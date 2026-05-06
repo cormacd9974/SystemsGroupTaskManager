@@ -1,0 +1,11 @@
+POST http://localhost:8800/api/user/register
+Content-Type: application/json
+
+{
+    "name": "Cormac Dunne",
+    "email": "cormacdunne2002@gmail.com",
+    "password": "cormac12345",
+    "title": "Production Engineer",
+    "role": "Admin",
+    "isAdmin": true
+}
