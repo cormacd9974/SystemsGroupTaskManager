@@ -223,7 +223,7 @@ const deleteRestoreTask = asyncHandler(async (req, res) => {
             t.isTrashed = false;
             await t.save();
         } else if (actionType === "restoreAll") {
-            await Task.updateMany({ isTrashed: true }, { $set: { $ne: true } });
+            await Task.updateMany({ isTrashed: true }, { $set: { isTrashed: false } });
         }
 
         res.status(200).json({ status: true, message: "Operation performed successfully." });

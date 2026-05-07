@@ -51,7 +51,8 @@ const registerUser = asyncHandler(async(req, res) => {
    if(user) {
     isAdmin ? createJWT(res, user._id) : null;
     user.password = undefined;
-    res.status(201).json({ ...user._doc, token });
+    const token = createJWT(res, user._id);
+    res.status(201).json({ ...user.toObject(), token });
    } else {
     return res.status(400).json({status: false, message: "Invalid user data."});
    }
@@ -103,7 +104,7 @@ const updateUserProfile = asyncHandler(async(req, res) => {
         user.isAdmin = req.body.isAdmin !== undefined ? req.body.isAdmin : user.isAdmin;
         const updateUser = await user.save();
         user.password = undefined;
-        res.status(200).json({status: true, message: "Profile update successful", user: updatedUser});
+        res.status(200).json({status: true, message: "Profile update successful", user: updateUser});
     } else {
         res.status(404).json({status: false, message: "User not found"});
     }
@@ -148,7 +149,7 @@ const activateUserProfile = asyncHandler(async(req, res) => {
 
 const deleteUserProfile = asyncHandler(async(req, res) => {
     const {id} = req.params;
-    await User.findById(id);
+    await User.findByIdAndDelete(id);
     res.status(200).json({status: true, message: "User deleted successfully"});
 });
 
