@@ -116,7 +116,7 @@ const TeamWorkPanel = ({ teamStatus }) => (
       {teamStatus.map((member,i) => (
         <div key={i} className="px-5 py-4">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-8 h-8 rounded-xl bg-linear-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold shrink-0">{getInitials(member.name)}</div>
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold shrink-0">{getInitials(member.name)}</div>
             <div><p className="text-sm font-semibold text-gray-900">{member.name}</p><p className="text-xs text-gray-400">{member.title}</p></div>
             <span className={clsx("ml-auto badge text-xs", member.inProgressTasks?.length>0 ? "bg-amber-50 text-amber-700 border border-amber-200":"bg-gray-50 text-gray-400 border border-gray-200")}>{member.inProgressTasks?.length||0} in-progress</span>
           </div>

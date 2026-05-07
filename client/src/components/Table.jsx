@@ -118,7 +118,7 @@ const Table = ({ tasks }) => {
                 setOpen={setOpenDialog}
                 onClick={deleteHandler}
             />
-            <AddTask open={openEdit} setOpen={setOpenEdit} task={selected} key={selected?._id} />
+            {openEdit && <AddTask open={openEdit} setOpen={setOpenEdit} task={selected} key={selected?._id} />}
         </>
     );
 };

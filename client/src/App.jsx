@@ -2,8 +2,6 @@ import { Toaster } from "sonner";
 import Sidebar from "./components/Sidebar";
 import Navbar from "./components/Navbar";
 import { setOpenSidebar } from "./redux/slices/authSlice";
-import { Transition } from "@headlessui/react";
-import { Fragment } from "react";
 import { IoMdClose } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux"
 import {
@@ -39,18 +37,9 @@ const MobileSidebar = () => {
   const dispatch = useDispatch();
   const closeSidebar = () => dispatch(setOpenSidebar(false));
 
+  if(!isSidebarOpen) return null;
+
   return (
-    <>
-      <Transition
-        show={isSidebarOpen}
-        as={Fragment}
-        enter="transition-opacity duration-200"
-        enterFrom="opacity-0"
-        enterTo="opacity-100"
-        leave="transition-opacity duration-200"
-        leaveFrom="opacity-100"
-        leaveTo="opacity-0"
-      >
         <div className="md:hidden fixed inset-0 z-50 bg-black/50" onClick={closeSidebar}>
           <div className="w-72 h-full" onClick={e => e.stopPropagation()}>
             <Sidebar />
@@ -59,8 +48,6 @@ const MobileSidebar = () => {
             </button>
           </div>
         </div>
-      </Transition>
-    </>
   );
 };
 

@@ -11,9 +11,9 @@ export function dateFormatter(dateString) {
     return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 };
 
-export function  getInitials(fullName) {
-    if(!fullName) return "?";
-    return fullName.split(" ").slice(0, 2).map((name) => name[0].toUpperCase()).join("");
+export function  getInitials(name) {
+    if(!name) return "?";
+    return name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2);
 };
 
 export const updateURL = ({ searchTerm, navigate, location}) => {

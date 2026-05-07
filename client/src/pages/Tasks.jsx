@@ -24,7 +24,7 @@ const Tasks = () => {
     useEffect(() => {
         refetch();
         window.scrollTo({ top: 0, left: 0, behavior: "smooth"});
-    }, [open, refetch]);
+    }, [open]);
     
 
     return isLoading ? (

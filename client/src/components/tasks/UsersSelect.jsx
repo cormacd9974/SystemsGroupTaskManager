@@ -17,7 +17,7 @@ export default function UserList({ team, setTeam }) {
         hasInitialized.current = true;
         if(!team || team.length < 1) {
             setSelectedUsers([data[0]]);
-            setTeam([data[0]]._id);
+            setTeam([data[0]._id]);
             
         }
     }, [data, isLoading]);

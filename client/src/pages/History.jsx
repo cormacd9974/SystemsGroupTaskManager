@@ -22,7 +22,7 @@ const PRIORITY_ICON  = {
 };
 
 const History = () => {
-    const [ data, isLoading ] = useGetTaskHistoryQuery();
+    const { data, isLoading }= useGetTaskHistoryQuery();
     const [search, setSearch] = useState("");
     const [filterCategory, setFilterCat] = useState("all");
 
@@ -103,7 +103,7 @@ const History = () => {
                                     <tr key={i}>
                                         <td>
                                             <Link to={`/task/${task._id}`} className="group flex items-center gap-2">
-                                              <div className="w-2 h-2 rounded-full bg-emerald-400 shriink-0" />
+                                              <div className="w-2 h-2 rounded-full bg-emerald-400 shrink-0" />
                                               <span className="font-medium text-gray-800 group-hover:text-blue-600 text-xs line-clamp-1">
                                                 {task.title}
                                               </span>
@@ -130,7 +130,7 @@ const History = () => {
                                             </div>
                                         </td>
                                         <td className="hidden md:table-cell text-gray-400 text-xs">
-                                            {moment(task.updateAt).format("DD MM YYYY")}
+                                            {moment(task.updatedAt).format("DD MM YYYY")}
                                         </td>
                                     </tr>
                                 ))}

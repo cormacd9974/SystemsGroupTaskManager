@@ -113,7 +113,7 @@ export default function TaskDialog({ task }) {
           </MenuItems>
         </Transition>
       </Menu>
-      <AddTask open={openEdit} setOpen={setOpenEdit} task={task} key={task?._id} />
+      {openEdit && <AddTask open={openEdit} setOpen={setOpenEdit} task={task} key={task?._id} />}
       <AddSubTask open={open} setOpen={setOpen} id={task._id} />
       <ConfirmationDialog open={openDialog} setOpen={setOpenDialog} onClick={deleteHandler} />
     </>

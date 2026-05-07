@@ -18,7 +18,7 @@ const createTask = asyncHandler(async (req, res) => {
         const task = await Task.create({
             title,
             team,
-            stage: stage ? stage.toLowerCase().replace(/_/g, "") : "todo",
+            stage: stage ? stage.toLowerCase() : "todo",
             date,
             priority: priority.toLowerCase(),
             category: category ? category.toLowerCase().replace("_", "-") : "report-created",
@@ -139,7 +139,14 @@ const getTasks = asyncHandler(async (req, res) => {
     const { userId, isAdmin } = req.user;
     const { stage, isTrashed, search, category } = req.query;
 
-    let query = { isTrashed: isTrashed ? true : false };
+    //let query = { isTrashed: isTrashed === "true" ? true : false };
+    let query = {};
+
+    if(isTrashed === "true"){
+        query.isTrashed = true;
+    } else {
+        query.isTrashed = { $ne: true};
+    }
 
     if (!isAdmin) query.team = { $all: [userId] };
     if (stage) query.stage = stage;
@@ -216,7 +223,7 @@ const deleteRestoreTask = asyncHandler(async (req, res) => {
             t.isTrashed = false;
             await t.save();
         } else if (actionType === "restoreAll") {
-            await Task.updateMany({ isTrashed: true }, { $set: { isTrashed: false } });
+            await Task.updateMany({ isTrashed: true }, { $set: { $ne: true } });
         }
 
         res.status(200).json({ status: true, message: "Operation performed successfully." });
@@ -294,8 +301,7 @@ const getTaskHistory = asyncHandler(async (req, res) => {
 
         const tasks = await Task.find({
             isTrashed: false,
-            stage: "completed",
-            updatedAt: { $gte: oneYearAgo },
+            stage: "completed"
         })
             .populate({ path: "team", select: "name title email" })
             .sort({ updatedAt: -1 });
