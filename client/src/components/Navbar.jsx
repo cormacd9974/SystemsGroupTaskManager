@@ -4,7 +4,6 @@ import { HiMenuAlt2 } from "react-icons/hi";
 import { useDispatch } from "react-redux";
 import { setOpenSidebar } from "../redux/slices/authSlice";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import { updateURL } from "../utils";
 import NotificationPanel from "./NotificationPanel";
 import UserAvatar from "./UserAvatar"
 
@@ -16,8 +15,11 @@ const Navbar = () => {
   const [searchTerm, setSearchTerm] = useState(searchParams.get("search") || "");
 
   useEffect(() => {
-    updateURL({ searchTerm, navigate, location });
-  }, [location, navigate, searchTerm]);
+    const params = new URLSearchParams();
+    if (searchTerm) params.set("search", searchTerm);
+    const newURL = `${location.pathname}${params.toString() ? "?" + params.toString() : ""}`;
+    navigate(newURL, { replace: true });
+  }, [searchTerm]);
 
   const pageName = location.pathname.split("/")[1];
   const displayName = pageName ? pageName.charAt(0).toUpperCase() + pageName.slice(1) : "Dashboard";

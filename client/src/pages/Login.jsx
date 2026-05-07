@@ -70,7 +70,7 @@ const Login = () => {
                   style={{ boxShadow: "0 8px 40px rgba(15,35,71,0.10)"}}
                 >
                     <div className="mb-8">
-                        <h1 className="text-2xl font-bold text-gray-900 mb-1">Welcome back1</h1>
+                        <h1 className="text-2xl font-bold text-gray-900 mb-1">Welcome back</h1>
                         <p className="text-gray-500 text-sm">Continue</p>
                     </div>
 

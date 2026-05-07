@@ -103,7 +103,7 @@ const updateUserProfile = asyncHandler(async(req, res) => {
         user.email = req.body.email || user.email;
         user.isAdmin = req.body.isAdmin !== undefined ? req.body.isAdmin : user.isAdmin;
         const updateUser = await user.save();
-        user.password = undefined;
+        updateUser.password = undefined;
         res.status(200).json({status: true, message: "Profile update successful", user: updateUser});
     } else {
         res.status(404).json({status: false, message: "User not found"});

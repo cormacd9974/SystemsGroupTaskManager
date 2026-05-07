@@ -24,13 +24,13 @@ const AddTask = ({ open, setOpen, task }) => {
   const [priority, setPriority] = useState(task?.priority || PRIORITY[2]);
   const [category, setCategory] = useState(task?.category?.toUpperCase()?.replace("-","_") || ALL_CATS[0]);
   const [team,     setTeam]     = useState(task?.team || []);
-  const [ setAssets]   = useState([]);
+  const [assets, setAssets]   = useState([]);
   const [createTask, { isLoading }]       = useCreateTaskMutation();
   const [updateTask, { isLoading: isUpd }] = useUpdateTaskMutation();
 
   const handleOnSubmit = async (data) => {
     try {
-      const payload = { ...data, team, stage: stage.toLowerCase(), priority: priority.toLowerCase(), category: category ? category.toLowerCase().replace("_","-"): "report-created" };
+      const payload = { ...data, team, stage: stage.toLowerCase(), priority: priority.toLowerCase(), category: category ? category.toLowerCase().replace("_","-"): "report-created", assets };
       const res = task?._id
         ? await updateTask({ ...payload, _id: task._id }).unwrap()
         : await createTask(payload).unwrap();

@@ -34,7 +34,7 @@ const CATEGORY_COLOR = {
 const TaskCard = ({ task }) => {
     const { user } = useSelector((state) => state.auth);
     const [open, setOpen] = useState(false);
-    const cat = task?.category?.toLowercase();
+    const cat = task?.category?.toLowerCase();
 
     return (
         <>
@@ -67,7 +67,7 @@ const TaskCard = ({ task }) => {
             <div className="flex items-center justify-between">
                 <TaskAssets 
                   activities={task?.activities?.length}
-                  subTasks={task?.subTask}
+                  subTasks={task?.subTasks}
                   assets={task?.assets?.length}
                 />
                 <div className="flex -space-x-1.5">

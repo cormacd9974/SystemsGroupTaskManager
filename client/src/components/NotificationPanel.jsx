@@ -39,10 +39,10 @@ export default function NotificationPanel() {
                 leaveFrom="opacity-100 translate-y-0"
                 leaveto="opacity-0"
             >
-                <PopoverPanel className="absolute right-0 z-10 mt-2w-80">
+                <PopoverPanel className="absolute right-0 z-10 mt-2 w-80">
                     {({ close }) => (
                         data?.length > 0 ? (
-                            <div className="bg-white rounded 2xl shadow-lg border border-gray-100">
+                            <div className="bg-white rounded-2xl shadow-lg border border-gray-100">
                                 <div className="px-4 py-3 border-b border-gray-500">
                                     <p className="text-sm font-bold text-gray-900">Notifications</p>
                                     <p className="text-xs text-gray-400">{data.length} unread</p>
@@ -87,7 +87,7 @@ export default function NotificationPanel() {
                             </div>
                         </div>
                         ) : (
-                            <div className="bg-white rounded 2xl shadow-lg border border-gray-100 p-6 text-center">
+                            <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 text-center">
                                 <p className="flex flex-col text-sm items-center gap-2"></p>
                             </div>
                         )

@@ -148,7 +148,7 @@ const getTasks = asyncHandler(async (req, res) => {
         query.isTrashed = { $ne: true};
     }
 
-    if (!isAdmin) query.team = { $all: [userId] };
+    if (!isAdmin) query.team = { $in: [userId] };
     if (stage) query.stage = stage;
     if (category) query.category = category;
 
@@ -266,7 +266,7 @@ const dashboardStatistics = asyncHandler(async (req, res) => {
                 const inProgressTasks = await Task.find({
                     isTrashed: false,
                     stage: "in-progress",
-                    team: { $all: [u._id] },
+                    team: { $in: [u._id] },
                 })
                     .select("title priority category date")
                     .sort({ _id: -1 });

@@ -1,5 +1,5 @@
 export const formatDate = (date) => {
-    const month = date.tolLocaleString("en-US", {month: "short"});
+    const month = date.toLocaleString("en-US", {month: "short"});
     return `${date.getDate()}-${month}-${date.getFullYear()}`;
 };
 

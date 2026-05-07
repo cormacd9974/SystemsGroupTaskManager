@@ -25,12 +25,14 @@ const Sidebar = () => {
         dispatch(setOpenSidebar(false));
     };
 
-    const NavLink = ({ el }) => {
+    const NavLink = ({ el, onClose }) => {
+        const location = useLocation();
+            const path = location.pathname.split("/")[1];
         const isActive = path === el.link.split("/")[1];
         return (
             <Link
                 to={el.link}
-                onClick={closeSidebar}
+                onClick={onClose}
                 className={clsx(
                     "flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-150",
                     isActive ? "bg-white/15 text-white border-l-[3px] border-blue-400 pl-3.25"
@@ -44,6 +46,10 @@ const Sidebar = () => {
             </Link>
         );
     };
+
+    {sidebarLinks.map(link => (
+        <NavLink el={link} key={link.label} onClose={closeSidebar} />
+    ))}
 
     return (
         <div className="w-full h-full flex flex-col sidebar-bg">
