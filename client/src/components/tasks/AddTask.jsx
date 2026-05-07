@@ -7,8 +7,8 @@ import { dateFormatter } from "../../utils";
 import { Loading, ModalWrapper, SelectList, Textbox } from "../";
 import UserList from "./UsersSelect";
 
-const STAGES   = ["TODO","IN PROGRESS","COMPLETED"];
-const PRIORITY = ["HIGH","MEDIUM","NORMAL","LOW"];
+const STAGES   = ["todo","in-progress","completed"];
+const PRIORITY = ["high","medium","normal","low"];
 const CATEGORY_GROUPS = [
   { group:"Reports",       options:["REPORT-CREATED","REPORT-ENHANCED","REPORT-VALIDATED"], labels:{"REPORT-CREATED":"Created","REPORT-ENHANCED":"Enhanced","REPORT-VALIDATED":"Validated"} },
   { group:"Configurations",options:["CONFIG-NEW","CONFIG-UPDATED"],                         labels:{"CONFIG-NEW":"New","CONFIG-UPDATED":"Updated"} },
@@ -20,17 +20,17 @@ const AddTask = ({ open, setOpen, task }) => {
   const { register, handleSubmit, formState: { errors } } = useForm({
     defaultValues: { title: task?.title||"", date: dateFormatter(task?.date||new Date()), description: task?.description||"", links: task?.links?.join(",")||"" },
   });
-  const [stage,    setStage]    = useState(task?.stage?.toUpperCase()    || STAGES[0]);
-  const [priority, setPriority] = useState(task?.priority?.toUpperCase() || PRIORITY[2]);
+  const [stage,    setStage]    = useState(task?.stage || STAGES[0]);
+  const [priority, setPriority] = useState(task?.priority || PRIORITY[2]);
   const [category, setCategory] = useState(task?.category?.toUpperCase()?.replace("-","_") || ALL_CATS[0]);
   const [team,     setTeam]     = useState(task?.team || []);
-  const [assets,   setAssets]   = useState([]);
+  const [ setAssets]   = useState([]);
   const [createTask, { isLoading }]       = useCreateTaskMutation();
   const [updateTask, { isLoading: isUpd }] = useUpdateTaskMutation();
 
   const handleOnSubmit = async (data) => {
     try {
-      const payload = { ...data, team, stage, priority, category: category.toLowerCase().replace("_","-") };
+      const payload = { ...data, team, stage: stage.toLowerCase(), priority: priority.toLowerCase(), category: category ? category.toLowerCase().replace("_","-"): "report-created" };
       const res = task?._id
         ? await updateTask({ ...payload, _id: task._id }).unwrap()
         : await createTask(payload).unwrap();

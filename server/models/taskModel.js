@@ -13,7 +13,10 @@ const taskSchema = new Schema(
         stage: {
             type: String,
             default: "todo",
-            enum: ["todo", "in-progress", "completed"],
+            enum: {
+                values: ["todo", "in-progress", "completed"],
+                message: "Stage must be either 'todo', 'in-progress', or 'completed'",
+            },
         },
 
         category: {
@@ -37,7 +40,7 @@ const taskSchema = new Schema(
                     enum: [
                         "assigned",
                         "started",
-                        "in progress",
+                        "in-progress",
                         "bug",
                         "completed",
                         "commented",

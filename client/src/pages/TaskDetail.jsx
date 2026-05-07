@@ -21,9 +21,9 @@ const ACTIVITY_ICON  = {
   assigned:     <div className="w-8 h-8 rounded-xl bg-purple-500 flex items-center justify-center text-white text-sm"><FaUser /></div>,
   bug:          <div className="w-8 h-8 rounded-xl bg-red-500 flex items-center justify-center text-white text-sm"><FaBug /></div>,
   completed:    <div className="w-8 h-8 rounded-xl bg-emerald-500 flex items-center justify-center text-white text-sm"><MdOutlineDoneAll /></div>,
-  "in progress":<div className="w-8 h-8 rounded-xl bg-violet-500 flex items-center justify-center text-white text-sm"><GrInProgress /></div>,
+  "in-progress":<div className="w-8 h-8 rounded-xl bg-violet-500 flex items-center justify-center text-white text-sm"><GrInProgress /></div>,
 };
-const act_types = ["Started","Completed","In Progress","Commented","Bug","Assigned"];
+const act_types = ["Started","Completed","in-progress","Commented","Bug","Assigned"];
 
 const Activities = ({ activity, id, refetch }) => {
   const [selected, setSelected] = useState("Started");

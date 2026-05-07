@@ -2,10 +2,10 @@
 export const dashboardData = {
   totalTasks: 12,
   last10Task: [
-    { _id: "1", title: "COS/AE Job Maintenance",        stage: "in progress", priority: "high",   date: new Date(), team: [{ name: "Dunne, Cormac",   title: "Production Engineer" }],    category: "report-created"   },
+    { _id: "1", title: "COS/AE Job Maintenance",        stage: "in-progress", priority: "high",   date: new Date(), team: [{ name: "Dunne, Cormac",   title: "Production Engineer" }],    category: "report-created"   },
     { _id: "2", title: "Executive Summary Maintenance", stage: "todo",        priority: "medium", date: new Date(), team: [{ name: "Acharya, Sushanti",   title: "Production Engineer" }],    category: "report-enhanced"  },
     { _id: "3", title: "REV CEID Creation",             stage: "completed",   priority: "normal", date: new Date(), team: [{ name: "Allen, Michael",    title: "Production Engineer" }], category: "config-new"       },
-    { _id: "4", title: "STRS Auto-Update Maintenance",  stage: "in progress", priority: "high",   date: new Date(), team: [{ name: "Dunne, Cormac",   title: "Production Engineer" }],    category: "project-new"      },
+    { _id: "4", title: "STRS Auto-Update Maintenance",  stage: "in-progress", priority: "high",   date: new Date(), team: [{ name: "Dunne, Cormac",   title: "Production Engineer" }],    category: "project-new"      },
     { _id: "5", title: "CT Goal Work",                  stage: "completed",   priority: "medium", date: new Date(), team: [{ name: "Acharya, Sushanti",   title: "Production Engineer" }],    category: "report-validated" },
   ],
   users: [
@@ -18,14 +18,14 @@ export const dashboardData = {
     {
       _id: "1", name: "Dunne, Cormac", title: "Production Engineer",
       inProgressTasks: [
-        { _id: "1", title: "COS/AE Job Maintenance",       priority: "high",   category: "report-created", stage: "in progress" },
-        { _id: "4", title: "STRS Auto-Update Maintenance", priority: "high",   category: "project-new",    stage: "in progress" },
+        { _id: "1", title: "COS/AE Job Maintenance",       priority: "high",   category: "report-created", stage: "in-progress" },
+        { _id: "4", title: "STRS Auto-Update Maintenance", priority: "high",   category: "project-new",    stage: "in-progress" },
       ],
     },
     {
       _id: "2", name: "Acharya, Sushanti", title: "Production Engineer",
       inProgressTasks: [
-        { _id: "2", title: "Executive Summary Maintenance", priority: "medium", category: "report-enhanced", stage: "in progress" },
+        { _id: "2", title: "Executive Summary Maintenance", priority: "medium", category: "report-enhanced", stage: "in-progress" },
       ],
     },
     {
@@ -37,7 +37,7 @@ export const dashboardData = {
       inProgressTasks: [],
     },
   ],
-  tasks: { completed: 4, "in progress": 5, todo: 3 },
+  tasks: { completed: 4, "in-progress": 5, todo: 3 },
   graphData: [
     { name: "high",   total: 4 },
     { name: "medium", total: 5 },
@@ -48,14 +48,14 @@ export const dashboardData = {
 // ── Tasks.jsx ─────────────────────────────────────────────────
 export const tasksData = {
   tasks: [
-    { _id: "1", title: "COS/AE Job Maintenance",        stage: "in progress", priority: "high",   category: "report-created",   date: new Date(), team: [{ name: "Dunne, Cormac" }],   activities: [], subTasks: [], assets: [] },
+    { _id: "1", title: "COS/AE Job Maintenance",        stage: "in-progress", priority: "high",   category: "report-created",   date: new Date(), team: [{ name: "Dunne, Cormac" }],   activities: [], subTasks: [], assets: [] },
     { _id: "2", title: "Executive Summary Maintenance", stage: "todo",        priority: "medium", category: "report-enhanced",  date: new Date(), team: [{ name: "Acharya, Sushanti" }],   activities: [], subTasks: [], assets: [] },
     { _id: "3", title: "REV CEID Creation",             stage: "completed",   priority: "normal", category: "report-validated", date: new Date(), team: [{ name: "Allen, Michael" }],    activities: [], subTasks: [], assets: [] },
-    { _id: "4", title: "STRS Auto-Update Maintenance",  stage: "in progress", priority: "high",   category: "config-new",       date: new Date(), team: [{ name: "Dunne, Cormac" }],   activities: [], subTasks: [], assets: [] },
+    { _id: "4", title: "STRS Auto-Update Maintenance",  stage: "in-progress", priority: "high",   category: "config-new",       date: new Date(), team: [{ name: "Dunne, Cormac" }],   activities: [], subTasks: [], assets: [] },
     { _id: "5", title: "CT Goal Work",                  stage: "todo",        priority: "medium", category: "config-updated",   date: new Date(), team: [{ name: "Acharya, Sushanti" }],   activities: [], subTasks: [], assets: [] },
     { _id: "6", title: "New Hire Integration Project",  stage: "todo",        priority: "low",    category: "project-new",      date: new Date(), team: [{ name: "Vechoorkaroot, Don Sam" }], activities: [], subTasks: [], assets: [] },
     { _id: "7", title: "Q1 Production Report",          stage: "completed",   priority: "high",   category: "report-created",   date: new Date(), team: [{ name: "Allen, Michael" }],    activities: [], subTasks: [], assets: [] },
-    { _id: "8", title: "System Config Baseline Update", stage: "in progress", priority: "medium", category: "config-updated",   date: new Date(), team: [{ name: "Dunne, Cormac" }],   activities: [], subTasks: [], assets: [] },
+    { _id: "8", title: "System Config Baseline Update", stage: "in-progress", priority: "medium", category: "config-updated",   date: new Date(), team: [{ name: "Dunne, Cormac" }],   activities: [], subTasks: [], assets: [] },
   ],
 };
 // ── Team.jsx ──────────────────────────────────────────────────
@@ -64,15 +64,15 @@ export const teamData = {
     {
       _id: "1", name: "Dunne, Cormac", title: "Production Engineer",
       inProgressTasks: [
-        { _id: "1", title: "COS/AE Job Maintenance",       priority: "high",   category: "report-created", stage: "in progress" },
-        { _id: "4", title: "STRS Auto-Update Maintenance", priority: "high",   category: "config-new",     stage: "in progress" },
-        { _id: "8", title: "System Config Baseline Update",priority: "medium", category: "config-updated", stage: "in progress" },
+        { _id: "1", title: "COS/AE Job Maintenance",       priority: "high",   category: "report-created", stage: "in-progress" },
+        { _id: "4", title: "STRS Auto-Update Maintenance", priority: "high",   category: "config-new",     stage: "in-progress" },
+        { _id: "8", title: "System Config Baseline Update",priority: "medium", category: "config-updated", stage: "in-progress" },
       ],
     },
     {
       _id: "2", name: "Acharya, Sushanti", title: "Production Engineer",
       inProgressTasks: [
-        { _id: "2", title: "Executive Summary Maintenance", priority: "medium", category: "report-enhanced", stage: "in progress" },
+        { _id: "2", title: "Executive Summary Maintenance", priority: "medium", category: "report-enhanced", stage: "in-progress" },
       ],
     },
     {
@@ -101,7 +101,7 @@ export const historyData = {
 export const trashData = {
   tasks: [
     { _id: "12", title: "Old Report Template v1",    stage: "todo",        priority: "low",    date: new Date("2024-01-05") },
-    { _id: "13", title: "Deprecated Config File",    stage: "in progress", priority: "normal", date: new Date("2024-02-10") },
+    { _id: "13", title: "Deprecated Config File",    stage: "in-progress", priority: "normal", date: new Date("2024-02-10") },
     { _id: "14", title: "Test Project Draft",        stage: "todo",        priority: "low",    date: new Date("2024-03-01") },
   ],
 };

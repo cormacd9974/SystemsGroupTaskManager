@@ -30,7 +30,7 @@ const Team = () => {
             <div>
                 <Title title="Team"/>
                 <p className="text-sm text-gray-400 mt-0.5">
-                    All in progress tasks
+                    All in-progress tasks
                 </p>
             </div>
 
@@ -92,7 +92,7 @@ const Team = () => {
                             </div>
                         ) : (
                             <div className="px-5 y-8 text-center">
-                              <p className="text-sm text-gray-300">No task in progress</p>
+                              <p className="text-sm text-gray-300">No task in-progress</p>
                             </div>
                         )}
                         </div>

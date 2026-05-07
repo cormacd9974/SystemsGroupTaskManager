@@ -18,10 +18,10 @@ const createTask = asyncHandler(async (req, res) => {
         const task = await Task.create({
             title,
             team,
-            stage: stage.toLowerCase(),
+            stage: stage ? stage.toLowerCase().replace(/_/g, "") : "todo",
             date,
             priority: priority.toLowerCase(),
-            category: category ? category.toLowerCase() : "report-created",
+            category: category ? category.toLowerCase().replace("_", "-") : "report-created",
             assets,
             activities: activity,
             links: newLinks,
@@ -258,7 +258,7 @@ const dashboardStatistics = asyncHandler(async (req, res) => {
             users.map(async (u) => {
                 const inProgressTasks = await Task.find({
                     isTrashed: false,
-                    stage: "in progress",
+                    stage: "in-progress",
                     team: { $all: [u._id] },
                 })
                     .select("title priority category date")

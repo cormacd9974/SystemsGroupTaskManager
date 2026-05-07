@@ -35,7 +35,7 @@ const Dashboard = () => {
   const stats = [
     { label:"Total Tasks",  total:data?.totalTasks||0,        icon:<HiCollection className="text-blue-600" />,    colorClass:"blue",  accent:"bg-blue-50 text-blue-600" },
     { label:"Completed",    total:totals["completed"]||0,      icon:<HiCheckCircle className="text-emerald-600" />, colorClass:"green", accent:"bg-emerald-50 text-emerald-600" },
-    { label:"In Progress",  total:totals["in progress"]||0,    icon:<HiLightningBolt className="text-amber-600" />, colorClass:"amber", accent:"bg-amber-50 text-amber-600" },
+    { label:"in-progress",  total:totals["in-progress"]||0,    icon:<HiLightningBolt className="text-amber-600" />, colorClass:"amber", accent:"bg-amber-50 text-amber-600" },
     { label:"To Do",        total:totals["todo"]||0,           icon:<HiClock className="text-rose-600" />,          colorClass:"rose",  accent:"bg-rose-50 text-rose-600" },
   ];
   return (
@@ -118,7 +118,7 @@ const TeamWorkPanel = ({ teamStatus }) => (
           <div className="flex items-center gap-3 mb-3">
             <div className="w-8 h-8 rounded-xl bg-linear-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold shrink-0">{getInitials(member.name)}</div>
             <div><p className="text-sm font-semibold text-gray-900">{member.name}</p><p className="text-xs text-gray-400">{member.title}</p></div>
-            <span className={clsx("ml-auto badge text-xs", member.inProgressTasks?.length>0 ? "bg-amber-50 text-amber-700 border border-amber-200":"bg-gray-50 text-gray-400 border border-gray-200")}>{member.inProgressTasks?.length||0} in progress</span>
+            <span className={clsx("ml-auto badge text-xs", member.inProgressTasks?.length>0 ? "bg-amber-50 text-amber-700 border border-amber-200":"bg-gray-50 text-gray-400 border border-gray-200")}>{member.inProgressTasks?.length||0} in-progress</span>
           </div>
           {member.inProgressTasks?.length > 0 ? (
             <div className="flex flex-col gap-2 pl-11">

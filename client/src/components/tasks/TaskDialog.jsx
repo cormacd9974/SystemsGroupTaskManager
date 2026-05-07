@@ -27,7 +27,7 @@ const ChangeTaskActions = ({ _id, stage }) => {
   };
   const items = [
     { label:"To-Do", stage:"todo", icon:<TaskColor className="bg-blue-600" />, onClick:() => changeHandler("todo") },
-    { label:"In Progress", stage:"in progress", icon:<TaskColor className="bg-yellow-600" />, onClick:() => changeHandler("in progress") },
+    { label:"in-progress", stage:"in-progress", icon:<TaskColor className="bg-yellow-600" />, onClick:() => changeHandler("in-progress") },
     { label:"Completed", stage:"completed", icon:<TaskColor className="bg-green-600" />, onClick:() => changeHandler("completed") },
   ];
   return (
