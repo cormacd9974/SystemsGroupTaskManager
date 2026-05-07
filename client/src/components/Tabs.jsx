@@ -1,6 +1,7 @@
 import { Tab, TabGroup, TabList, TabPanels } from "@headlessui/react";
 
 const Tabs = ({ tabs, setSelected, children }) => {
+    return (
     <div className="w-full">
         <TabGroup onChange={setSelected}>
             <TabList className="flex space-x-1 rounded-xl bg-gray-100 p-1">
@@ -24,6 +25,7 @@ const Tabs = ({ tabs, setSelected, children }) => {
             </TabPanels>
         </TabGroup>
     </div>
+    );
 };
 
 export default Tabs;

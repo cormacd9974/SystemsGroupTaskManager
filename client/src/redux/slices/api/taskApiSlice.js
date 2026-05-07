@@ -1,4 +1,4 @@
-import { USERS_URL } from "../../../utils/contants";
+//import { USERS_URL } from "../../../utils/contants";
 import { TASKS_URL } from "../../../utils/contants";
 import { apiSlice } from "../apiSlice";
 
@@ -30,7 +30,7 @@ export const taskApiSlice = apiSlice.injectEndpoints({
         }),
          getAllTask: builder.query({
            query: ({ strQuery, isTrashed, search }) => ({
-                url: `${TASKS_URL}?stage=${strQuery}&isTrashed=${isTrashed}&search=${search}`,
+                url: `${TASKS_URL}?${strQuery ? `stage=${strQuery}&` : ""}&isTrashed=${isTrashed}&search=${search ?? ""}`,
                 method: "GET",
                 credentials: "include",
             }),

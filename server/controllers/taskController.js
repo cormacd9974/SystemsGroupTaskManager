@@ -240,7 +240,7 @@ const dashboardStatistics = asyncHandler(async (req, res) => {
             ? await Task.find({ isTrashed: false })
                 .populate({ path: "team", select: "name role title email" })
                 .sort({ _id: -1 })
-            : await Task.find({ isTrashed: false, team: { $all: [userId] } })
+            : await Task.find({ isTrashed: false, team: { $in: [userId] } })
                 .populate({ path: "team", select: "name role title email" })
                 .sort({ _id: -1 });
 
