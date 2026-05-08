@@ -9,9 +9,9 @@ import { setOpenSidebar } from "../redux/slices/authSlice";
 const linkData = [
     { label: "Dashboard", link: "/dashboard", icon: <MdDashboard /> },
     { label: "Tasks", link: "/tasks", icon: <FaTasks /> },
-    { label: "Team", link: "/team", icon: <FaUsers /> },
     { label: "History", link: "/history", icon: <IoMdBook /> },
     { label: "Trash", link: "/trashed", icon: <FaTrashAlt /> },
+    { label: "Team", link: "/team", icon: <FaUsers /> },
 ];
 
 const Sidebar = () => {
@@ -19,7 +19,7 @@ const Sidebar = () => {
     const dispatch = useDispatch();
     const location = useLocation();
     const path = location.pathname.split("/")[1];
-    const sidebarLinks = user?.isAdmin ? linkData : linkData.slice(0, 3);
+    const sidebarLinks = user?.isAdmin ? linkData : linkData.slice(0, 4);
 
     const closeSidebar = () => {
         dispatch(setOpenSidebar(false));

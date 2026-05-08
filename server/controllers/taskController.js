@@ -145,7 +145,10 @@ const getTasks = asyncHandler(async (req, res) => {
     if(isTrashed === "true"){
         query.isTrashed = true;
     } else {
-        query.isTrashed = { $ne: "completed" };
+        query.isTrashed = { $ne: true};
+        if(!stage) {
+            query.stage = { $ne: true };
+        }
     }
 
     if (!isAdmin) query.team = { $in: [userId] };
@@ -237,10 +240,10 @@ const dashboardStatistics = asyncHandler(async (req, res) => {
         const { userId, isAdmin } = req.user;
 
         const allTasks = isAdmin
-            ? await Task.find({ isTrashed: false, stage: { $ne: "completed" } })
+            ? await Task.find({ isTrashed: false })
                 .populate({ path: "team", select: "name role title email" })
                 .sort({ _id: -1 })
-            : await Task.find({ isTrashed: false, stage: { $ne: "completed" }, team: { $in: [userId] } })
+            : await Task.find({ isTrashed: false, team: { $in: [userId] } })
                 .populate({ path: "team", select: "name role title email" })
                 .sort({ _id: -1 });
 
