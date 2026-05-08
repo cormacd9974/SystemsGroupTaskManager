@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useChangeTaskStageMutation, useDuplicateTaskMutation, useTrashTaskMutation } from "../../redux/slices/api/taskApiSlice";
 import { ConfirmationDialog } from "../index";
-import { useSelector } from "react-redux";
+//import { useSelector } from "react-redux";
 import AddSubTask from "./AddSubTask";
 import AddTask from "./AddTask";
 import TaskColor from "./TaskColor";
@@ -54,7 +54,7 @@ const ChangeTaskActions = ({ _id, stage }) => {
 };
 
 export default function TaskDialog({ task }) {
-  const { user } = useSelector(s => s.auth);
+  //const { user } = useSelector(s => s.auth);
   const [open, setOpen] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
@@ -90,10 +90,10 @@ export default function TaskDialog({ task }) {
         <Transition as={Fragment} enter="transition ease-out duration-100" enterFrom="opacity-0 scale-95" enterTo="opacity-100 scale-100" leave="transition ease-in duration-75" leaveFrom="opacity-100" leaveTo="opacity-0 scale-95">
           <MenuItems className="absolute right-0 mt-2 w-52 rounded-xl bg-white shadow-lg ring-1 ring-black/5 focus:outline-none p-2 z-50 divide-y divide-gray-100">
             <div className="space-y-1 pb-1">
-              {items.map((el, idx) => (
+              {items.map((el) => (
                 <MenuItem key={el.label}>
                   {({ active }) => (
-                    <button disabled={idx === 0 ? false : !user.isAdmin} onClick={el.onClick}
+                    <button disabled={false} onClick={el.onClick}
                       className={`${active ? "bg-blue-500 text-white" : "text-gray-900"} group flex w-full items-center rounded-lg px-2 py-2 text-sm disabled:text-gray-400`}>
                       {el.icon}{el.label}
                     </button>

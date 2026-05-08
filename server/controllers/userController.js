@@ -49,7 +49,7 @@ const registerUser = asyncHandler(async(req, res) => {
     name, email, password, isAdmin, role, title
    });
    if(user) {
-    isAdmin ? createJWT(res, user._id) : null;
+    //isAdmin ? createJWT(res, user._id) : null;
     user.password = undefined;
     const token = createJWT(res, user._id);
     res.status(201).json({ ...user.toObject(), token });
