@@ -145,7 +145,7 @@ const getTasks = asyncHandler(async (req, res) => {
     if(isTrashed === "true"){
         query.isTrashed = true;
     } else {
-        query.isTrashed = { $ne: true};
+        query.isTrashed = { $ne: "completed" };
     }
 
     if (!isAdmin) query.team = { $in: [userId] };
@@ -237,10 +237,10 @@ const dashboardStatistics = asyncHandler(async (req, res) => {
         const { userId, isAdmin } = req.user;
 
         const allTasks = isAdmin
-            ? await Task.find({ isTrashed: false })
+            ? await Task.find({ isTrashed: false, stage: { $ne: "completed" } })
                 .populate({ path: "team", select: "name role title email" })
                 .sort({ _id: -1 })
-            : await Task.find({ isTrashed: false, team: { $in: [userId] } })
+            : await Task.find({ isTrashed: false, stage: { $ne: "completed" }, team: { $in: [userId] } })
                 .populate({ path: "team", select: "name role title email" })
                 .sort({ _id: -1 });
 
@@ -291,18 +291,16 @@ const dashboardStatistics = asyncHandler(async (req, res) => {
 
 const getTaskHistory = asyncHandler(async (req, res) => {
     try {
-        const { isAdmin } = req.user;
-        if (!isAdmin) {
-            return res.status(403).json({ status: false, message: "Not authorised." });
-        }
+        const { isAdmin, userId } = req.user;
+        const query = isAdmin ? { isTrashed: false, stage: "completed" } : { isTrashed: false, stage: "completed", team: { $in: [userId] } };
 
         const oneYearAgo = new Date();
         oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
 
-        const tasks = await Task.find({
+        const tasks = await Task.find(query)/*({
             isTrashed: false,
             stage: "completed"
-        })
+        })*/
             .populate({ path: "team", select: "name title email" })
             .sort({ updatedAt: -1 });
 

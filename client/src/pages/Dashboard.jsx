@@ -26,7 +26,7 @@ const StatCard = ({ label, count, icon, colorClass, accent }) => (
 );
 
 const Dashboard = () => {
-  const { data, isLoading } = useGetDashboardStatsQuery();
+  const { data, isLoading } = useGetDashboardStatsQuery(undefined, { refetchOnMountOrArgChange:true });
 
   const { user } = useSelector(s => s.auth);
   useEffect(() => { window.scrollTo({ top:0, left:0, behavior:"smooth" }); }, []);

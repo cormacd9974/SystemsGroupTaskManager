@@ -19,7 +19,7 @@ const Sidebar = () => {
     const dispatch = useDispatch();
     const location = useLocation();
     const path = location.pathname.split("/")[1];
-    const sidebarLinks = user?.isAdmin ? linkData : linkData.slice(0, 2);
+    const sidebarLinks = user?.isAdmin ? linkData : linkData.slice(0, 3);
 
     const closeSidebar = () => {
         dispatch(setOpenSidebar(false));
@@ -68,6 +68,7 @@ const Sidebar = () => {
             </div>
 
             <div className="px-3 py-4 border-t border-white/10">
+                {user?.isAdmin && (
                 <Link
                     to="/settings"
                     onClick={closeSidebar}
@@ -81,6 +82,7 @@ const Sidebar = () => {
                     <MdSettings className="text-base" />
                     <span>Settings</span>
                 </Link>
+                )}      
                 {user && (
                     <div
                         className="mt-3 px-4 py-3 rounded-xl flex items-center gap-3"

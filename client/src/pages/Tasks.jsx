@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { FaList } from "react-icons/fa";
-import { useSelector } from "react-redux";
+//import { useSelector } from "react-redux";
 import { IoMdAdd } from "react-icons/io";
 import { MdGridView } from "react-icons/md";
 import { Loading, Table, Tabs, Title } from "../components";
@@ -17,7 +17,7 @@ const Tasks = () => {
     const [searchParams] = useSearchParams();
     const [searchTerm] = useState(searchParams.get("search") || "");
     const [open, setOpen] = useState(false);
-    const { user } = useSelector((state) => state.auth);
+    //const { user } = useSelector((state) => state.auth);
     const [selected, setSelected] = useState(0);
     const { data, isLoading, refetch } = useGetAllTaskQuery({ strQuery: "", isTrashed: "", search: searchTerm});
 
@@ -40,7 +40,7 @@ const Tasks = () => {
                     {data?.tasks?.length || 0} tasks
                   </p>
                 </div>
-                {user?.isAdmin && (
+                
                     <button
                     onClick={() => setOpen(true)}
                     className="btn-primary flex items-center gap-2"
@@ -48,7 +48,7 @@ const Tasks = () => {
                         <IoMdAdd className="text-lg"/>
                         <span>New Task</span>
                     </button>
-                )}
+                
             </div>
 
             <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
