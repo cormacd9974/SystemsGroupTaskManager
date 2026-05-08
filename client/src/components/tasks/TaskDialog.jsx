@@ -104,7 +104,7 @@ export default function TaskDialog({ task }) {
             <div className="py-1"><MenuItem><ChangeTaskActions id={task._id} {...task} /></MenuItem></div>
             <div className="pt-1">
               <MenuItem>{({ active }) => (
-                <button disabled={!user.isAdmin} onClick={() => setOpenDialog(true)}
+                <button disabled={false} onClick={() => setOpenDialog(true)}
                   className={`${active ? "bg-red-100 text-red-900" : "text-red-900"} group flex w-full items-center rounded-lg px-2 py-2 text-sm disabled:text-gray-400`}>
                   <RiDeleteBin6Line className="mr-2 h-4 w-4 text-red-600" />Delete
                 </button>

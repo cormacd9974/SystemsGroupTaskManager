@@ -94,7 +94,7 @@ const getNotificationList = asyncHandler(async(req, res) => {
 const updateUserProfile = asyncHandler(async(req, res) => {
     const {userId, isAdmin} = req.user;
     const {_id} = req.body;
-    const id = isAdmin && userId === _id ? userId: isAdmin && userId !== _id ? _id : userId;
+    const id = isAdmin && userId.toString() === _id?.toString() ? userId : isAdmin && userId.toString() !== _id?.toString() ? _id : userId;
     const user = await User.findById(id);
     if(user) {
         user.name = req.body.name || user.name;

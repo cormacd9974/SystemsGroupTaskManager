@@ -6,6 +6,7 @@ import { useUpdateUserMutation } from "../redux/slices/api/userApiSlice";
 import { setCredentials } from "../redux/slices/authSlice";
 import { Loading, ModalWrapper, Textbox } from "./";
 
+
 const AddUser = ({ open, setOpen, userData }) => {
     const { user } = useSelector((state) => state.auth);
     const { register, handleSubmit, formState: { errors } } = useForm({ defaultValues: userData ?? {} });
@@ -22,7 +23,7 @@ const AddUser = ({ open, setOpen, userData }) => {
                     dispatch(setCredentials({ ...res?.user }));
                 }
             } else {
-                await addNewUser({ ...data, password: data?.email }).unwrap();
+                await addNewUser({ ...data, isAdmin: data.isAdmin === "true", password: data?.email }).unwrap();
                 toast.success("User added successfully");
             }
             setTimeout(() =>
@@ -57,15 +58,18 @@ const AddUser = ({ open, setOpen, userData }) => {
                         register={register("email", { required: "Email is required" })}
                         error={errors?.email?.message}
                     />
-                    <Textbox
-                        placeholder="Role"
-                        type="text"
-                        name="role"
-                        label="Role"
-                        className="w-full rounded-xl"
-                        register={register("role", { required: "Role is required" })}
-                        error={errors?.role?.message}
-                    />
+                    <div className="flex flex-col gap-1">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Role</label>
+                        <select
+                            {...register("isAdmin", { required: "Role is required" })}
+                            className="w-full rounded-xl border-gray-300 text-sm focus:ring-blue-500 focus:border-blue-500"
+                        >
+                            <option value="">Select Role</option>
+                            <option value="true">Admin</option>
+                            <option value="false">Team Member</option>
+                        </select>
+                        {errors?.isAdmin && <p className="text-red-500 text-sm mt-1">{errors.isAdmin.message}</p>}
+                    </div>
                     <Textbox
                         placeholder="Title"
                         type="text"
