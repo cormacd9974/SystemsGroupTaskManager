@@ -11,6 +11,7 @@ export const taskApiSlice = apiSlice.injectEndpoints({
                 body: data,
                 credentials: "include",
             }),
+            invalidatesTags: ["Tasks"],
         }),
          updateTask: builder.mutation({
            query: (data) => ({
@@ -19,6 +20,7 @@ export const taskApiSlice = apiSlice.injectEndpoints({
                 body: data,
                 credentials: "include",
             }),
+            invalidatesTags: ["Tasks"],
         }),
          duplicateTask: builder.mutation({
            query: (id) => ({
@@ -78,6 +80,7 @@ export const taskApiSlice = apiSlice.injectEndpoints({
                 method: "PUT",
                 credentials: "include",
             }),
+            invalidatesTags: ["Tasks"],
         }),
          deleteRestoreTask: builder.mutation({
            query: ({ id, actionType }) => ({
@@ -85,6 +88,7 @@ export const taskApiSlice = apiSlice.injectEndpoints({
                 method: "DELETE",
                 credentials: "include",
             }),
+            invalidatesTags: ["Tasks"],
         }),
          
         changeTaskStage: builder.mutation({
@@ -92,7 +96,6 @@ export const taskApiSlice = apiSlice.injectEndpoints({
                 url: `${TASKS_URL}/change-stage/${data?.id}`,
                 method: "PUT",
                 body: data,
-                credentials: "include",
             }),
         }),
          changeSubTaskStatus: builder.mutation({
@@ -100,8 +103,8 @@ export const taskApiSlice = apiSlice.injectEndpoints({
                 url: `${TASKS_URL}/change-stage/${data?.id}/${data?.subId}`,
                 method: "PUT",
                 body: data,
-                credentials: "include",
             }),
+            invalidatesTags: ["Tasks"],
         }),
     }),
 });

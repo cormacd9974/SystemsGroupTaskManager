@@ -23,7 +23,7 @@ const AddUser = ({ open, setOpen, userData }) => {
                     dispatch(setCredentials({ ...res?.user }));
                 }
             } else {
-                await addNewUser({ ...data, isAdmin: data.isAdmin === "true", password: data?.email }).unwrap();
+                await addNewUser({ ...data, isAdmin: data.isAdmin === "true", role: data.isAdmin === "true" ? "admin" : "user", password: data?.email }).unwrap();
                 toast.success("User added successfully");
             }
             setTimeout(() =>

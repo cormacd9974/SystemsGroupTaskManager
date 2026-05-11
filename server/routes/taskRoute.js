@@ -33,6 +33,7 @@ router.put("/change-stage/:id", protectRoute, updateTaskStage );
 router.put("/change-status/:taskId/:subTaskId", protectRoute, updateTaskStage);
 router.put("/:id", protectRoute, trashTask );
 
+router.delete("/delete-restore", protectRoute, deleteRestoreTask );
 router.delete("/delete-restore/:id", protectRoute, deleteRestoreTask );
 
 export default router;
