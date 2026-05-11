@@ -261,12 +261,20 @@ const dashboardStatistics = asyncHandler(async (req, res) => {
             return result;
         }, {});
 
-        const graphData = Object.entries(
+        /*const graphData = Object.entries(
             allTasks.reduce((result, task) => {
                 result[task.priority] = (result[task.priority] || 0) + 1;
                 return result;
             }, {})
-        ).map(([name, total]) => ({ name, total }));
+        ).map(([name, total]) => ({ name, total }));*/
+        const priorityCount = allTasks.reduce((result, task) => {
+            result[task.priority] = (result[task.priority] || 0) + 1;
+            return result;
+        }, {});
+        const graphData = ["high", "medium", "normal", "low"].map(priority => ({
+            name: priority,
+            total: priorityCount[priority] || 0,
+        }));
 
         const teamStatus = await Promise.all(
             users.map(async (u) => {
