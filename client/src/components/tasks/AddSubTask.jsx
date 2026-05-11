@@ -3,24 +3,24 @@ import { toast } from "sonner";
 import { useCreateSubTaskMutation } from "../../redux/slices/api/taskApiSlice";
 import { Loading, ModalWrapper, Textbox } from "../";
 
-const AddSubTask = ({ open, setOpen, id }) => {
+const AddSubTask = ({ open, setOpen, id }) => {// id is the parent task id
     const {
-        register, handleSubmit, formState: { errors },
-    } = useForm();
+        register, handleSubmit, formState: { errors },// reset
+    } = useForm();// defaultValues: { title: "", date: "", tag: "" }
 
-    const [addSubTask, { isLoading }] = useCreateSubTaskMutation();
+    const [addSubTask, { isLoading }] = useCreateSubTaskMutation();// isSuccess
 
-    const handleOnSubmit = async(data) => {
+    const handleOnSubmit = async(data) => {// reset() can be called here if needed to clear the form after submission
     try {
-        const res = await addSubTask({ data, id }).unwrap();
+        const res = await addSubTask({ data, id }).unwrap();// Assuming the API returns a message on success
         toast.success(res.message);
-        setTimeout(() => setOpen(false), 500);
+        setTimeout(() => setOpen(false), 500);// Close the modal after a short delay to allow users to see the success message
     } catch (err) {
-        toast.error(err?.data?.message || err.error);
+        toast.error(err?.data?.message || err.error);// Handle error response from the API
     }
 };
 
-return (
+return ( // The form is wrapped in a ModalWrapper component, which controls the visibility of the modal based on the 'open' prop. The 'setOpen' function is used to close the modal when needed.
     <ModalWrapper open={open} setOpen={setOpen}>
         <form onSubmit={handleSubmit(handleOnSubmit)}>
             <h2 className="text-base font-bold text-gray-900 mb-4">
@@ -80,3 +80,8 @@ return (
 };
 
 export default AddSubTask;
+// This component allows users to add a sub-task to an existing task. 
+// It uses the react-hook-form library for form handling and validation, 
+// and the sonner library for displaying success and error messages. 
+// The useCreateSubTaskMutation hook is used to send the new sub-task data to the server, 
+// and the Loading component is displayed while the request is in progress.

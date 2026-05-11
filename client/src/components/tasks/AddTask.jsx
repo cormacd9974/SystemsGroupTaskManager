@@ -7,8 +7,9 @@ import { dateFormatter } from "../../utils";
 import { Loading, ModalWrapper, SelectList, Textbox } from "../";
 import UserList from "./UsersSelect";
 
-const STAGES   = ["todo","in-progress","completed"];
-const PRIORITY = ["high","medium","normal","low"];
+const STAGES   = ["todo","in-progress","completed"];// These constants define the possible stages, priorities, and categories for tasks. They are used to populate the dropdowns and buttons in the form, allowing users to select the appropriate values when creating or updating a task.
+const PRIORITY = ["high","medium","normal","low"];// The categories are grouped for better organization in the UI, and each category has a label for display purposes.
+
 const CATEGORY_GROUPS = [
   { group:"Reports",       options:["REPORT-CREATED","REPORT-ENHANCED","REPORT-VALIDATED"], labels:{"REPORT-CREATED":"Created","REPORT-ENHANCED":"Enhanced","REPORT-VALIDATED":"Validated"} },
   { group:"Configurations",options:["CONFIG-NEW","CONFIG-UPDATED"],                         labels:{"CONFIG-NEW":"New","CONFIG-UPDATED":"Updated"} },
