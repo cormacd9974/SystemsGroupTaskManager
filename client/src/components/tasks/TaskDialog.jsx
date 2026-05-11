@@ -22,7 +22,6 @@ const ChangeTaskActions = ({ _id, stage }) => {
     try {
       const res = await changeStage({ id: _id, stage: val }).unwrap();
       toast.success(res?.message);
-      setTimeout(() => window.location.reload(), 500);
     } catch (err) { toast.error(err?.data?.message || err.error); }
   };
   const items = [
@@ -101,7 +100,7 @@ export default function TaskDialog({ task }) {
                 </MenuItem>
               ))}
             </div>
-            <div className="py-1"><MenuItem><ChangeTaskActions id={task._id} {...task} /></MenuItem></div>
+            <div className="py-1"><ChangeTaskActions _id={task._id} stage={task.stage} /></div>
             <div className="pt-1">
               <MenuItem>{({ active }) => (
                 <button disabled={false} onClick={() => setOpenDialog(true)}

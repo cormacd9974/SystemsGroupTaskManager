@@ -29,34 +29,37 @@ export const taskApiSlice = apiSlice.injectEndpoints({
                 body: {},
              
             }),
+            
         }),
          getAllTask: builder.query({
            query: ({ strQuery, isTrashed, search }) => ({
                 url: `${TASKS_URL}?${strQuery ? `stage=${strQuery}&` : ""}isTrashed=${isTrashed}&search=${search ?? ""}`,
                 method: "GET",
-                credentials: "include",
+               
             }),
+            providesTags: ["Tasks"],
         }),
          getSingleTask: builder.query({
            query: (id) => ({
                 url: `${TASKS_URL}/${id}`,
                 method: "GET",
-                credentials: "include",
+                
             }),
         }),
          getTaskHistory: builder.query({
            query: () => ({
                 url: `${TASKS_URL}/history`,
                 method: "GET",
-                credentials: "include",
+              
             }),
+            providesTags: ["Tasks"],
         }),
          getDashboardStats: builder.query({
            query: () => ({
                 url: `${TASKS_URL}/dashboard`,
                 method: "GET",
-                credentials: "include",
             }),
+            providesTags: ["Tasks"],
         }),
          createSubTask: builder.mutation({
            query: ({ data, id }) => ({
