@@ -19,7 +19,7 @@ const Tasks = () => {
     const [open, setOpen] = useState(false);
     //const { user } = useSelector((state) => state.auth);
     const [selected, setSelected] = useState(0);
-    const { data, isLoading, refetch } = useGetAllTaskQuery({ strQuery: "", isTrashed: "", search: searchTerm});
+    const { data, isLoading, refetch } = useGetAllTaskQuery({ strQuery: "", isTrashed: "", search: searchTerm}, { refetchOnMountOrArgChange: true });
 
     useEffect(() => {
         refetch();

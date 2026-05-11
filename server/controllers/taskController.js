@@ -146,8 +146,11 @@ const getTasks = asyncHandler(async (req, res) => {
         query.isTrashed = true;
     } else {
         query.isTrashed = { $ne: true};
+        const oneYearAgo = new Date();
+        oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+        query.date = { $gte: oneYearAgo };
         if(!stage) {
-            query.stage = { $ne: true };
+            query.stage = { $ne: "completed" };
         }
     }
 
@@ -238,12 +241,13 @@ const deleteRestoreTask = asyncHandler(async (req, res) => {
 const dashboardStatistics = asyncHandler(async (req, res) => {
     try {
         const { userId, isAdmin } = req.user;
-
+        const oneYearAgo = new Date();
+        oneYearAgo.setFullYear(oneYearAgo.getFullYear() -1);
         const allTasks = isAdmin
-            ? await Task.find({ isTrashed: false })
+            ? await Task.find({ isTrashed: false, date: { $gte: oneYearAgo } })
                 .populate({ path: "team", select: "name role title email" })
                 .sort({ _id: -1 })
-            : await Task.find({ isTrashed: false, team: { $in: [userId] } })
+            : await Task.find({ isTrashed: false, team: { $in: [userId] }, date: { $gte: oneYearAgo } })
                 .populate({ path: "team", select: "name role title email" })
                 .sort({ _id: -1 });
 
@@ -295,10 +299,13 @@ const dashboardStatistics = asyncHandler(async (req, res) => {
 const getTaskHistory = asyncHandler(async (req, res) => {
     try {
         const { isAdmin, userId } = req.user;
-        const query = isAdmin ? { isTrashed: false, stage: "completed" } : { isTrashed: false, stage: "completed", team: { $in: [userId] } };
-
         const oneYearAgo = new Date();
-        oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+        oneYearAgo.setFullYear(oneYearAgo.getFullYear() -1);
+        const query = isAdmin 
+        ? { isTrashed: false, stage: "completed", date: { $gte: oneYearAgo } } 
+        : { isTrashed: false, stage: "completed", team: { $in: [userId] }, date: { $gte: oneYearAgo } };
+
+       
 
         const tasks = await Task.find(query)/*({
             isTrashed: false,

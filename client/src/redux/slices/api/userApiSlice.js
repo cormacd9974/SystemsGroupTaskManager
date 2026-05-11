@@ -37,8 +37,9 @@ export const userApiSlice = apiSlice.injectEndpoints({
            query: () => ({
                 url: `${USERS_URL}/notifications`,
                 method: "GET",
-                credentials: "include",
+            
             }),
+            providesTags: ["Users"],
         }),
          markNotiAsRead: builder.mutation({
            query: (data) => ({
