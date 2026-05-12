@@ -92,7 +92,7 @@ export function UserAction({
                     </button>
                     <button
                         onClick={onClick}
-                        className="flex-1 py-2 rounded-lg bg-blue-500 hover:bg-blue-600 text-white transition-colors"
+                        className="flex-1 py-2 rounded-lg bg-blue-500 hover:bg-[#005a9e] text-white transition-colors"
                     >
                         Confirm
                     </button>

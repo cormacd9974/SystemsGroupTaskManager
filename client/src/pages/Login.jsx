@@ -34,12 +34,10 @@ const Login = () => {
     <div className="w-full min-h-screen flex bg-white">
         <div
         className="hidden lg:flex lg:w-1/2 flex-col justify-between p-12"
-        style={{ background: "linear-gradient(180deg, #0f2347 0%, #1a3a6e 100%)"}}
+        style={{ backgroundColor: "#0068B5"}}
         >
             <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-blue-500 rounded-xl flex items-center justify-center shadow-lg">
-                    <MdOutlineAddTask className="text-white text-xl"/>
-                </div>
+                
                 <div>
                     <span className="text-white font-bold text-xl leading-none">Systems Group</span>
                     <p className="text-blue-300 text-xs mt-0.5">Production Department</p>
@@ -113,7 +111,7 @@ const Login = () => {
                         {isLoading ? (
                             <Loading />
                         ) : (
-                            <button type="submit" className="btn-primary w-full text-center">
+                            <button type="submit" className="btn-primary w-full text-center bg-blue-600">
                                 Sign In
                             </button>
                         )}

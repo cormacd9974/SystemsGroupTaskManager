@@ -22,7 +22,7 @@ export default function UserInfo({ user }) {
         >
             <PopoverPanel className="absolute left-1/2 z-10 mt-3 w-64 -translate-x-1/2 transform">
                <div className="flex items-center gap-3 rounded-xl shadow-lg bg-white p-4 border border-gray-100">
-                <div className="w-12 h-12 bg-blue-600 rounded-xl text-white flex items-center justify-center font-bold">
+                <div className="w-12 h-12 bg-[#0068B5] rounded-xl text-white flex items-center justify-center font-bold">
                     {getInitials(user?.name)}
                 </div>
                 <div>

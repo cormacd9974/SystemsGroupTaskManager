@@ -52,14 +52,14 @@ const Sidebar = () => {
     ))}
 
     return (
-        <div className="w-full h-full flex flex-col sidebar-bg">
+        <div className="w-full h-full flex flex-col" style={{ backgroundColor: "#0068B5"}}>
             <div className="px-5 py-6 border-b border-white/10">
                 <span className="text-white font-bold text-lg leading-none">Systems Group</span>
                 <p className="text-blue-300 text-xs mt-0.5">Production Department</p>
             </div>
 
             <div className="flex-1 px-3 py-5 space-y-1 overflow-y-auto">
-                <p className="text-blue-400/50 text-xs font-semibold uppercase tracking-widest px-4 mb-3">
+                <p className="text-blue-100 text-xs font-semibold uppercase tracking-widest px-4 mb-3">
                     Navigation
                 </p>
                 {sidebarLinks.map(link => (

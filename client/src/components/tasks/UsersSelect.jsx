@@ -80,7 +80,7 @@ export default function UserList({ team, setTeam }) {
                                     }}
                                     className={`flex items-center gap-2 px-4 py-2.5 cursor-pointer hover:bg-blue-50 ${isSelected ? "bg-blue-50" : ""}`}
                                 >
-                                    <div className="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs shrink-0">
+                                    <div className="w-6 h-6 rounded-full bg-[#0068B5] text-white flex items-center justify-center text-xs shrink-0">
                                         {getInitials(user.name)}
                                     </div>
                                     <span className={isSelected ? "font-semibold text-blue-700" : "text-gray-700"}>
