@@ -22,7 +22,7 @@ export default function NotificationPanel() {
         <>
         <Popover className="relative">
             <PopoverButton className="relative w-9 h-9 flex items-center justify-center 
-            rounded-xl hover:bg-gray-100 overflow-hidden">
+            rounded-xl hover:bg-gray-100">
                 <IoIosNotificationsOutline className="h-5 w-5 text-gray-600" />
                 {data?.length > 0 && (
                     <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-red-500 text-white text-xs flex items-center justify-center">

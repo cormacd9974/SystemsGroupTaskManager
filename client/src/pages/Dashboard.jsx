@@ -53,12 +53,15 @@ const Dashboard = () => {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {stats.map((s,i) => <StatCard key={i} {...s} count={s.total} />)}
       </div>
-      <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
+      <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm w-full">
         <div className="flex items-center justify-between mb-4">
           <h3 className="font-bold text-gray-900">Priority Breakdown</h3>
           <span className="text-xs text-gray-400 bg-gray-50 px-3 py-1 rounded-full border border-gray-200">All tasks</span>
         </div>
-        <Chart data={data?.graphData} />
+        <div className="w-full overflow-visible">
+          <Chart data={data?.graphData} />
+        </div>
+        
       </div>
       <div className="flex flex-col lg:flex-row gap-4">
         {data && <RecentTasksTable tasks={data?.last10Task} />}
