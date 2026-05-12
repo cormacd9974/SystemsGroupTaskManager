@@ -47,7 +47,7 @@ const Table = ({ tasks }) => {
             <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
                 <div className="overflow-x-auto">
                     <table className="w-full data-table">
-                        <thread>
+                        <thead>
                             <tr>
                                 <th>Task</th>
                                 <th>Category</th>
@@ -56,7 +56,7 @@ const Table = ({ tasks }) => {
                                 <th className="hidden md:table-cell">Created</th>
                                 <th className="text-right">Actions</th>
                             </tr>
-                        </thread>
+                        </thead>
                         <tbody>
                             {tasks?.map((task, i) => (
                                 <tr key={i}>

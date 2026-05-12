@@ -61,7 +61,7 @@ const History = () => {
                   onChange={e => setSearch(e.target.value)}
                   className="input-field max-w-xs"
                 />
-                <div className="flex-gap-2 flex-wrap">
+                <div className="flex gap-2 flex-wrap">
                     {categories.map(c => (
                         <button
                           key={c.key}

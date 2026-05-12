@@ -55,9 +55,9 @@ const TaskCard = ({ task }) => {
           }
 
           <Link to={`/task/${task._id}`}>
-          <div className="text-xs text-gray-400 ml-4 mb-3">
+          <div className="flex items-start gap-2 mb-3">
             <div className={clsx("w-2.5 h-2.5 rounded-full mt-1.5 shrink-0", TASK_TYPE[task.stage])} />
-            <h4 className="text-sm font-semibold text-gray-900 line-clamp-2 group-hover:text-blue-600 transition-colors">
+            <h4 className="text-sm font-semibold text-gray-900 line-clamp-2 hover:text-blue-600 transition-colors">
               {task?.title}
             </h4>
           </div>

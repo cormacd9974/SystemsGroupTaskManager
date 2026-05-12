@@ -111,7 +111,7 @@ const Login = () => {
                         {isLoading ? (
                             <Loading />
                         ) : (
-                            <button type="submit" className="btn-primary w-full text-center bg-blue-600">
+                            <button type="submit" className="btn-primary w-full text-center" style={{ backgroundColor: "#0068B5" }}>
                                 Sign In
                             </button>
                         )}
