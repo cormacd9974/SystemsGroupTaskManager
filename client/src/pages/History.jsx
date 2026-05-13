@@ -3,9 +3,9 @@ import moment from "moment";
 import { useState } from "react";
 import { MdKeyboardArrowDown, MdKeyboardArrowUp, MdKeyboardDoubleArrowUp } from "react-icons/md";
 import { HiOutlineClipboardCheck } from "react-icons/hi";
-import { Loading, Title } from "../components";
+import { Loading, Title, UserInfo } from "../components";
 import { useGetTaskHistoryQuery } from "../redux/slices/api/taskApiSlice";
-import { BGS, CATEGORY_LABEL, getInitials } from "../utils";
+import { BGS, CATEGORY_LABEL } from "../utils";
 import { Link } from "react-router-dom";
 
 const PRIORITY_BADGE = { 
@@ -61,7 +61,7 @@ const History = () => {
                   onChange={e => setSearch(e.target.value)}
                   className="input-field max-w-xs"
                 />
-                <div className="flex gap-2 flex-wrap">
+                <div className="flexgap-2 flex-wrap">
                     {categories.map(c => (
                         <button
                           key={c.key}
@@ -122,10 +122,10 @@ const History = () => {
                                         </td>
                                         <td>
                                             <div className="flex -space-x-1">
-                                                {task.team?.map((m, idx) => (
-                                                    <div key={idx} className={clsx("w-6 h-6 rounded-full text-white flex items-center justify-center text-xs border-2 border-white font-medium", BGS[idx % BGS.length])}>
-                                                      {getInitials(m.name || "?")}
-                                                    </div>    
+                                                {task?.team?.map((m, idx) => (
+                                                    <div key={idx} className={clsx("w-7 h-7 rounded-full text-white flex items-center justify-center text-xs border-2 border-white font-bold", BGS[idx % BGS.length])}>
+                                                        <UserInfo user={m}/>
+                                                    </div>
                                                 ))}
                                             </div>
                                         </td>

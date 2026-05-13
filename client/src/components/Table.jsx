@@ -4,7 +4,7 @@ import { MdKeyboardArrowDown, MdKeyboardArrowUp, MdKeyboardDoubleArrowUp } from 
 import { HiPencil, HiTrash } from "react-icons/hi";
 import { toast } from "sonner";
 import { useTrashTaskMutation } from "../redux/slices/api/taskApiSlice";
-import { BGS, TASK_TYPE, formatDate, CATEGORY_LABEL, getInitials } from "../utils";
+import { TASK_TYPE, formatDate, CATEGORY_LABEL, getInitials } from "../utils";
 import { ConfirmationDialog } from "./index";
 import { AddTask } from "./tasks";
 import { Link } from "react-router-dom";
@@ -28,7 +28,7 @@ const Table = ({ tasks }) => {
     const [selected, setSelected] = useState(null);
     const [openEdit, setOpenEdit] = useState(false);
     const [deleteTask] = useTrashTaskMutation();
-
+    const INTEL_BLUE = ["#0068B5"];
     const deleteHandler = async () => {
         try {
             const res = await deleteTask({ id: selected }).unwrap();
@@ -82,7 +82,7 @@ const Table = ({ tasks }) => {
                                     <td>
                                         <div className="flex -space-x-1">
                                             {task?.team?.map((m, idx) => (
-                                                <div key={idx} className={clsx("w-7 h-7 rounded-full text-white flex items-center justify-center text-xs border-2 border-white font-bold", BGS[idx % BGS.length])}>
+                                                <div key={idx} className="w-7 h-7 rounded-full text-white flex items-center justify-center text-xs border-2 border-white font-bold" style={{ backgroundColor: INTEL_BLUE[idx % INTEL_BLUE.length] }}>
                                                     {getInitials(m?.name || "?")}
                                                 </div>
                                             ))}

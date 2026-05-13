@@ -3,9 +3,10 @@ import { useState } from "react";
 import { MdKeyboardArrowDown, MdKeyboardArrowUp, MdKeyboardDoubleArrowUp } from "react-icons/md";
 import { IoMdAdd } from "react-icons/io";
 import { useSelector } from "react-redux";
-import { BGS, TASK_TYPE, formatDate, CATEGORY_LABEL, getInitials } from "../../utils";
+import { BGS, TASK_TYPE, formatDate, CATEGORY_LABEL} from "../../utils";
 import { Link } from "react-router-dom";
 import { AddSubTask, TaskAssets, TaskDialog } from "./index";
+import { UserInfo } from "../index";
 
 const PRIORITY_BADGE = {
     high: "text-red-600 bg-red-50 border border-red-200",
@@ -33,7 +34,7 @@ const CATEGORY_COLOR = {
 const TaskCard = ({ task }) => {
     const { user } = useSelector((state) => state.auth);
     const [open, setOpen] = useState(false);
-    const [showName, setShowName] = useState(null);
+    //const [showName, setShowName] = useState(null);
     const cat = task?.category?.toLowerCase();
 
     return (
@@ -71,23 +72,12 @@ const TaskCard = ({ task }) => {
                     />
                     <div className="flex -space-x-1.5 items-center">
                         {task?.team?.slice(0, 3).map((m, i) => (
-                            <div className="relative" key={i}>
-                                <div
-                                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); setShowName(showName === i ? null : i); }}
-                                    className={clsx("w-8 h-8 rounded-full text-white flex items-center justify-center text-xs border-2 border-white font-bold tracking-wide cursor-pointer", BGS[i % BGS.length])}
-                                >
-                                    {getInitials(m?.name || "?")}
-                                </div>
-                                {showName === i && (
-                                    <div className="absolute bottom-10 left-0 bg-white shadow-xl rounded-xl p-3 z-50 whitespace-nowrap border border-gray-100 min-w-35">
-                                        <p className="font-semibold text-gray-800 text-xs">{m?.name}</p>
-                                        <p className="text-gray-400 text-xs mt-0.5">{m?.title}</p>
-                                    </div>
-                                )}
+                            <div key={i} className="w-8 h-8 rounded-full flex items-center justify-center text-xs border-2 border-white font-bold" style={{ backgroundColor: "#0068B5" }}>
+                                <UserInfo user={m} />
                             </div>
                         ))}
                         {task?.team?.length > 3 && (
-                            <div className="w-8 h-8 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center text-xs border-2 border-white font-bold">
+                            <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs border-2 border-white font-bold text-white" style={{ backgroundColor: "#0068B5" }}>
                                 +{task.team.length - 3}
                             </div>
                         )}
