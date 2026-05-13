@@ -1,4 +1,4 @@
-/*import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 export const Chart = ({ data }) => {
     return (
@@ -16,10 +16,10 @@ export const Chart = ({ data }) => {
         </BarChart>
     </ResponsiveContainer>
     )
-};*/
+};
 
 
-
+/*
 import { PieChart, Pie, Cell, Tooltip} from "recharts";
 
     const COLORS = {
@@ -108,4 +108,4 @@ export const Chart = ({ data }) => {
             </div>
         </div>
     )
-};
+};*/

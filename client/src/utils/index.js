@@ -30,16 +30,16 @@ export const TASK_TYPE = {
     completed: "bg-green-600"
 };
 export const BGS = [
-    "bg-blue-600",
-    "bg-yellow-600",
-    "bg-red-600",
-    "bg-green-600",
-    "bg-purple-600",
-    "bg-pink-600",
-    "bg-indigo",
-    "bg-orange-600",
-    "bg-teal-600",
-    "bg-cyan-600"
+    "bg-[#0068B5]",
+    "bg-[#004f8c]",
+    "bg-[#003d6d]",
+    "bg-[#005a9e]",
+    "bg-[#0079cc]",
+    "bg-[#0086e0]",
+    "bg-[#0057a0]",
+    "bg-[#0073c6]",
+    "bg-[#004a85]",
+    "bg-[#006ab8]"
 ];
 
 export const getCompletedSubTasks = (items) =>

@@ -4,8 +4,8 @@ import { MdKeyboardArrowDown, MdKeyboardArrowUp, MdKeyboardDoubleArrowUp } from 
 import { HiPencil, HiTrash } from "react-icons/hi";
 import { toast } from "sonner";
 import { useTrashTaskMutation } from "../redux/slices/api/taskApiSlice";
-import { BGS, TASK_TYPE, formatDate, CATEGORY_LABEL } from "../utils";
-import { ConfirmationDialog, UserInfo } from "./index";
+import { BGS, TASK_TYPE, formatDate, CATEGORY_LABEL, getInitials } from "../utils";
+import { ConfirmationDialog } from "./index";
 import { AddTask } from "./tasks";
 import { Link } from "react-router-dom";
 
@@ -69,7 +69,7 @@ const Table = ({ tasks }) => {
                                         </Link>
                                     </td>
                                     <td>
-                                        <span className="text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full border border-gray-200">
+                                        <span className="text-xs text-gray-500 bg-gray-800 px-2 py-0.5 rounded-full border border-gray-200">
                                             {CATEGORY_LABEL[task?.category] || task?.category || "-"}
                                         </span>
                                     </td>
@@ -82,8 +82,8 @@ const Table = ({ tasks }) => {
                                     <td>
                                         <div className="flex -space-x-1">
                                             {task?.team?.map((m, idx) => (
-                                                <div key={idx} className={clsx("w-6 h-6 rounded-full text-white flex items-center justify-center text-xs border-2 border-white", BGS[idx % BGS.length])}>
-                                                    <UserInfo user={m} />
+                                                <div key={idx} className={clsx("w-7 h-7 rounded-full text-white flex items-center justify-center text-xs border-2 border-white font-bold", BGS[idx % BGS.length])}>
+                                                    {getInitials(m?.name || "?")}
                                                 </div>
                                             ))}
                                         </div>
