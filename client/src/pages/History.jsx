@@ -123,7 +123,7 @@ const History = () => {
                                         <td>
                                             <div className="flex -space-x-1">
                                                 {task?.team?.map((m, idx) => (
-                                                    <div key={idx} className={clsx("w-7 h-7 rounded-full text-white flex items-center justify-center text-xs border-2 border-white font-bold", BGS[idx % BGS.length])}>
+                                                    <div key={idx} className={clsx("w-7 h-7 rounded-full text-white flex items-center justify-center text-xs border-2 border-white font-bold" )}>
                                                         <UserInfo user={m}/>
                                                     </div>
                                                 ))}

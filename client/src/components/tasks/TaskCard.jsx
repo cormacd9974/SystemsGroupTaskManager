@@ -3,7 +3,7 @@ import { useState } from "react";
 import { MdKeyboardArrowDown, MdKeyboardArrowUp, MdKeyboardDoubleArrowUp } from "react-icons/md";
 import { IoMdAdd } from "react-icons/io";
 import { useSelector } from "react-redux";
-import { BGS, TASK_TYPE, formatDate, CATEGORY_LABEL} from "../../utils";
+import { TASK_TYPE, formatDate, CATEGORY_LABEL} from "../../utils";
 import { Link } from "react-router-dom";
 import { AddSubTask, TaskAssets, TaskDialog } from "./index";
 import { UserInfo } from "../index";
@@ -72,7 +72,7 @@ const TaskCard = ({ task }) => {
                     />
                     <div className="flex -space-x-1.5 items-center">
                         {task?.team?.slice(0, 3).map((m, i) => (
-                            <div key={i} className="w-8 h-8 rounded-full flex items-center justify-center text-xs border-2 border-white font-bold" style={{ backgroundColor: "#0068B5" }}>
+                            <div key={i} className="w-8 h-8 rounded-full flex items-center justify-center text-xs border-2 border-white font-bold" style={{ backgroundColor: ["#0068B5", "#0068B5", "#0068B5", "#0068B5", "#0068B5", "#0068B5", "#0068B5", "#0068B5"][i % 8] }}>
                                 <UserInfo user={m} />
                             </div>
                         ))}
