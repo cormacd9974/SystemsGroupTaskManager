@@ -69,7 +69,7 @@ const Table = ({ tasks }) => {
                                         </Link>
                                     </td>
                                     <td>
-                                        <span className="text-xs text-gray-500 bg-gray-800 px-2 py-0.5 rounded-full border border-gray-200">
+                                        <span className="text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full border border-gray-200">
                                             {CATEGORY_LABEL[task?.category] || task?.category || "-"}
                                         </span>
                                     </td>
@@ -82,7 +82,7 @@ const Table = ({ tasks }) => {
                                     <td>
                                         <div className="flex -space-x-1">
                                             {task?.team?.map((m, idx) => (
-                                                <div key={idx} className="w-7 h-7 rounded-full text-white flex items-center justify-center text-xs border-2 border-white font-bold" style={{ backgroundColor: ["#0068B5", "#0068B5", "#0068B5", "#0068B5", "#0068B5", "#0068B5", "#0068B5", "#0068B5"][idx % 8] }}>
+                                                <div key={idx} className="w-7 h-7 rounded-full text-white flex items-center justify-center text-xs border-2 border-white font-bold" style={{ backgroundColor: ["#0068B5", "#005a9e", "#004f8c", "#0079cc", "#0086e0", "#003d6b", "#0057a0", "#0073c6"][idx % 8] }}>
                                                     {getInitials(m?.name || "?")}
                                                 </div>
                                             ))}

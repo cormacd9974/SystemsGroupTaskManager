@@ -5,7 +5,7 @@ import { MdKeyboardArrowDown, MdKeyboardArrowUp, MdKeyboardDoubleArrowUp } from 
 import { HiOutlineClipboardCheck } from "react-icons/hi";
 import { Loading, Title, UserInfo } from "../components";
 import { useGetTaskHistoryQuery } from "../redux/slices/api/taskApiSlice";
-import { BGS, CATEGORY_LABEL } from "../utils";
+import { CATEGORY_LABEL } from "../utils";
 import { Link } from "react-router-dom";
 
 const PRIORITY_BADGE = { 
@@ -61,7 +61,7 @@ const History = () => {
                   onChange={e => setSearch(e.target.value)}
                   className="input-field max-w-xs"
                 />
-                <div className="flexgap-2 flex-wrap">
+                <div className="flex gap-2 flex-wrap">
                     {categories.map(c => (
                         <button
                           key={c.key}
@@ -69,7 +69,7 @@ const History = () => {
                           className={clsx(
                             "px-3 py-1.5 rounded-xl text-xs font-medium border transition-all",
                             filterCategory === c.key
-                            ? "bg-blue-600 text-white border-blue-600"
+                            ? "text-white border-[#0068B5] bg-[#0068B5]"
                             : "bg-white text-gray-600 border-gray-200 hover:border-blue-300"
                           )}
                         >
@@ -123,7 +123,7 @@ const History = () => {
                                         <td>
                                             <div className="flex -space-x-1">
                                                 {task?.team?.map((m, idx) => (
-                                                    <div key={idx} className={clsx("w-7 h-7 rounded-full text-white flex items-center justify-center text-xs border-2 border-white font-bold" )}>
+                                                    <div key={idx} className="w-7 h-7 rounded-full text-white flex items-center justify-center text-xs border-2 border-white font-bold" style={{ backgroundColor: ["#0068B5", "#005a9e", "#004f8c", "#0079cc", "#0086e0", "#003d6b", "#0057a0", "#0073c6"][idx % 8] }}>
                                                         <UserInfo user={m}/>
                                                     </div>
                                                 ))}
