@@ -4,10 +4,11 @@ import { MdKeyboardArrowDown, MdKeyboardArrowUp, MdKeyboardDoubleArrowUp } from 
 import { HiPencil, HiTrash } from "react-icons/hi";
 import { toast } from "sonner";
 import { useTrashTaskMutation } from "../redux/slices/api/taskApiSlice";
-import { TASK_TYPE, formatDate, CATEGORY_LABEL, getInitials } from "../utils";
-import { ConfirmationDialog } from "./index";
+import { TASK_TYPE, formatDate, CATEGORY_LABEL } from "../utils";
+import { ConfirmationDialog, UserInfo } from "./index";
 import { AddTask } from "./tasks";
 import { Link } from "react-router-dom";
+
 
 const PRIORITY_BADGE = {
     high: "text-red-600 bg-red-50 border border-red-200",
@@ -80,12 +81,22 @@ const Table = ({ tasks }) => {
                                         </span>
                                     </td>
                                     <td>
-                                        <div className="flex -space-x-1">
-                                            {task?.team?.map((m, idx) => (
-                                                <div key={idx} className="w-7 h-7 rounded-full text-white flex items-center justify-center text-xs border-2 border-white font-bold" style={{ backgroundColor: ["#0068B5", "#005a9e", "#004f8c", "#0079cc", "#0086e0", "#003d6b", "#0057a0", "#0073c6"][idx % 8] }}>
-                                                    {getInitials(m?.name || "?")}
+                                        <div className="flex -space-x-1 items-center">
+                                            {task?.team?.slice(0, 3).map((m, idx) => (
+                                                <div key={idx} 
+                                                className="w-12 h-12 rounded-full text-white flex items-center justify-center text-xs border-2 border-white font-bold" 
+                                                style={{ backgroundColor: ["#0068B5", "#005a9e", "#004f8c", "#0079cc", "#0086e0", "#003d6b", "#0057a0", "#0073c6"][idx % 8] }}
+                                                title={m?.name}
+                                                >
+                                                    <UserInfo user={m} />
                                                 </div>
                                             ))}
+                                            {task?.team?.length > 3 && (
+                                                <div className="w-12 h-12 rounded-full text-white flex items-center justify-center text-xs border-2 border-white font-bold"
+                                                style={{ backgroundColor: "#003d6b"}}>
+                                                    +{task.team.length - 3}
+                                                </div>
+                                            )}
                                         </div>
                                     </td>
                                     <td className="hideen md:table-cell text-gray-400 text-xs">

@@ -121,13 +121,23 @@ const History = () => {
                                             </span>
                                         </td>
                                         <td>
-                                            <div className="flex -space-x-1">
-                                                {task?.team?.map((m, idx) => (
-                                                    <div key={idx} className="w-7 h-7 rounded-full text-white flex items-center justify-center text-xs border-2 border-white font-bold" style={{ backgroundColor: ["#0068B5", "#005a9e", "#004f8c", "#0079cc", "#0086e0", "#003d6b", "#0057a0", "#0073c6"][idx % 8] }}>
-                                                        <UserInfo user={m}/>
-                                                    </div>
-                                                ))}
-                                            </div>
+                                            <div className="flex -space-x-1 items-center">
+                                            {task?.team?.slice(0, 3).map((m, idx) => (
+                                                <div key={idx} 
+                                                className="w-9 h-9 rounded-full text-white flex items-center justify-center text-xs border-2 border-white font-bold" 
+                                                style={{ backgroundColor: ["#0068B5", "#005a9e", "#004f8c", "#0079cc", "#0086e0", "#003d6b", "#0057a0", "#0073c6"][idx % 8] }}
+                                                title={m?.name}
+                                                >
+                                                    <UserInfo user={m} />
+                                                </div>
+                                            ))}
+                                            {task?.team?.length > 3 && (
+                                                <div className="w-9 h-9 rounded-full text-white flex items-center justify-center text-xs border-2 border-white font-bold"
+                                                style={{ backgroundColor: "#003d6b"}}>
+                                                    +{task.team.length - 3}
+                                                </div>
+                                            )}
+                                        </div>
                                         </td>
                                         <td className="hidden md:table-cell text-gray-400 text-xs">
                                             {moment(task.updatedAt).format("DD MM YYYY")}

@@ -15,14 +15,13 @@ const TABS = [
 
 const Tasks = () => {
     const [searchParams] = useSearchParams();
-    const [searchTerm] = useState(searchParams.get("search") || "");
+    const searchTerm = searchParams.get("search") || "";
     const [open, setOpen] = useState(false);
     //const { user } = useSelector((state) => state.auth);
     const [selected, setSelected] = useState(0);
-    const { data, isLoading, refetch } = useGetAllTaskQuery({ strQuery: "", isTrashed: "", search: searchTerm}, { refetchOnMountOrArgChange: true });
+    const { data, isLoading } = useGetAllTaskQuery({ strQuery: "", isTrashed: "", search: searchTerm}, { refetchOnMountOrArgChange: true });
 
     useEffect(() => {
-        refetch();
         window.scrollTo({ top: 0, left: 0, behavior: "smooth"});
     }, [open]);
     

@@ -5,9 +5,9 @@ import { getInitials } from "../utils";
 export default function UserInfo({ user }) {
   return (
     <Popover className="relative">
-        <PopoverButton className="outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 rounded-full">
+        <PopoverButton className="outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600 rounded-full">
             <span className="sr-only">User menu</span>
-            <span className="inline-flex items-center justify-center h-10 w-10 rounded-full bg-gray-200 text-gray-700">
+            <span className="inline-flex items-center justify-center h-full w-full rounded-full text-white text-xs font-bold tracking-white">
                 {getInitials(user.name)}
             </span>
         </PopoverButton>
@@ -20,15 +20,15 @@ export default function UserInfo({ user }) {
             leaveFrom="opacity-100 translate-y-0"
             leaveTo="opacity-0 translate-y-1"
         >
-            <PopoverPanel className="absolute left-1/2 z-10 mt-3 w-64 -translate-x-1/2 transform">
+            <PopoverPanel className="absolute left-1/2 z-10 mt-3 w-72 -translate-x-1/2 transform">
                <div className="flex items-center gap-3 rounded-xl shadow-lg bg-white p-4 border border-gray-100">
-                <div className="w-12 h-12 bg-[#0068B5] rounded-xl text-white flex items-center justify-center font-bold">
+                <div className="w-12 h-12 bg-[#0068B5] rounded-xl text-white flex items-center justify-center font-bold shrink-0">
                     {getInitials(user?.name)}
                 </div>
                 <div>
-                    <p className="font-medium text-gray-900">{user?.name}</p>
-                    <p className="text-sm text-gray-500">{user?.email}</p>
-                    <p className="text-xs text-gray-400">{user?.title}</p>
+                    <p className="font-medium text-gray-900 text-sm truncate">{user?.name}</p>
+                    <p className="text-sm text-gray-500 truncate">{user?.email}</p>
+                    <p className="text-xs text-gray-400 truncate">{user?.title}</p>
                 </div>
                </div>
             </PopoverPanel>
