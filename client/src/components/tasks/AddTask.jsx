@@ -31,7 +31,7 @@ const AddTask = ({ open, setOpen, task }) => {
 
   const handleOnSubmit = async (data) => {
     try {
-      const payload = { ...data, team, stage: stage.toLowerCase(), priority: priority.toLowerCase(), category: category ? category.toLowerCase().replace("_","-"): "report-created", assets };
+      const payload = { ...data, team, stage: stage.toLowerCase(), priority: priority.toLowerCase(), category: category ? category.toLowerCase().replace("_","-"): "report-created", assets, startDate: data.startDate || undefined, dueDate: data.dueDate || undefined };
       const res = task?._id
         ? await updateTask({ ...payload, _id: task._id }).unwrap()
         : await createTask(payload).unwrap();
@@ -72,6 +72,8 @@ const AddTask = ({ open, setOpen, task }) => {
           <div className="flex gap-4">
             <div className="w-full">
               <Textbox placeholder="Date" type="date" name="date" label="Task Date" className="w-full rounded-xl" register={register("date",{required:"Date is required"})} error={errors.date?.message} />
+              <Textbox placeholder="Start Date" type="date" name="startDate" label="Start Date (optional)" className="w-full rounded-xl mt-2" register={register("startDate")} />
+              <Textbox placeholder="Due Date" type="date" name="dueDate" label="Due Date (optional)" className="w-full rounded-xl mt-2" register={register("dueDate")} />
             </div>
             <div className="w-full flex items-end pb-1">
               <label className="flex items-center gap-1.5 text-sm text-gray-600 hover:text-blue-600 cursor-pointer" htmlFor="imgUpload">

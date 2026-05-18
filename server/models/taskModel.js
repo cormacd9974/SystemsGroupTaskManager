@@ -4,6 +4,8 @@ const taskSchema = new Schema(
     {
         title: { type: String, required: true },
         date: { type: Date, default: new Date() },
+        startDate: { type: Date },
+        dueDate: { type: Date },
         priority: {
             type: String,
             default: "normal",
@@ -56,6 +58,7 @@ const taskSchema = new Schema(
                 title: String,
                 date: Date,
                 tag: String,
+                description: String,
                 isCompleted: Boolean,
             },
         ],

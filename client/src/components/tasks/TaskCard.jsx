@@ -62,7 +62,16 @@ const TaskCard = ({ task }) => {
                         </h4>
                     </div>
                 </Link>
-                <p className="text-xs text-gray-400 ml-4 mb-3">{formatDate(new Date(task?.date))}</p>
+                <div>
+                    {task?.startDate && <p className="text-xs text-gray-400">Start: {formatDate(new Date(task.startDate))}</p>}
+                    {task?.dueDate && (
+                        <p className={`text-xs font-medium ${new Date(task.dueDate) < new Date() ? "text-red-400" : new Date(task.dueDate) - new Date () < 3 * 24 * 60 * 60 ? "text-orange-400" : "text-gray-400"}`}>
+                            Due: {formatDate(new Date(task.dueDate))}
+                            {new Date(task.dueDate) < new Date() && " ⚠️ (Overdue)"}
+                            {new Date(task.dueDate) - new Date() < 3 * 24 * 60 * 60 && new Date(task.dueDate) > new Date() && " ⏰ (Due Soon)"}
+                        </p>
+                    )}
+                </div>
                 <div className="border-t border-gray-100 my-3" />
                 <div className="flex items-center justify-between">
                     <TaskAssets

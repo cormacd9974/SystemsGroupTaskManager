@@ -6,7 +6,7 @@ import User from "../models/userModel.js";
 const createTask = asyncHandler(async (req, res) => {
     try {
         const { userId } = req.user;
-        const { title, team, stage, date, priority, category, assets, links, description } = req.body;
+        const { title, team, stage, date, startDate, dueDate, priority, category, assets, links, description } = req.body;
 
         let text = "New task has been assigned to you";
         if (team?.length > 1) text += ` and ${team.length - 1} others.`;
@@ -20,6 +20,8 @@ const createTask = asyncHandler(async (req, res) => {
             team,
             stage: stage ? stage.toLowerCase() : "todo",
             date,
+            startDate,
+            dueDate,
             priority: priority.toLowerCase(),
             category: category ? category.toLowerCase().replace("_", "-") : "report-created",
             assets,
@@ -76,11 +78,13 @@ const duplicateTask = asyncHandler(async (req, res) => {
 
 const updateTask = asyncHandler(async (req, res) => {
     const { id } = req.params;
-    const { title, date, team, stage, priority, category, assets, links, description } = req.body;
+    const { title, date, startDate, dueDate, team, stage, priority, category, assets, links, description } = req.body;
     try {
         const task = await Task.findById(id);
         task.title = title;
         task.date = date;
+        task.startDate = startDate ||undefined;
+        task.dueDate = dueDate || undefined;
         task.priority = priority.toLowerCase();
         task.category = category ? category.toLowerCase() : task.category;
         task.assets = assets;
@@ -123,11 +127,11 @@ const updateSubTaskStage = asyncHandler(async (req, res) => {
 });
 
 const createSubTask = asyncHandler(async (req, res) => {
-    const { title, tag, date } = req.body;
+    const { title, tag, date, description } = req.body;
     const { id } = req.params;
     try {
         const task = await Task.findById(id);
-        task.subTasks.push({ title, date, tag, isCompleted: false });
+        task.subTasks.push({ title, date, tag, description, isCompleted: false });
         await task.save();
         res.status(200).json({ status: true, message: "SubTask added successfully." });
     } catch (error) {

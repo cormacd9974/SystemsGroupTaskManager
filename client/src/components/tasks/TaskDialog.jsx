@@ -11,44 +11,51 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useChangeTaskStageMutation, useDuplicateTaskMutation, useTrashTaskMutation } from "../../redux/slices/api/taskApiSlice";
 import { ConfirmationDialog } from "../index";
-//import { useSelector } from "react-redux";
 import AddSubTask from "./AddSubTask";
 import AddTask from "./AddTask";
-import TaskColor from "./TaskColor";
+
 
 const ChangeTaskActions = ({ _id, stage }) => {
+  const [showStages, setShowStages] = useState(false);
   const [changeStage] = useChangeTaskStageMutation();
+
   const changeHandler = async (val) => {
     try {
       const res = await changeStage({ id: _id, stage: val }).unwrap();
       toast.success(res?.message);
+      setTimeout(() => window.location.reload(), 500);
     } catch (err) { toast.error(err?.data?.message || err.error); }
   };
   const items = [
-    { label:"To-Do", stage:"todo", icon:<TaskColor className="bg-blue-600" />, onClick:() => changeHandler("todo") },
-    { label:"in-progress", stage:"in-progress", icon:<TaskColor className="bg-yellow-600" />, onClick:() => changeHandler("in-progress") },
-    { label:"Completed", stage:"completed", icon:<TaskColor className="bg-green-600" />, onClick:() => changeHandler("completed") },
+    { label:"To-Do", stage:"todo", color: "bg-blue-600" },
+    { label:"in-progress", stage:"in-progress", color: "bg-yellow-600" },
+    { label:"Completed", stage:"completed", color: "bg-green-600" },
   ];
   return (
-    <Menu as="div" className="relative inline-block text-left w-full">
-      <MenuButton className="inline-flex w-full items-center gap-2 rounded-md px-4 py-2 text-sm font-medium text-gray-600">
-        <FaExchangeAlt /><span>Change Stage</span>
-      </MenuButton>
-      <Transition as={Fragment} enter="transition ease-out duration-100" enterFrom="opacity-0 scale-95" enterTo="opacity-100 scale-100" leave="transition ease-in duration-75" leaveFrom="opacity-100" leaveTo="opacity-0 scale-95">
-        <MenuItems className="absolute left-0 mt-2 w-40 rounded-xl bg-white shadow-lg ring-1 ring-black/5 focus:outline-none p-2 z-50">
+    <div className="relative w-full">
+      <button
+        onMouseDown={(e) => { e.preventDefault(); setShowStages(!showStages); e.stopPropagation(); }}
+        className="inline-flex w-full items-center justify-center rounded-md px-2 py-1 text-sm font-medium text-gray-600 hover:bg-gray-100"
+        >
+          <FaExchangeAlt className="mr-2 h-4 w-4"/>
+          <span>Change Stage</span>
+      </button>
+      {showStages && (
+        <div className="absolute top-full left-0 ml-1 w-40 rounded-xl bg-white shadow-lg ring-1 ring-black/5 p-2 z-50">
           {items.map(el => (
-            <MenuItem key={el.label} disabled={stage === el.stage}>
-              {({ active }) => (
-                <button disabled={stage === el.stage} onClick={el.onClick}
-                  className={clsx("group flex gap-2 w-full items-center rounded-lg px-2 py-2 text-sm disabled:opacity-50", active ? "bg-gray-100" : "text-gray-900")}>
-                  {el.icon}{el.label}
-                </button>
-              )}
-            </MenuItem>
+            <button 
+            key={el.stage} 
+            disabled={stage === el.stage} 
+            onMouseDown={(e) => { e.preventDefault(); changeHandler(el.stage); e.stopPropagation(); setShowStages(false); }}
+              className="flex gap-2 w-full items-center rounded-lg px-2 py-2 text-sm hover:bg-gray-100 disabled:opacity-50"
+              >
+              <div className={clsx("w-2 h-2 rounded-full", el.color)} />
+              {el.label}
+            </button>
           ))}
-        </MenuItems>
-      </Transition>
-    </Menu>
+        </div>
+      )}
+    </div>
   );
 };
 

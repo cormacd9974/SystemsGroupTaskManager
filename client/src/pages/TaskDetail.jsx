@@ -104,7 +104,16 @@ const TaskDetail = () => {
                   <span className="badge bg-gray-100 text-gray-700 border border-gray-200 flex items-center gap-1.5"><div className={clsx("w-2 h-2 rounded-full", TASK_TYPE[task?.stage])} /><span className="capitalize">{task?.stage}</span></span>
                   {task?.category && <span className="badge bg-blue-50 text-blue-700 border border-blue-200">{CATEGORY_LABEL[task?.category]||task?.category}</span>}
                 </div>
-                <p className="text-sm text-gray-400">Created {new Date(task?.date).toDateString()}</p>
+                <div className="flex flex-col gap-1">
+                  <p className="text-sm text-gray-700 whitespace-pre-wrap">Created: {new Date(task?.date).toDateString()}</p>
+                  {task?.startDate && <p className="text-sm text-gray-400">Start: {new Date(task.startDate).toDateString()}</p>}
+                  {task?.dueDate && (
+                    <p className={`text-sm font-medium ${new Date(task.dueDate) < new Date() ? "text-red-400" : "text-gray-400"}`}>
+                      Due: {new Date(task.dueDate).toDateString()}
+                      {new Date(task.dueDate) < new Date() && " ⚠️ (Overdue)"}
+                    </p>
+                  )}
+                </div>
                 <div className="flex gap-4 p-4 bg-gray-50 rounded-xl border border-gray-100">
                   <div className="text-center"><p className="text-2xl font-bold text-gray-900">{task?.assets?.length||0}</p><p className="text-xs text-gray-400">Assets</p></div>
                   <div className="w-px bg-gray-200" />

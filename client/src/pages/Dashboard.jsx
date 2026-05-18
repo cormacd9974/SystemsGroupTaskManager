@@ -105,13 +105,12 @@ const TeamMembersTable = ({ users }) => (
   <div className="w-full lg:w-1/3 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
     <div className="px-5 py-4 border-b border-gray-100"><h3 className="font-bold text-gray-900 text-sm">Team Members</h3></div>
     <table className="w-full data-table">
-      <thead><tr><th>Name</th><th>Status</th><th>Joined</th></tr></thead>
+      <thead><tr><th>Name</th><th>Status</th></tr></thead>
       <tbody>
         {users?.map((user, i) => (
           <tr key={i}>
             <td><div className="flex items-center gap-2.5"><div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0" style={{ backgroundColor: "#0068B5" }}>{getInitials(user?.name)}</div><div><p className="font-medium text-gray-900 text-xs">{user.name}</p><p className="text-gray-400 text-xs">{user?.role}</p></div></div></td>
             <td><span className={clsx("badge text-xs", user?.isActive ? "bg-emerald-50 text-emerald-700 border border-emerald-200" : "bg-amber-50 text-amber-700 border border-amber-200")}>{user?.isActive ? "Active" : "Inactive"}</span></td>
-            <td className="text-gray-400 text-xs">{moment(user?.createdAt).fromNow()}</td>
           </tr>
         ))}
       </tbody>
