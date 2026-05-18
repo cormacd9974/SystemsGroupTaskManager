@@ -55,16 +55,18 @@ return ( // The form is wrapped in a ModalWrapper component, which controls the 
                         register={register("tag", { required: "Tag is required" })}
                         error={errors.tag?.message}
                     />
-                    <div className="flex flex-colgap-1 mt-4">
-                        <label className="text-sm font-medium text-gray-700">Description<span className="text-gray-400">(optional)</span></label>
+                    </div>
+                    <div className="flex flex-col gap-1 mt-4">
+                        <label className="text-sm font-medium text-gray-700">Description<span className="text-gray-400"> (optional)</span></label>
                         <textarea
                             {...register("description")}
+                            rows={5}
                             placeholder="Add details..."
-                            className="input-field resize-none"
+                            className="input-field resize-none w-full mt-1"
                         />
                     </div>
                 </div>
-            </div>
+            
 
             {isLoading ? (
                 <div className="p-4"><Loading /></div>

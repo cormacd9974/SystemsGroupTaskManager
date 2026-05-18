@@ -51,7 +51,7 @@ const Tasks = () => {
             </div>
 
             <div>
-                {["", "todo", "inprogress"].map((stage) => (
+                {["", "todo", "in-progress"].map((stage) => (
                     <button
                         key={stage}
                         onClick={() => setStageFilter(stage)}
