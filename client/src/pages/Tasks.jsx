@@ -19,7 +19,8 @@ const Tasks = () => {
     const [open, setOpen] = useState(false);
     //const { user } = useSelector((state) => state.auth);
     const [selected, setSelected] = useState(0);
-    const { data, isLoading } = useGetAllTaskQuery({ strQuery: "", isTrashed: "", search: searchTerm}, { refetchOnMountOrArgChange: true });
+    const [stageFilter, setStageFilter] = useState("");
+    const { data, isLoading } = useGetAllTaskQuery({ strQuery: stageFilter, isTrashed: "", search: searchTerm}, { refetchOnMountOrArgChange: true });
 
     useEffect(() => {
         window.scrollTo({ top: 0, left: 0, behavior: "smooth"});
@@ -47,7 +48,23 @@ const Tasks = () => {
                         <IoMdAdd className="text-lg"/>
                         <span>New Task</span>
                     </button>
-                
+            </div>
+
+            <div>
+                {["", "todo", "inprogress"].map((stage) => (
+                    <button
+                        key={stage}
+                        onClick={() => setStageFilter(stage)}
+                        className={`px-4 py-2 rounded-lg text-xs font-medium border tracking-all ${
+                            stageFilter === stage
+                                ? "border-[#0068B5] text-white"
+                                : "text-gray-700 border-gray-200 bg-white hover:border-[#0068B5"
+                        }`}
+                        style={stageFilter === stage ? { backgroundColor: "#0068B5"} : {}}
+                    >
+                        {stage === "" ? "All" : stage === "todo" ? "To Do" : "In Progress"}
+                    </button>
+                ))}
             </div>
 
             <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">

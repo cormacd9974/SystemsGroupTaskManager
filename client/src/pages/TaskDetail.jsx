@@ -117,7 +117,7 @@ const TaskDetail = () => {
                   <div className="space-y-2">
                     {task?.team?.map((m,i) => (
                       <div key={i} className="flex items-center gap-3 p-3 rounded-xl bg-gray-50 border border-gray-100">
-                        <div className="w-9 h-9 rounded-xl bg-linear-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold">{getInitials(m?.name)}</div>
+                        <div className="w-9 h-9 rounded-xl flex items-center justify-center text-white text-xs font-bold" style={{ backgroundColor: "#0068B5"}}>{getInitials(m?.name)}</div>
                         <div><p className="text-sm font-semibold text-gray-900">{m?.name}</p><p className="text-xs text-gray-400">{m?.title}</p></div>
                       </div>
                     ))}
