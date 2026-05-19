@@ -37,21 +37,32 @@ const MobileSidebar = () => {
   const dispatch = useDispatch();
   const closeSidebar = () => dispatch(setOpenSidebar(false));
 
-  if(!isSidebarOpen) return null;
+  if (!isSidebarOpen) return null;
 
   return (
-        <div className="md:hidden fixed inset-0 z-50 bg-black/50" onClick={closeSidebar}>
-          <div className="w-72 h-full" onClick={e => e.stopPropagation()}>
-            <Sidebar />
-            <button onClick={closeSidebar} className="absolute top-4 right-4 text-white/70 hover:text-white p-1">
-              <IoMdClose size={22}/>
-            </button>
-          </div>
-        </div>
+    <div className="md:hidden fixed inset-0 z-50 bg-black/50" onClick={closeSidebar}>
+      <div className="w-72 h-full" onClick={e => e.stopPropagation()}>
+        <Sidebar />
+        <button onClick={closeSidebar} className="absolute top-4 right-4 text-white/70 hover:text-white p-1">
+          <IoMdClose size={22} />
+        </button>
+      </div>
+    </div>
   );
 };
 
-const App = () => (
+const App = () => {
+  /*const [darkMode, setDarkMode] = useState(false);
+
+useEffect(() => {
+  if (darkMode) {
+    document.documentElement.classList.add("dark");
+  } else {
+    document.documentElement.classList.remove("dark");
+  }
+}, [darkMode]);*/
+
+  return (
     <main className='w-full min-h-screen bg-gray-50'>
       <Routes>
         <Route element={<Layout />}>
@@ -61,13 +72,24 @@ const App = () => (
           <Route path='/team' element={<Team />} />
           <Route path='/history' element={<History />} />
           <Route path='/trashed' element={<Trash />} />
-          <Route path='/task/:id' element={<TaskDetail/>} />
+          <Route path='/task/:id' element={<TaskDetail />} />
           <Route path='/settings' element={<Users />} />
         </Route>
-        <Route path = "/log-in" element={<Login />} />
+        <Route path="/log-in" element={<Login />} />
       </Routes>
-      <Toaster richColors position="top-center"/>
+      <Toaster richColors position="top-center" />
+      
     </main>
-);
+  );
+};
+
+/*<button
+        onClick={() => setDarkMode(!darkMode)}
+        className="fixed bottom-6 right-6 z-50 w-10 h-10 rounded-full shadow-lg flex items-center justify-center text-white"
+        style {...{ backgroundColor: "#0068B5" }}
+      >
+        {darkMode ? "☀️" : "🌙"}
+      </button>*/
+
 
 export default App;

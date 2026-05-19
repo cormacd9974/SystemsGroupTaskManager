@@ -79,7 +79,7 @@ const RecentTasksTable = ({ tasks }) => (
       <thead><tr><th>Task</th><th>Priority</th><th>Team</th><th className="hidden md:table-cell">Created</th></tr></thead>
       <tbody>
         {tasks?.map((task, i) => (
-          <tr key={i}>
+          <tr key={i} className={`${task?.dueDate && new Date(task.dueDate) < new Date () ? "bg-red-50 border-l-4 border-l-red-400" : ""}`}>
             <td><div className="flex items-center gap-2"><div className={clsx("w-2 h-2 rounded-full shrink-0", TASK_TYPE[task.stage])} /><span className="font-medium text-gray-800 text-xs line-clamp-1">{task?.title}</span></div></td>
             <td><span className={clsx("badge text-xs flex items-center gap-1 w-fit", PRIORITY_BADGE[task?.priority])}>{PRIORITY_ICON[task?.priority]}<span className="capitalize">{task?.priority}</span></span></td>
             <td><div className="flex -space-x-1">

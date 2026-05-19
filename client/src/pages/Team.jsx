@@ -43,7 +43,7 @@ const Team = () => {
                     {teamStatus.map((member, i) => (
                         <div key={i} className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
                             <div className="px-5 py-4 border-b border-gray-100 flex items-center gap-3">
-                                <div className="w-10 h-10 rounded-xl bg-linear-to-br from-blue-600 to-blue-600 flex items-center justify-center text-white text-sm font-bold shrink-0">
+                                <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white text-sm font-bold shrink-0" style={{ backgroundColor: "#0068B5"}}>
                                     {getInitials(member.name)}
                                 </div>
                             

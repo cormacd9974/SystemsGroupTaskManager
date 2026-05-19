@@ -6,8 +6,21 @@ import { setOpenSidebar } from "../redux/slices/authSlice";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import NotificationPanel from "./NotificationPanel";
 import UserAvatar from "./UserAvatar"
+import { MdDarkMode, MdLightMode } from "react-icons/md";
 
 const Navbar = () => {
+  const [darkMode, setDarkMode] = useState(document.documentElement.classList.contains("dark"));
+
+const toggleDark = () => {
+  const isDark = !darkMode;
+  setDarkMode(isDark);
+  if (isDark) {
+    document.documentElement.classList.add("dark");
+  } else {
+    document.documentElement.classList.remove("dark");
+  }
+};
+
   const dispatch = useDispatch();// Access the dispatch function from Redux
   const navigate = useNavigate();// Access the navigate function from React Router
   const location = useLocation();// Access the current location object from React Router
@@ -52,6 +65,12 @@ const Navbar = () => {
         )}
       </div>
       <div className="flex items-center gap-3">
+        <button
+          onClick={toggleDark}
+          className="p-2 rounded-lg hover:bg-gray-100 text-gray-500 hover:text-gray-700"
+        >
+          {darkMode ? <MdLightMode size={20} /> : <MdDarkMode size={20} />}
+        </button>
         <NotificationPanel />
         <UserAvatar />
       </div>
