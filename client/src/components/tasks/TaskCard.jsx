@@ -94,15 +94,27 @@ const TaskCard = ({ task }) => {
                 </div>
 
                 {task?.subTasks?.length > 0 ? (
-                    <div className="mt-3 pt-3 border-t border-gray-100 flex items-center justify-baseline">
+                    <div className="mt-3 pt-3 border-t border-gray-100">
+                        <div className="flex items-center justify-between mb-1.5">
                         <p className="text-xs font-medium text-gray-700 line-clamp-1 flex-1">
                             {task.subTasks[0].title}
                         </p>
-                        {task.subTasks[0].tag && (
-                            <span className="ml-2 text-xs bg-blue-50 text-blue-700 border border-blue-200 px-2 py-0.5 rounded-full">
-                                {task.subTasks[0].tag}
-                            </span>
-                        )}
+                        <span className="text-xs text-gray-400 ml-2 shrink-0">
+                            {task.subTasks.filter( s => s.isCompleted).length}/{task.subTasks.length}
+                        </span>
+                        </div>
+                        <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                            <div 
+                              className={clsx("h-full rounded-full transition-all",
+                                task.subTasks.filter( s => s.isCompleted).length === task.subTasks.length
+                                ? "bg-emerald-400"
+                                : task.subTasks.filter( s => s.isCompleted).length === 0 
+                                ? "bg-gray-300"
+                                : "bg-[#0068B5]"
+                              )}
+                              style = {{ width: `${(task.subTasks.filter( s => s.isCompleted).length / task.subTasks.length) * 100}%`}}
+                            />
+                        </div>
                     </div>
                 ) : (
                     <div className="mt-3 pt-3 border-t border-gray-100">
