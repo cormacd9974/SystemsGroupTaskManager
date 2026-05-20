@@ -7,7 +7,7 @@ const loginUser = asyncHandler(async(req, res) => {
     const {email, password} = req.body;
     const user = await User.findOne({email});
     if(!user) {
-        return res.status(401).json({status: false, message: "Invalid email or passowrd."});
+        return res.status(401).json({status: false, message: "Invalid email or password."});
     }
     if(!user?.isActive) {
         return res.status(401).json({status: false, message: "Account deactivated. Contact Admin."});
@@ -27,7 +27,7 @@ const loginUser = asyncHandler(async(req, res) => {
             token
         });
     } else {
-        return res.status(401).json({status: false, message: "Invalid email or passowrd."});
+        return res.status(401).json({status: false, message: "Invalid email or password."});
     }
 });
 

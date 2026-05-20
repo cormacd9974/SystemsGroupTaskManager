@@ -65,10 +65,10 @@ const TaskCard = ({ task }) => {
                 <div>
                     {task?.startDate && <p className="text-xs text-gray-400">Start: {formatDate(new Date(task.startDate))}</p>}
                     {task?.dueDate && (
-                        <p className={`text-xs font-medium ${new Date(task.dueDate) < new Date() ? "text-red-400" : new Date(task.dueDate) - new Date () < 3 * 24 * 60 * 60 ? "text-orange-400" : "text-gray-400"}`}>
+                        <p className={`text-xs font-medium ${new Date(task.dueDate) < new Date() ? "text-red-400" : new Date(task.dueDate) - new Date () < 3 * 24 * 60 * 60 * 1000 ? "text-orange-400" : "text-gray-400"}`}>
                             Due: {formatDate(new Date(task.dueDate))}
                             {new Date(task.dueDate) < new Date() && " ⚠️ (Overdue)"}
-                            {new Date(task.dueDate) - new Date() < 3 * 24 * 60 * 60 && new Date(task.dueDate) > new Date() && " ⏰ (Due Soon)"}
+                            {new Date(task.dueDate) - new Date() < 3 * 24 * 60 * 60 * 1000 && new Date(task.dueDate) > new Date() && " ⏰ (Due Soon)"}
                         </p>
                     )}
                 </div>

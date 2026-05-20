@@ -140,7 +140,7 @@ const History = () => {
                                         </div>
                                         </td>
                                         <td className="hidden md:table-cell text-gray-400 text-xs">
-                                            {moment(task.updatedAt).format("DD MM YYYY")}
+                                            {moment(task.updatedAt).format("DD MMM YYYY")}
                                         </td>
                                     </tr>
                                 ))}

@@ -47,10 +47,6 @@ const Sidebar = () => {
         );
     };
 
-    {sidebarLinks.map(link => (
-        <NavLink el={link} key={link.label} onClose={closeSidebar} />
-    ))}
-
     return (
         <div className="w-full h-full flex flex-col" style={{ backgroundColor: "#0068B5"}}>
             <div className="px-5 py-6 border-b border-white/10">

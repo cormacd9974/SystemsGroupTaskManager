@@ -58,7 +58,7 @@ const Tasks = () => {
                         className={`px-4 py-2 rounded-lg text-xs font-medium border tracking-all ${
                             stageFilter === stage
                                 ? "border-[#0068B5] text-white"
-                                : "text-gray-700 border-gray-200 bg-white hover:border-[#0068B5"
+                                : "text-gray-700 border-gray-200 bg-white hover:border-[#0068B5]"
                         }`}
                         style={stageFilter === stage ? { backgroundColor: "#0068B5"} : {}}
                     >

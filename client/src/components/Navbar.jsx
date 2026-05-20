@@ -45,7 +45,7 @@ const toggleDark = () => {
           onClick={() => dispatch(setOpenSidebar(true))}
           className="text-gray-500 hover:text-blue-600 block md:hidden p-1.5 rounded-lg hover:bg-blue-50"
         >
-          <HiMenuAlt2 sixe={22} />
+          <HiMenuAlt2 size={22} />
         </button>
         <div className="hidden md:block">
           <h1 className="text-lg font-bold text-gray-900 capitalize">{displayName}</h1>

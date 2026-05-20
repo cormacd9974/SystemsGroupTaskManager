@@ -78,7 +78,7 @@ return ( // The form is wrapped in a ModalWrapper component, which controls the 
                     <button
                     type="button"
                     onClick={() => setOpen(false)}
-                    className="px-6 py-2 rounded-xl border border-gray-200 text-sm font-mediumtext-gray-700 hover;bg-gray-50"
+                    className="px-6 py-2 rounded-xl border border-gray-200 text-sm font-medium text-gray-700 hover:bg-gray-50"
                     >
                         Cancel
                     </button>

@@ -43,7 +43,7 @@ export default function NotificationPanel() {
                     {({ close }) => (
                         data?.length > 0 ? (
                             <div className="bg-white rounded-2xl shadow-lg border border-gray-100">
-                                <div className="px-4 py-3 border-b border-gray-500">
+                                <div className="px-4 py-3 border-b border-gray-100">
                                     <p className="text-sm font-bold text-gray-900">Notifications</p>
                                     <p className="text-xs text-gray-400">{data.length} unread</p>
                                 </div>
@@ -88,7 +88,7 @@ export default function NotificationPanel() {
                         </div>
                         ) : (
                             <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 text-center">
-                                <p className="flex flex-col text-sm items-center gap-2"></p>
+                                <p className="text-sm text-gray-400">No new notifications</p>
                             </div>
                         )
                     )}
