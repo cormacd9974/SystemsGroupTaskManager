@@ -201,9 +201,9 @@ export const Chart = ({ data }) => {
                             </Pie>
                             <Tooltip content={<CustomTooltip />} />
                         </PieChart>
-                        <div style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", pointerEvents: "none" }}>
-                            <span style={{ fontSize: "28px", fontWeight: "bold", color: "#111827" }}>{total}</span>
-                            <span style={{ fontSize: "12px", color: "#9ca3af" }}>Total Tasks</span>
+                        <div style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, pointerEvents: "none" }} className="flex flex-col items-center justify-center">
+                            <span className="text-3xl font-bold text-gray-900 dark:text-white">{total}</span>
+                            <span className="text-xs text-gray-400 dark:text-gray-400">Total Tasks</span>
                         </div>
                     </div>
                     <div className="flex-1">

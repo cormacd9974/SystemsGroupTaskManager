@@ -16,8 +16,8 @@ const StatCard = ({ label, count, icon, colorClass, accent }) => (
   <div className={clsx("stat-card p-5 card-lift", colorClass)}>
     <div className="flex items-start justify-between">
       <div>
-        <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">{label}</p>
-        <p className="text-3xl font-bold text-gray-900">{count}</p>
+        <p className="text-xs font-semibold text-gray-400 dark:text-gray-300 uppercase tracking-wider mb-2">{label}</p>
+        <p className="text-3xl font-bold text-gray-900 dark:text-white">{count}</p>
         <p className="text-xs text-gray-400 mt-1">Past year</p>
       </div>
       <div className={clsx("w-11 h-11 rounded-xl flex items-center justify-center text-xl", accent)}>{icon}</div>

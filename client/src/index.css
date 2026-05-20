@@ -253,6 +253,11 @@ background-color: #1e293b !important;
     position: relative;
 }
 
+.dark .stat-card {
+    background: #0f1d33;
+    border-color: rgba(148, 163, 184, 0.15)
+}
+
 .stat-card::before {
     content: '';
     position: absolute;
