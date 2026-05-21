@@ -71,14 +71,42 @@ const AddTask = ({ open, setOpen, task }) => {
 
   const handleOnSubmit = async (data) => {
     try {
-      const payload = { ...data, team, stage: stage.toLowerCase(), priority: priority.toLowerCase(), category: category ? category.toLowerCase().replace("_", "-") : "report-created", assets, startDate: data.startDate || undefined, dueDate: data.dueDate || undefined };
+      let assetUrls = [];
+      if (assets.length > 0) {
+        const formData = new FormData();
+        Array.from(assets).forEach(file => formData.append("files", file));
+        const uploadRes = await fetch("/api/task/upload", {
+          method: "POST",
+          headers: {
+            authorization: `Bearer ${JSON.parse(localStorage.getItem("userInfo"))?.token}`,
+          },
+          body: formData,
+        });
+        const uploadData = await uploadRes.json();
+        assetUrls = uploadData.urls || [];
+      }
+
+      const payload = {
+        ...data,
+        team,
+        stage: stage.toLowerCase(),
+        priority: priority.toLowerCase(),
+        category: category ? category.toLowerCase().replace("_", "-") : "report-created",
+        assets: assetUrls,
+        startDate: data.startDate || undefined,
+        dueDate: data.dueDate || undefined,
+      };
+
       const res = task?._id
         ? await updateTask({ ...payload, _id: task._id }).unwrap()
         : await createTask(payload).unwrap();
       toast.success(res.message);
       setTimeout(() => setOpen(false), 500);
-    } catch (err) { toast.error(err?.data?.message || err.error); }
+    } catch (err) {
+      toast.error(err?.data?.message || err.error);
+    }
   };
+
 
   return (
     <ModalWrapper open={open} setOpen={setOpen}>

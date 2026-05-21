@@ -14,14 +14,18 @@ import {
     updateSubTaskStage,
     updateTask,
     updateTaskStage,
-    updateSubTaskStage
 } from "../controllers/taskController.js";
+import { upload } from "../middleware/uploadMiddleware.js";
 
 const router = express.Router();
 
 router.post("/create", protectRoute, createTask );
 router.post("/duplicate/:id", protectRoute, duplicateTask );
 router.post("/activity/:id", protectRoute, postTaskActivity );
+router.post("/upload", protectRoute, upload.array("files", 10), (req, res) =>{
+    const urls =  req.files.map(f => `/uploads/${f.filename}`);
+    res.status(200).json({ status: true, urls});
+})
 
 router.get("/dashboard", protectRoute, dashboardStatistics );
 router.get("/history", protectRoute, getTaskHistory );
