@@ -208,7 +208,7 @@ const AddTask = ({ open, setOpen, task }) => {
             <div className="w-full">
               <label className="block text-sm font-medium text-gray-700 mb-1.5">Attachments</label>
               <label htmlFor="imgUpload" className="flex items-center gap-2 px-4 py-2 border-2 border-dashed border-gray-200 rounded-xl cursor-pointer hover:border-[#0068B5] transition-colors">
-                <input type="file" className="hidden" id="imgUpload" onChange={e => setAssets(Array.form(e.target.files))} accept=".jpg,.png,.jpeg,.pdf,.doc,.docx,.xlsx,.csv,.txt" multiple />
+                <input type="file" className="hidden" id="imgUpload" onChange={e => setAssets(prev => [...prev, ...Array.from(e.target.files)])} accept=".jpg,.png,.jpeg,.pdf,.doc,.docx,.xlsx,.csv,.txt" multiple />
                 <BiImages className="text-gray-400" />
                 <span className="text-sm text-gray-500">
                   {assets.length > 0 ? `${assets.length} file(s) selected` : "Click to attach files"}
@@ -217,12 +217,15 @@ const AddTask = ({ open, setOpen, task }) => {
               {assets.length > 0 && (
                 <div className="flex flex-wrap gap-2 mt-2">
                   {Array.from(assets).map((file, i) => (
-                    <span key={i} className="text-xs bg-blue-50 text-blue-700 border border-blue-200 px-2 py-1 rounded-lg">
+                    <span key={i} className="flex items-center justify-between gap-3 text-sm bg-blue-100 border-blue-200 px-3 py-1.5 rounded-lg w-full">
                       {file.name}
                       <button
                         type="button"
-                        onClick={() => setAssets(prev => Array.form(prev).filter((_, idx) => idx !== i))}
-                        className="text-blue-400 hover:text-red-500 transition-colors font-bold"
+                        onClick={() => {
+                          const updated = assets.filter((_, idx) => idx !== i);
+                          setAssets(updated);
+                        }}
+                        className="text-red-800 hover:text-red-500 transition-colors font-bold text-base ml-auto"
                       >
                         x
                       </button>
