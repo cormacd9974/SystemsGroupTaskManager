@@ -2,7 +2,7 @@ import clsx from "clsx";
 import moment from "moment";
 import { useEffect } from "react";
 import { MdKeyboardArrowDown, MdKeyboardArrowUp, MdKeyboardDoubleArrowUp } from "react-icons/md";
-import { HiCheckCircle, HiClock, HiCollection, HiLightningBolt } from "react-icons/hi";
+import { HiCheckCircle, HiClock, HiCollection, HiLightningBolt, HiExclamationCircle } from "react-icons/hi";
 import { Chart, Loading, UserInfo } from "../components";
 import { useGetDashboardStatsQuery } from "../redux/slices/api/taskApiSlice";
 import { TASK_TYPE, CATEGORY_LABEL, getInitials } from "../utils";
@@ -37,6 +37,7 @@ const Dashboard = () => {
     { label: "Completed", total: totals["completed"] || 0, icon: <HiCheckCircle className="text-emerald-600" />, colorClass: "green", accent: "bg-emerald-50 text-emerald-600" },
     { label: "in-progress", total: totals["in-progress"] || 0, icon: <HiLightningBolt className="text-amber-600" />, colorClass: "amber", accent: "bg-amber-50 text-amber-600" },
     { label: "To Do", total: totals["todo"] || 0, icon: <HiClock className="text-rose-600" />, colorClass: "rose", accent: "bg-rose-50 text-rose-600" },
+    { label: "Overdue", total: data.overdueCount || 0, icon: <HiExclamationCircle className="text-rose-600" />, colorClass: "rose", accent: "bg-rose-50 text-rose-600" },
   ];
   return (
     <div className="py-4 space-y-6">
@@ -50,7 +51,7 @@ const Dashboard = () => {
           <p className="text-xs text-gray-400">{moment().format("YYYY")}</p>
         </div>
       </div>
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
         {stats.map((s, i) => <StatCard key={i} {...s} count={s.total} />)}
       </div>
       <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm w-full">

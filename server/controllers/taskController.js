@@ -293,10 +293,18 @@ const dashboardStatistics = asyncHandler(async (req, res) => {
             })
         );
 
+        const overdueCount = allTasks.filter(t =>
+            t.dueDate &&
+            new Date(t.dueDate) < new Date() &&
+            t.stage !== "completed" &&
+            !t.isTrashed
+        ).length;
+
         res.status(200).json({
             status: true,
             totalTasks: allTasks.length,
             last10Task: allTasks.slice(0, 10),
+            overdueCount,
             users: isAdmin ? users : [],
             teamStatus: isAdmin ? teamStatus : [],
             tasks: groupedTasks,
