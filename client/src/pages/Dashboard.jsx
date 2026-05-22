@@ -9,29 +9,50 @@ import { TASK_TYPE, CATEGORY_LABEL, getInitials } from "../utils";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
+// Map task priorities to badge styles
 const PRIORITY_BADGE = { high: "text-red-600 bg-red-50 border border-red-200", medium: "text-amber-600 bg-amber-50 border border-amber-200", normal: "text-blue-600 bg-blue-50 border border-blue-200", low: "text-slate-500 bg-slate-50 border border-slate-200" };
+
+// Map task priorities to icons
 const PRIORITY_ICON = { high: <MdKeyboardDoubleArrowUp />, medium: <MdKeyboardArrowUp />, normal: <MdKeyboardArrowDown />, low: <MdKeyboardArrowDown /> };
 
+// Reusable stat card component used to display dashboard summary numbers
 const StatCard = ({ label, count, icon, colorClass, accent }) => (
   <div className={clsx("stat-card p-5 card-lift", colorClass)}>
     <div className="flex items-start justify-between">
       <div>
+        {/* Stat label */}
         <p className="text-xs font-semibold text-gray-400 dark:text-gray-300 uppercase tracking-wider mb-2">{label}</p>
+
+        {/* Stat value */}
         <p className="text-3xl font-bold text-gray-900 dark:text-white">{count}</p>
+
+        {/* Supporting caption */}
         <p className="text-xs text-gray-400 mt-1">Past year</p>
       </div>
+
+      {/* Icon container for each stat card */}
       <div className={clsx("w-11 h-11 rounded-xl flex items-center justify-center text-xl", accent)}>{icon}</div>
     </div>
   </div>
 );
 
 const Dashboard = () => {
+  // Fetch dashboard statistics from the API
   const { data, isLoading } = useGetDashboardStatsQuery(undefined, { refetchOnMountOrArgChange: true });
 
+  // Get the logged-in user from Redux state
   const { user } = useSelector(s => s.auth);
+
+  // Scroll to top when the dashboard mounts
   useEffect(() => { window.scrollTo({ top: 0, left: 0, behavior: "smooth" }); }, []);
+
+  // Safely access task counts by status
   const totals = data?.tasks || {};
+
+  // Show loading indicator while data is being fetched
   if (isLoading) return <div className="py-16 flex justify-center"><Loading /></div>;
+
+  // Summary cards displayed at the top of the dashboard
   const stats = [
     { label: "Total Tasks", total: data?.totalTasks || 0, icon: <HiCollection className="text-blue-600" />, colorClass: "blue", accent: "bg-blue-50 text-blue-600" },
     { label: "Completed", total: totals["completed"] || 0, icon: <HiCheckCircle className="text-emerald-600" />, colorClass: "green", accent: "bg-emerald-50 text-emerald-600" },
@@ -39,8 +60,10 @@ const Dashboard = () => {
     { label: "To Do", total: totals["todo"] || 0, icon: <HiClock className="text-rose-600" />, colorClass: "rose", accent: "bg-rose-50 text-rose-600" },
     { label: "Overdue", total: data.overdueCount || 0, icon: <HiExclamationCircle className="text-rose-600" />, colorClass: "rose", accent: "bg-rose-50 text-rose-600" },
   ];
+
   return (
     <div className="py-4 space-y-6">
+      {/* Dashboard header greeting and current date */}
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-xl font-bold text-gray-900">Good {new Date().getHours() < 12 ? "morning" : new Date().getHours() < 17 ? "afternoon" : "evening"}, {user?.name?.split(" ")[0]} 👋</h2>
@@ -51,9 +74,13 @@ const Dashboard = () => {
           <p className="text-xs text-gray-400">{moment().format("YYYY")}</p>
         </div>
       </div>
+
+      {/* Summary stats cards */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
         {stats.map((s, i) => <StatCard key={i} {...s} count={s.total} />)}
       </div>
+
+      {/* Priority breakdown chart section */}
       <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm w-full">
         <div className="flex items-center justify-between mb-4">
           <h3 className="font-bold text-gray-900">Priority Breakdown</h3>
@@ -62,17 +89,21 @@ const Dashboard = () => {
         <div className="w-full overflow-visible">
           <Chart data={data?.graphData} />
         </div>
-
       </div>
+
+      {/* Recent tasks and team members side-by-side on larger screens */}
       <div className="flex flex-col lg:flex-row gap-4">
         {data && <RecentTasksTable tasks={data?.last10Task} />}
         {data && user?.isAdmin && <TeamMembersTable users={data?.users} />}
       </div>
+
+      {/* Team workload panel only shown for admins */}
       {user?.isAdmin && data?.teamStatus?.length > 0 && <TeamWorkPanel teamStatus={data.teamStatus} />}
     </div>
   );
 };
 
+// Table showing the most recent tasks
 const RecentTasksTable = ({ tasks }) => (
   <div className="flex-1 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
     <div className="px-5 py-4 border-b border-gray-100"><h3 className="font-bold text-gray-900 text-sm">Recent Tasks</h3></div>
@@ -81,8 +112,13 @@ const RecentTasksTable = ({ tasks }) => (
       <tbody>
         {tasks?.map((task, i) => (
           <tr key={i} className={`${task?.dueDate && new Date(task.dueDate) < new Date () ? "bg-red-50 border-l-4 border-l-red-400" : ""}`}>
+            {/* Task status indicator and title */}
             <td><div className="flex items-center gap-2"><div className={clsx("w-2 h-2 rounded-full shrink-0", TASK_TYPE[task.stage])} /><span className="font-medium text-gray-800 text-xs line-clamp-1">{task?.title}</span></div></td>
+
+            {/* Task priority badge and icon */}
             <td><span className={clsx("badge text-xs flex items-center gap-1 w-fit", PRIORITY_BADGE[task?.priority])}>{PRIORITY_ICON[task?.priority]}<span className="capitalize">{task?.priority}</span></span></td>
+
+            {/* Team member avatars */}
             <td><div className="flex -space-x-1">
               {task?.team?.map((m, idx) => (
                 <div
@@ -92,8 +128,9 @@ const RecentTasksTable = ({ tasks }) => (
                   <UserInfo user={m} />
                 </div>
               ))}
-              
             </div></td>
+
+            {/* Human-readable created time */}
             <td className="hidden md:table-cell text-gray-400 text-xs">{moment(task?.date).fromNow()}</td>
           </tr>
         ))}
@@ -102,6 +139,7 @@ const RecentTasksTable = ({ tasks }) => (
   </div>
 );
 
+// Table showing all team members and whether they are active
 const TeamMembersTable = ({ users }) => (
   <div className="w-full lg:w-1/3 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
     <div className="px-5 py-4 border-b border-gray-100"><h3 className="font-bold text-gray-900 text-sm">Team Members</h3></div>
@@ -110,7 +148,10 @@ const TeamMembersTable = ({ users }) => (
       <tbody>
         {users?.map((user, i) => (
           <tr key={i}>
+            {/* User name, avatar initial, and role */}
             <td><div className="flex items-center gap-2.5"><div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0" style={{ backgroundColor: "#0068B5" }}>{getInitials(user?.name)}</div><div><p className="font-medium text-gray-900 text-xs">{user.name}</p><p className="text-gray-400 text-xs">{user?.role}</p></div></div></td>
+
+            {/* Active/inactive state badge */}
             <td><span className={clsx("badge text-xs", user?.isActive ? "bg-emerald-50 text-emerald-700 border border-emerald-200" : "bg-amber-50 text-amber-700 border border-amber-200")}>{user?.isActive ? "Active" : "Inactive"}</span></td>
           </tr>
         ))}
@@ -119,6 +160,7 @@ const TeamMembersTable = ({ users }) => (
   </div>
 );
 
+// Panel showing each team member's in-progress tasks
 const TeamWorkPanel = ({ teamStatus }) => (
   <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
     <div className="px-5 py-4 border-b border-gray-100">
@@ -129,10 +171,15 @@ const TeamWorkPanel = ({ teamStatus }) => (
       {teamStatus.map((member, i) => (
         <div key={i} className="px-5 py-4">
           <div className="flex items-center gap-3 mb-3">
+            {/* Member avatar and basic info */}
             <div className="w-8 h-8 rounded-xl bg-gradient-to-br flex items-center justify-center text-white text-xs font-bold shrink-0" style={{ backgroundColor: "#0068B5" }}>{getInitials(member.name)}</div>
             <div><p className="text-sm font-semibold text-gray-900">{member.name}</p><p className="text-xs text-gray-400">{member.title}</p></div>
+
+            {/* Number of in-progress tasks for the member */}
             <span className={clsx("ml-auto badge text-xs", member.inProgressTasks?.length > 0 ? "bg-amber-50 text-amber-700 border border-amber-200" : "bg-gray-50 text-gray-400 border border-gray-200")}>{member.inProgressTasks?.length || 0} in-progress</span>
           </div>
+
+          {/* List the member's in-progress tasks if any exist */}
           {member.inProgressTasks?.length > 0 ? (
             <div className="flex flex-col gap-2 pl-11">
               {member.inProgressTasks.map((task, j) => (

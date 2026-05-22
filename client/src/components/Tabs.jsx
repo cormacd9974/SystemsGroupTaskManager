@@ -1,9 +1,11 @@
 import { Tab, TabGroup, TabList, TabPanels } from "@headlessui/react";
 
+// Reusable tabs component built with Headless UI
 const Tabs = ({ tabs, setSelected, children }) => {
     return (
     <div className="w-full">
         <TabGroup onChange={setSelected}>
+            {/* Tab header list */}
             <TabList className="flex space-x-1 rounded-xl bg-gray-100 p-1">
                 {tabs.map((tab, i) => (
                     <Tab
@@ -15,11 +17,16 @@ const Tabs = ({ tabs, setSelected, children }) => {
                         ${selected ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}`
                         }
                     >
+                        {/* Tab icon */}
                         <span className="text-base">{tab.icon}</span>
+
+                        {/* Tab title */}
                         <span>{tab.title}</span>
                     </Tab>
                 ))} 
             </TabList>
+
+            {/* Tab content panels passed from parent */}
             <TabPanels className="w-full">
                 {children}
             </TabPanels>
@@ -28,4 +35,5 @@ const Tabs = ({ tabs, setSelected, children }) => {
     );
 };
 
+// Export the Tabs component
 export default Tabs;

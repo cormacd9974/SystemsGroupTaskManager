@@ -12,9 +12,16 @@ import { Loading, Tabs } from "../components";
 import { useChangeSubTaskStatusMutation, useGetSingleTaskQuery, usePostTaskActivityMutation } from "../redux/slices/api/taskApiSlice";
 import { TASK_TYPE, CATEGORY_LABEL, getCompletedSubTasks, getInitials } from "../utils";
 
+// Tab configuration for switching between task details and activity timeline
 const TABS = [{ title: "Task Detail", icon: <FaTasks /> }, { title: "Activity Timeline", icon: <RxActivityLog /> }];
+
+// Styling classes for priority badges
 const PRIORITY_BADGE = { high: "text-red-600 bg-red-50 border border-red-200", medium: "text-amber-600 bg-amber-50 border border-amber-200", normal: "text-blue-600 bg-blue-50 border border-blue-200", low: "text-slate-500 bg-slate-50 border border-slate-200" };
+
+// Icon used for each task priority
 const PRIORITY_ICON = { high: <MdKeyboardDoubleArrowUp />, medium: <MdKeyboardArrowUp />, normal: <MdKeyboardArrowDown />, low: <MdKeyboardArrowDown /> };
+
+// Visual icons for different activity types in the timeline
 const ACTIVITY_ICON = {
   commented: <div className="w-8 h-8 rounded-xl bg-gray-400 flex items-center justify-center text-white text-sm"><MdOutlineMessage /></div>,
   started: <div className="w-8 h-8 rounded-xl bg-blue-500 flex items-center justify-center text-white text-sm"><FaThumbsUp /></div>,
@@ -23,26 +30,34 @@ const ACTIVITY_ICON = {
   completed: <div className="w-8 h-8 rounded-xl bg-emerald-500 flex items-center justify-center text-white text-sm"><MdOutlineDoneAll /></div>,
   "in-progress": <div className="w-8 h-8 rounded-xl bg-violet-500 flex items-center justify-center text-white text-sm"><GrInProgress /></div>,
 };
+
+// Allowed activity categories shown in the "Add Activity" section
 const act_types = ["Started", "Completed", "in-progress", "Commented", "Bug", "Assigned"];
 
+// Component responsible for showing the task activity history and posting new updates
 const Activities = ({ activity, id, refetch }) => {
   const [selected, setSelected] = useState("Started");
   const [text, setText] = useState("");
   const [postActivity, { isLoading }] = usePostTaskActivityMutation();
+
+  // Sends the selected activity type and note to the backend
   const handleSubmit = async () => {
     try {
       const res = await postActivity({ data: { type: selected?.toLowerCase(), activity: text }, id }).unwrap();
       setText(""); toast.success(res?.message); refetch();
     } catch (err) { toast.error(err?.data?.message || err.error); }
   };
+
   return (
     <div className="flex flex-col md:flex-row gap-6 bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+      {/* Left side: activity timeline */}
       <div className="w-full md:w-1/2">
         <h4 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-5">Timeline</h4>
         <div className="space-y-0">
           {activity?.map((item, i) => (
             <div key={i} className="flex gap-3">
               <div className="flex flex-col items-center">
+                {/* Activity icon marker */}
                 <div className="shrink-0">{ACTIVITY_ICON[item?.type] || ACTIVITY_ICON["started"]}</div>
                 {i < activity.length - 1 && <div className="w-0.5 bg-gray-100 flex-1 my-1" />}
               </div>
@@ -52,12 +67,15 @@ const Activities = ({ activity, id, refetch }) => {
                   <span className="text-xs capitalize text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full">{item?.type}</span>
                   <span className="text-xs text-gray-400">{moment(item?.date).fromNow()}</span>
                 </div>
+                {/* Optional text note attached to the activity */}
                 {item?.activity && <p className="text-sm text-gray-600 mt-1.5 bg-gray-50 px-3 py-2 rounded-xl border border-gray-100">{item?.activity}</p>}
               </div>
             </div>
           ))}
         </div>
       </div>
+
+      {/* Right side: form for adding a new activity */}
       <div className="w-full md:w-1/2 md:border-l md:border-gray-100 md:pl-6">
         <h4 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-5">Add Activity</h4>
         <div className="space-y-4">
@@ -68,7 +86,11 @@ const Activities = ({ activity, id, refetch }) => {
               </label>
             ))}
           </div>
+
+          {/* Free-text note field */}
           <textarea rows={4} value={text} onChange={e => setText(e.target.value)} placeholder="Add a note..." className="input-field resize-none" />
+
+          {/* Loading state vs submit button */}
           {isLoading ? <Loading /> : <button onClick={handleSubmit} className="btn-primary w-full">Post Activity</button>}
         </div>
       </div>
@@ -76,34 +98,47 @@ const Activities = ({ activity, id, refetch }) => {
   );
 };
 
+// Main page that loads one task and shows detail/history content
 const TaskDetail = () => {
   const { id } = useParams();
   const { data, isLoading, refetch } = useGetSingleTaskQuery(id);
   const [subTaskAction, { isLoading: isSubmitting }] = useChangeSubTaskStatusMutation();
   const [selected, setSelected] = useState(0);
   const task = data?.task || {};
+
+  // Toggles a sub-task between completed and not completed
   const handleSubmitAction = async (el) => {
     try { const res = await subTaskAction({ id: el.id, subId: el.subId, status: !el.status }).unwrap(); toast.success(res?.message); refetch(); }
     catch (err) { toast.error(err?.data?.message || err.error); }
   };
+
+  // Display loader until the task data has finished loading
   if (isLoading) return <div className="py-16 flex justify-center"><Loading /></div>;
+
+  // Calculate overall sub-task completion percentage
   const percentageCompleted = task?.subTasks?.length === 0 ? 0 : (getCompletedSubTasks(task?.subTasks) / task?.subTasks?.length) * 100;
+
   return (
     <div className="space-y-4 pb-8">
+      {/* Task title and stage indicator */}
       <div className="flex items-start gap-3">
         <div className={clsx("w-3 h-3 rounded-full mt-2.5 shrink-0", TASK_TYPE[task?.stage])} />
         <h1 className="text-2xl font-bold text-gray-900">{task?.title}</h1>
       </div>
+
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
         <Tabs tabs={TABS} setSelected={setSelected}>
           {selected === 0 ? (
             <div className="flex flex-col md:flex-row gap-6 p-6">
               <div className="w-full md:w-1/2 space-y-6">
+                {/* Quick status chips */}
                 <div className="flex flex-wrap gap-2">
                   <span className={clsx("badge flex items-center gap-1", PRIORITY_BADGE[task?.priority])}>{PRIORITY_ICON[task?.priority]}<span className="capitalize">{task?.priority} Priority</span></span>
                   <span className="badge bg-gray-100 text-gray-700 border border-gray-200 flex items-center gap-1.5"><div className={clsx("w-2 h-2 rounded-full", TASK_TYPE[task?.stage])} /><span className="capitalize">{task?.stage}</span></span>
                   {task?.category && <span className="badge bg-blue-50 text-blue-700 border border-blue-200">{CATEGORY_LABEL[task?.category] || task?.category}</span>}
                 </div>
+
+                {/* Date metadata */}
                 <div className="flex flex-col gap-1">
                   <p className="text-sm text-gray-700 whitespace-pre-wrap">Created: {new Date(task?.date).toDateString()}</p>
                   {task?.startDate && <p className="text-sm text-gray-400">Start: {new Date(task.startDate).toDateString()}</p>}
@@ -114,6 +149,8 @@ const TaskDetail = () => {
                     </p>
                   )}
                 </div>
+
+                {/* Summary counters */}
                 <div className="flex gap-4 p-4 bg-gray-50 rounded-xl border border-gray-100">
                   <div className="text-center"><p className="text-2xl font-bold text-gray-900">{task?.assets?.length || 0}</p><p className="text-xs text-gray-400">Assets</p></div>
                   <div className="w-px bg-gray-200" />
@@ -121,6 +158,8 @@ const TaskDetail = () => {
                   <div className="w-px bg-gray-200" />
                   <div className="text-center"><p className="text-2xl font-bold text-gray-900">{task?.activities?.length || 0}</p><p className="text-xs text-gray-400">Activities</p></div>
                 </div>
+
+                {/* Assigned team members */}
                 <div>
                   <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Task Team</p>
                   <div className="space-y-2">
@@ -132,6 +171,8 @@ const TaskDetail = () => {
                     ))}
                   </div>
                 </div>
+
+                {/* Sub-task list and progress bar */}
                 {task?.subTasks?.length > 0 && (
                   <div>
                     <div className="flex items-center justify-between mb-3">
@@ -164,11 +205,15 @@ const TaskDetail = () => {
                   </div>
                 )}
               </div>
+
               <div className="w-full md:w-1/2 space-y-6 md:border-l md:border-gray-100 md:pl-6">
+                {/* Task description */}
                 {task?.description && (
                   <div><p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Description</p>
                     <p className="text-sm text-gray-700 leading-relaxed bg-gray-50 p-4 rounded-xl border border-gray-100">{task?.description}</p></div>
                 )}
+
+                {/* Attachments section */}
                 {task?.assets?.length > 0 && (
                   <div className="mt-4">
                     <p className="text-sm font-semibold text-gray-700 mb-2">Attachments</p>
@@ -190,6 +235,7 @@ const TaskDetail = () => {
                   </div>
                 )}
 
+                {/* External links shared with the task */}
                 {task?.links?.length > 0 && (
                   <div><p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Links</p>
                     <div className="space-y-2">{task?.links?.map((el, i) => <a key={i} href={el} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-sm text-blue-600 bg-blue-50 hover:bg-blue-100 px-3 py-2 rounded-xl border border-blue-200"><HiLink /><span className="truncate">{el}</span></a>)}</div></div>
@@ -202,4 +248,5 @@ const TaskDetail = () => {
     </div>
   );
 };
+
 export default TaskDetail;

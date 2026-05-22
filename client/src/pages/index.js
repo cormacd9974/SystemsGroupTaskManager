@@ -1,3 +1,4 @@
+// Importing page components from their respective files
 import Dashboard from "./Dashboard"
 import Login from "./Login"
 import History from "./History"
@@ -7,6 +8,7 @@ import Team from "./Team"
 import Trash from "./Trash"
 import Users from "./Users"
 
+// Re-exporting all page components from this file for cleaner imports elsewhere
 export {
     Dashboard,
     Login,

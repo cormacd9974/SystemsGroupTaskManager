@@ -1,8 +1,10 @@
 import React from "react";
 import clsx from "clsx";
 
+// Reusable input component with label and validation error display
 const Textbox = ({ type, placeholder, label, className, labelClass, register, name, error }) => (
     <div className='w-full flex flex-col gap-1'>
+    {/* Optional field label */}
     {label && (
      <label
           htmlFor={name}
@@ -16,11 +18,13 @@ const Textbox = ({ type, placeholder, label, className, labelClass, register, na
           className={clsx("input-field", className)}
           {...register}
        />
+           {/* Validation error message */}
            {error && (
            <span className='text-xs text-red-500 mt-0.5 '>{error}</span>)}
         </div>
 
 );
 
+// Explicit display name for debugging/devtools
 Textbox.displayName = "Texbox";
 export default Textbox;

@@ -11,12 +11,14 @@ import path from "path";
 
 dotenv.config();
 
+// Connect to MongoDB
 dbConnection();
 
 const PORT = process.env.PORT || 8800;
 
 const app = express();
 
+// Enable CORS for local frontend development origins
 app.use(
     cors({
         origin: ["http://localhost:3000", "http://localhost:5173"],
@@ -25,17 +27,31 @@ app.use(
     })
 );
 
+// Parse JSON request bodies
 app.use(express.json());
+
+// Get __dirname equivalent in ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// Serve uploaded files statically
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+// Parse URL-encoded form data
 app.use(express.urlencoded({ extended: true }));
+
+// Parse cookies from incoming requests
 app.use(cookieParser());
+
+// Log HTTP requests in development
 app.use(morgan("dev"));
 
+// Mount API routes under /api
 app.use("/api", routes);
 
+// Handle unknown routes and errors
 app.use(routeNotFound);
 app.use(errorHandler);
 
+// Start the server
 app.listen(PORT, () => console.log(`Server listenning on port ${PORT}`));

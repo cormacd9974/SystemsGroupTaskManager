@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { setOpenSidebar } from "../redux/slices/authSlice";
 
+// Sidebar navigation link definitions
 const linkData = [
     { label: "Dashboard", link: "/dashboard", icon: <MdDashboard /> },
     { label: "Tasks", link: "/tasks", icon: <FaTasks /> },
@@ -14,21 +15,36 @@ const linkData = [
     { label: "Team", link: "/team", icon: <FaUsers /> },
 ];
 
+// Sidebar component for app navigation
 const Sidebar = () => {
+    // Get logged-in user from Redux store
     const { user } = useSelector((state) => state.auth);
+
+    // Redux dispatch function
     const dispatch = useDispatch();
+
+    // Current route location
     const location = useLocation();
+
+    // Extract top-level route segment for active link styling
     const path = location.pathname.split("/")[1];
+
+    // Admins see all links, non-admins see only the first four
     const sidebarLinks = user?.isAdmin ? linkData : linkData.slice(0, 4);
 
+    // Close sidebar (used for mobile drawer behavior)
     const closeSidebar = () => {
         dispatch(setOpenSidebar(false));
     };
 
+    // Internal nav link component with active state styling
     const NavLink = ({ el, onClose }) => {
         const location = useLocation();
             const path = location.pathname.split("/")[1];
+
+        // Determine whether this link matches the current route
         const isActive = path === el.link.split("/")[1];
+
         return (
             <Link
                 to={el.link}
@@ -39,9 +55,12 @@ const Sidebar = () => {
                         : "text-blue-200 hover:bg-white/10 hover:text-white"
                 )}
             >
+                {/* Link icon */}
                 <span className={clsx("text-base", isActive ? "text-blue-400" : "text-blue-400/70")}>
                     {el.icon}
                 </span>
+
+                {/* Link label */}
                 <span>{el.label}</span>
             </Link>
         );
@@ -49,11 +68,13 @@ const Sidebar = () => {
 
     return (
         <div className="w-full h-full flex flex-col" style={{ backgroundColor: "#0068B5"}}>
+            {/* Sidebar header / branding */}
             <div className="px-5 py-6 border-b border-white/10">
                 <span className="text-white font-bold text-lg leading-none">Systems Group</span>
                 <p className="text-blue-300 text-xs mt-0.5">Production Department</p>
             </div>
 
+            {/* Navigation links */}
             <div className="flex-1 px-3 py-5 space-y-1 overflow-y-auto">
                 <p className="text-blue-100 text-xs font-semibold uppercase tracking-widest px-4 mb-3">
                     Navigation
@@ -63,6 +84,7 @@ const Sidebar = () => {
                 ))}
             </div>
 
+            {/* Bottom section with settings and current user summary */}
             <div className="px-3 py-4 border-t border-white/10">
                 {user?.isAdmin && (
                 <Link
@@ -79,14 +101,19 @@ const Sidebar = () => {
                     <span>Settings</span>
                 </Link>
                 )}      
+
+                {/* Current logged-in user info */}
                 {user && (
                     <div
                         className="mt-3 px-4 py-3 rounded-xl flex items-center gap-3"
                         style={{ background: "rgba(255,255,255,0.07)" }}
                     >
+                        {/* User initial avatar */}
                         <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs font-bold">
                             {user.name?.charAt(0).toUpperCase()}
                         </div>
+
+                        {/* User name and role */}
                         <div className="flex-1 min-w-0">
                             <p className="text-white text-sm font-medium truncate">{user.name}</p>
                             <p className="text-blue-400/70 text-xs truncate">
@@ -101,4 +128,5 @@ const Sidebar = () => {
 
 };
 
+// Export the Sidebar component
 export default Sidebar;

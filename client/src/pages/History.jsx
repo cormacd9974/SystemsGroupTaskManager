@@ -8,12 +8,15 @@ import { useGetTaskHistoryQuery } from "../redux/slices/api/taskApiSlice";
 import { CATEGORY_LABEL } from "../utils";
 import { Link } from "react-router-dom";
 
+// Map each priority to its badge styling
 const PRIORITY_BADGE = { 
     high:"text-red-600 bg-red-50 border border-red-200", 
     medium:"text-amber-600 bg-amber-50 border border-amber-200", 
     normal:"text-blue-600 bg-blue-50 border border-blue-200", 
     low:"text-slate-500 bg-slate-50 border border-slate-200" 
 };
+
+// Map each priority to an icon
 const PRIORITY_ICON  = { 
     high:<MdKeyboardDoubleArrowUp />, 
     medium:<MdKeyboardArrowUp />, 
@@ -22,21 +25,30 @@ const PRIORITY_ICON  = {
 };
 
 const History = () => {
+    // Fetch completed task history from the API
     const { data, isLoading }= useGetTaskHistoryQuery();
+
+    // Search input state
     const [search, setSearch] = useState("");
+
+    // Category filter state
     const [filterCategory, setFilterCat] = useState("all");
 
+    // Show loading screen while data is being fetched
     if(isLoading) 
         return <div className="py-16 flex justify-center"><Loading /></div>;
 
+    // Fallback to an empty array if no tasks exist
     const tasks = data?.tasks || [];
 
+    // Filter tasks by search text and selected category
     const filtered = tasks.filter(t => {
         const matchSearch = t.title.toLowerCase().includes(search.toLowerCase());
         const matchCat = filterCategory === "all" ||t.category?.startsWith(filterCategory);
         return matchCat && matchSearch;
     });
 
+    // Filter button options
     const categories = [
         {key: "all", label: "All"},
         {key: "report", label: "Reports"},
@@ -46,6 +58,7 @@ const History = () => {
 
     return (
         <div className="space-y-4">
+            {/* Page header */}
             <div>
                 <Title title="History"/>
                 <p className="text-sm text-gray-400 mt-0.5">
@@ -53,6 +66,7 @@ const History = () => {
                 </p>
             </div>
 
+            {/* Search bar and category filters */}
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
                 <input 
                   type="text"
@@ -80,6 +94,7 @@ const History = () => {
                 <span className="text-xs text-gray-400 ml-auto">{filtered.length} tasks</span>
             </div>
 
+            {/* Empty state if no tasks match the filters */}
             {filtered.length === 0 ? (
                 <div className="bg-white rounded-2xl border border-gray-100 shadow-sm py-20 flex flex-col items-center gap-3">
                     <HiOutlineClipboardCheck className="text-5xl text-gray-500"/>
@@ -101,6 +116,7 @@ const History = () => {
                             <tbody>
                                 {filtered.map((task, i) => (
                                     <tr key={i}>
+                                        {/* Link to task details */}
                                         <td>
                                             <Link to={`/task/${task._id}`} className="group flex items-center gap-2">
                                               <div className="w-2 h-2 rounded-full bg-emerald-400 shrink-0" />
@@ -109,17 +125,23 @@ const History = () => {
                                               </span>
                                             </Link>
                                         </td>
+
+                                        {/* Category label */}
                                         <td>
                                             <span className="text-xs text-gray-400 bg-gray-100 border border-gray-200 px-2 py-0.5 rounded-full">
                                                 {CATEGORY_LABEL[task.category] || task.category || "-"}
                                             </span>
                                         </td>
+
+                                        {/* Priority badge */}
                                         <td>
                                             <span className={clsx("badge text-xs flex items-center gap-1 w-fit", PRIORITY_BADGE[task.priority])}>
                                                 {PRIORITY_ICON[task.priority]}
                                                 <span className="capitalize">{task.priority}</span>
                                             </span>
                                         </td>
+
+                                        {/* Team member avatars */}
                                         <td>
                                             <div className="flex -space-x-1 items-center">
                                             {task?.team?.slice(0, 3).map((m, idx) => (
@@ -139,6 +161,8 @@ const History = () => {
                                             )}
                                         </div>
                                         </td>
+
+                                        {/* Completion date */}
                                         <td className="hidden md:table-cell text-gray-400 text-xs">
                                             {moment(task.updatedAt).format("DD MMM YYYY")}
                                         </td>

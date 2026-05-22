@@ -1,6 +1,13 @@
 import clsx from "clsx";
 import TaskCard from "./TaskCard";
 
+// Configuration for the board columns/groups.
+// Each group contains:
+// - key: unique identifier
+// - label: display name
+// - color/lightBg/border/text: styling classes
+// - categories: task categories that belong to the group
+// - subLabels: user-friendly labels for each category
 const GROUPS = [
   {
     key: "reports",
@@ -43,12 +50,15 @@ const GROUPS = [
   },
 ];
 
+// Board view component that displays tasks grouped by category type
 const BoardView = ({ tasks }) => {
+  // If no tasks are provided, render nothing
   if (!tasks) return null;
 
   return (
     <div className="w-full py-4 grid grid-cols-1 md:grid-cols-3 gap-5 px-4 pb-6">
       {GROUPS.map(group => {
+        // Filter tasks that belong to the current group based on category
         const groupTasks = tasks.filter(t => {
           const cat = t.category?.toLowerCase().trim();
           return group.categories.includes(cat);
@@ -56,6 +66,7 @@ const BoardView = ({ tasks }) => {
 
         return (
           <div key={group.key} className="flex flex-col gap-3">
+            {/* Group header with colored indicator and total task count */}
             <div className={clsx(
               "flex items-center justify-between px-3 py-2 rounded-xl border",
               group.lightBg, group.border
@@ -71,6 +82,7 @@ const BoardView = ({ tasks }) => {
               </span>
             </div>
 
+            {/* Sub-category count chips for the current group */}
             <div className="flex flex-wrap gap-1.5 px-1">
               {group.categories.map(cat => (
                 <span key={cat} className="text-xs text-gray-500 bg-gray-100 border border-gray-200 px-2 py-0.5 rounded-full">
@@ -79,6 +91,7 @@ const BoardView = ({ tasks }) => {
               ))}
             </div>
 
+            {/* Task cards for the group, or empty state if none exist */}
             <div className="flex flex-col gap-3">
               {groupTasks.length > 0
                 ? groupTasks.map((task, i) => <TaskCard task={task} key={i} />)
@@ -96,5 +109,5 @@ const BoardView = ({ tasks }) => {
   );
 };
 
+// Export the board view component
 export default BoardView;
-

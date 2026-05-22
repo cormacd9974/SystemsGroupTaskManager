@@ -8,22 +8,45 @@ import { useDeleteUserMutation, useGetTeamListsQuery, useUserActionMutation } fr
 import { getInitials } from "../utils";
 import { useSearchParams } from "react-router-dom";
 
+// Team members management page
 const Users = () => {
+    // Read search query from URL
     const [searchParams] = useSearchParams();
+
+    // Store current search term
     const [searchTerm] = useState(searchParams.get("search") || "");
+
+    // Fetch team member list from API
     const { data, isLoading, refetch } = useGetTeamListsQuery({ search: searchTerm });
+
+    // Mutation for deleting a user
     const [deleteUser] = useDeleteUserMutation();
+
+    // Mutation for updating user active/inactive status
     const [userAction] = useUserActionMutation();
 
+    // Controls delete confirmation dialog
     const [openDialog, setOpenDialog] = useState(false);
+
+    // Controls add/edit user modal
     const [open, setOpen] = useState(false);
+
+    // Controls active/inactive confirmation dialog
     const [openAction, setOpenAction] = useState(false);
+
+    // Stores the selected user or user id depending on action
     const [selected, setSelected] = useState(null);
 
+    // Open delete confirmation for a specific user
     const deleteClick = (id) => { setSelected(id); setOpenDialog(true); };
+
+    // Open edit modal and load selected user data
     const editClick = (el) => { setSelected(el); setOpen(true); };
+
+    // Open active/inactive confirmation modal
     const userStatusClick = (el) => { setSelected(el); setOpenAction(true); };
 
+    // Handle user deletion
     const deleteHandler = async () => {
         try {
             const res = await deleteUser(selected);
@@ -36,6 +59,7 @@ const Users = () => {
         }
     };
 
+    // Handle toggling user active status
     const userActionHandler = async () => {
         try {
             const res = await userAction({ isActive: !selected?.isActive, id: selected?._id });
@@ -48,13 +72,16 @@ const Users = () => {
         }
     };
 
+    // Refetch user list when add/edit modal changes
     useEffect(() => { refetch(); }, [open, refetch]);
 
+    // Show loading state while team data is being fetched
     return isLoading ? (
         <div className="py-16 flex justify-center"><Loading /></div>
     ) : (
         <>
             <div className="space-y-4">
+                {/* Page header and add member button */}
                 <div className="flex items-center justify-between">
                     <div>
                         <Title title="Team Members" />
@@ -69,6 +96,7 @@ const Users = () => {
                     </button>
                 </div>
 
+                {/* Team members table */}
                 <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
                     <div className="overflow-x-auto">
                         <table className="w-full data-table">
@@ -85,6 +113,7 @@ const Users = () => {
                             <tbody>
                                 {data?.map((user, i) => (
                                     <tr key={i}>
+                                        {/* Avatar + name */}
                                         <td>
                                             <div className="flex items-center gap-3">
                                                 <div className="w-9 h-9 rounded-xl bg-linear-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold shrink-0">
@@ -93,9 +122,17 @@ const Users = () => {
                                                 <span className="font-medium text-gray-900 text-sm">{user.name}</span>
                                             </div>
                                         </td>
+
+                                        {/* Job title */}
                                         <td className="text-gray-600 text-sm">{user.title}</td>
+
+                                        {/* Email address */}
                                         <td className="text-gray-500 text-sm">{user.email}</td>
+
+                                        {/* User role */}
                                         <td className="text-gray-600 text-sm">{user.role}</td>
+
+                                        {/* Active/inactive toggle button */}
                                         <td>
                                             <button
                                                 onClick={() => userStatusClick(user)}
@@ -109,6 +146,8 @@ const Users = () => {
                                                 {user?.isActive ? "Active" : "Inactive"}
                                             </button>
                                         </td>
+
+                                        {/* Edit and delete actions */}
                                         <td>
                                             <div className="flex items-center gap-2 justify-end">
                                                 <button
@@ -133,17 +172,22 @@ const Users = () => {
                 </div>
             </div>
 
+            {/* Add/Edit user modal */}
             <AddUser
                 open={open}
                 setOpen={setOpen}
                 userData={selected}
                 key={new Date().getTime().toString()}
             />
+
+            {/* Delete confirmation dialog */}
             <ConfirmationDialog
                 open={openDialog}
                 setOpen={setOpenDialog}
                 onClick={deleteHandler}
             />
+
+            {/* Activate/deactivate user confirmation */}
             <UserAction
                 open={openAction}
                 setOpen={setOpenAction}

@@ -8,12 +8,17 @@ import NotificationPanel from "./NotificationPanel";
 import UserAvatar from "./UserAvatar"
 import { MdDarkMode, MdLightMode } from "react-icons/md";
 
+// Top navigation bar component
 const Navbar = () => {
+  // Initialize dark mode state based on whether the root document currently has the "dark" class
   const [darkMode, setDarkMode] = useState(document.documentElement.classList.contains("dark"));
 
 const toggleDark = () => {
+  // Toggle dark mode state
   const isDark = !darkMode;
   setDarkMode(isDark);
+
+  // Add or remove the "dark" class from the root HTML element
   if (isDark) {
     document.documentElement.classList.add("dark");
   } else {
@@ -26,6 +31,7 @@ const toggleDark = () => {
   const location = useLocation();// Access the current location object from React Router
   const [searchParams] = useSearchParams();// Access the search parameters from the URL
   const [searchTerm, setSearchTerm] = useState(searchParams.get("search") || "");// State to hold the current search term, initialized from the URL search parameters
+
  // Effect to update the URL search parameters whenever the search term changes
   useEffect(() => {
     const params = new URLSearchParams();// Create a new URLSearchParams object to build the query string
@@ -36,21 +42,27 @@ const toggleDark = () => {
 
   const pageName = location.pathname.split("/")[1];// Extract the page name from the current pathname by splitting it and taking the second segment
   const displayName = pageName ? pageName.charAt(0).toUpperCase() + pageName.slice(1) : "Dashboard";// Format the page name for display by capitalizing the first letter and concatenating it with the rest of the string, or default to "Dashboard" if there is no page name
+
   // The return statement defines the JSX structure of the navbar, including conditional rendering for the search input and responsive design elements
   return (
     // Main container for the navbar, styled with Tailwind CSS classes for layout, background, borders, padding, and shadow
     <div className="flex justify-between items-center bg-white border-b border-gray-100 px-5 py-3.5 sticky z-10 top-0 shadow-sm">
       <div className="flex items-center gap-4">
+        {/* Mobile menu button opens the sidebar */}
         <button
           onClick={() => dispatch(setOpenSidebar(true))}
           className="text-gray-500 hover:text-blue-600 block md:hidden p-1.5 rounded-lg hover:bg-blue-50"
         >
           <HiMenuAlt2 size={22} />
         </button>
+
+        {/* Page title and subtitle shown on medium+ screens */}
         <div className="hidden md:block">
           <h1 className="text-lg font-bold text-gray-900 capitalize">{displayName}</h1>
           <p className="text-xs text-gray-400">Systems Group-Production Department</p>
         </div>
+
+        {/* Search input is hidden on the dashboard route */}
         {location.pathname !== "/dashboard" && (
           <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-xl py-2 px-3.5 w-56 focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-100 transition-all">
             <MdOutlineSearch className="text-gray-400 text-lg shrink-0" />
@@ -64,13 +76,18 @@ const toggleDark = () => {
           </div>
         )}
       </div>
+
+      {/* Right-side controls */}
       <div className="flex items-center gap-3">
+        {/* Dark mode toggle button */}
         <button
           onClick={toggleDark}
           className="p-2 rounded-lg hover:bg-gray-100 text-gray-500 hover:text-gray-700"
         >
           {darkMode ? <MdLightMode size={20} /> : <MdDarkMode size={20} />}
         </button>
+
+        {/* Notifications and user profile/avatar */}
         <NotificationPanel />
         <UserAvatar />
       </div>
@@ -79,7 +96,3 @@ const toggleDark = () => {
 };
 //
 export default Navbar;
-// This component defines a responsive navigation bar that includes a menu button for smaller screens, a page title,
-// a search input for non-dashboard pages, and user-related components such as notifications and avatar. 
-// It uses React hooks for state management and side effects, and integrates with Redux for global state management 
-// and React Router for navigation.

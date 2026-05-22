@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import { HiExclamation, HiRefresh } from 'react-icons/hi';
 import ModalWrapper from './ModalWrapper';
 
+// Reusable confirmation dialog for delete/restore actions
 export default function ConfirmationDialog({ 
     open,
     setOpen, 
@@ -11,17 +12,20 @@ export default function ConfirmationDialog({
     setMsg = () => {},
     setType = () => {},
 }) {
+    // Resets dialog state and closes the modal
     const closeDialog = () => {
         setOpen(false);
         setMsg("");
         setType("delete");
     }
 
+    // Determines whether the dialog is being used for restore actions
     const isRestore = type === "restore" || type === "restoreAll";
 
     return (
         <ModalWrapper open={open} setOpen={closeDialog}>
             <div className='flex flex-col items-center gap-4 py-2'>
+                {/* Icon container changes color/icon depending on action type */}
                 <div className={clsx(
                     "w-16 h-16 rounded-2xl flex items-center justify-center",
                     isRestore ? "bg-amber-50 text-amber-600" : "bg-red-100 text-red-600"
@@ -31,6 +35,7 @@ export default function ConfirmationDialog({
                     : <HiExclamation className='text-red-500 text-3xl'/>}
                 </div>
 
+                {/* Title and message */}
                 <div className='text-center'>
                     <h3 className='text-base font-bold text-gray-900 mb-1'>
                         {isRestore ? "Restore Task(s)" : "Delete Task(s)?"}
@@ -40,6 +45,7 @@ export default function ConfirmationDialog({
                     </p>
                 </div>
 
+                {/* Action buttons */}
                 <div className='flex gap-3 w-full pt-2'>
                     <button
                         onClick={closeDialog}
@@ -62,6 +68,7 @@ export default function ConfirmationDialog({
     );
 }
 
+// Confirmation modal specifically for user account status actions
 export function UserAction({
     open,
     setOpen,
@@ -70,10 +77,12 @@ export function UserAction({
     return (
         <ModalWrapper open={open} setOpen={() => setOpen(false)}>
             <div className='flex flex-col items-center gap-4 py-2'>
+                {/* Static icon for account status action */}
                 <div className="w-16 h-16 rounded-2xl flex items-center justify-center bg-blue-50 text-blue-600">
                     <HiExclamation className='text-blue-500 text-3xl'/>
                 </div>
 
+                {/* Title and supporting message */}
                 <div className='text-center'>
                     <h3 className='text-base font-bold text-gray-900 mb-1'>
                         Change Account Status
@@ -83,6 +92,7 @@ export function UserAction({
                     </p>
                 </div>
 
+                {/* Action buttons */}
                 <div className='flex gap-3 w-full pt-2'>
                     <button
                         onClick={() => setOpen(false)}

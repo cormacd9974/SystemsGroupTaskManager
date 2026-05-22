@@ -7,28 +7,49 @@ import { setCredentials } from "../redux/slices/authSlice";
 import { Loading, ModalWrapper, Textbox } from "./";
 
 
+// Component for adding a new user or editing an existing user
 const AddUser = ({ open, setOpen, userData }) => {
+    // Get currently logged-in user from Redux store
     const { user } = useSelector((state) => state.auth);
+
+    // Initialize form with existing user data when editing
     const { register, handleSubmit, formState: { errors } } = useForm({ defaultValues: userData ?? {} });
+
+    // Redux dispatch function
     const dispatch = useDispatch();
+
+    // Mutation hook for registering a new user
     const [addNewUser, { isLoading }] = useRegisterMutation();
+
+    // Mutation hook for updating an existing user
     const [updateUser, { isLoading: isUpdating }] = useUpdateUserMutation();
 
+    // Handles both add-user and edit-user form submission
     const handleOnSubmit = async (data) => {
         try {
             if (userData) {
+                // Update existing user
                 const res = await updateUser(data).unwrap();
                 toast.success(res?.message);
+
+                // If the logged-in user edited their own profile, refresh Redux auth state
                 if (userData?._id === user?._id) {
                     dispatch(setCredentials({ ...res?.user }));
                 }
             } else {
+                // Create a new user
+                // isAdmin is converted from string to boolean
+                // role is derived from isAdmin
+                // default password is set to the user's email
                 await addNewUser({ ...data, isAdmin: data.isAdmin === "true", role: data.isAdmin === "true" ? "admin" : "user", password: data?.email }).unwrap();
                 toast.success("User added successfully");
             }
+
+            // Close modal after a short delay
             setTimeout(() =>
                 setOpen(false), 1500);
         } catch (err) {
+            // Show fallback error if API response does not provide one
             toast.error(err?.data?.message || "Something went wrong");
         }
     };
@@ -36,10 +57,13 @@ const AddUser = ({ open, setOpen, userData }) => {
     return (
         <ModalWrapper open={open} setOpen={setOpen}>
             <form onSubmit={handleSubmit(handleOnSubmit)}>
+                {/* Modal title changes depending on whether this is add or edit mode */}
                 <h2 className="text-base font-bold text-gray-900 mb-4">
                     {userData ? "Edit User" : "Add User"}
                 </h2>
+
                 <div className="flex flex-col gap-5">
+                    {/* User name input */}
                     <Textbox
                         placeholder="Name"
                         type="text"
@@ -49,6 +73,8 @@ const AddUser = ({ open, setOpen, userData }) => {
                         register={register("name", { required: "Name is required" })}
                         error={errors?.name?.message}
                     />
+
+                    {/* User email input */}
                     <Textbox
                         placeholder="Email"
                         type="email"
@@ -58,6 +84,8 @@ const AddUser = ({ open, setOpen, userData }) => {
                         register={register("email", { required: "Email is required" })}
                         error={errors?.email?.message}
                     />
+
+                    {/* Role selection */}
                     <div className="flex flex-col gap-1">
                         <label className="block text-sm font-medium text-gray-700 mb-1">Role</label>
                         <select
@@ -70,6 +98,8 @@ const AddUser = ({ open, setOpen, userData }) => {
                         </select>
                         {errors?.isAdmin && <p className="text-red-500 text-sm mt-1">{errors.isAdmin.message}</p>}
                     </div>
+
+                    {/* User title/job title input */}
                     <Textbox
                         placeholder="Title"
                         type="text"
@@ -80,6 +110,8 @@ const AddUser = ({ open, setOpen, userData }) => {
                         error={errors?.title?.message}
                     />
                 </div>
+
+                {/* Show loading spinner while submitting */}
                 {isLoading || isUpdating ? (
                     <div className="py-4"><Loading /></div>
                 ) : (
@@ -100,4 +132,5 @@ const AddUser = ({ open, setOpen, userData }) => {
     );
 };
 
+// Export the AddUser component
 export default AddUser;

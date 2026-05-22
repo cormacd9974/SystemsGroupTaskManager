@@ -1,12 +1,17 @@
 import jwt from "jsonwebtoken";
 import User from "../models/userModel.js";
 
+// Middleware to protect routes by verifying a valid JWT token
 const protectRoute = async(req, res, next) => {
     try{
         let token;
+
+        // Read the Bearer token from the Authorization header
         if(req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
             token = req.headers.authorization.split(" ")[1];
         }
+
+        // If token exists, verify it and attach user data to req.user
         if(token) {
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
             const user = await User.findById(decoded.userId).select("isAdmin email");
@@ -25,6 +30,7 @@ const protectRoute = async(req, res, next) => {
     }
 };
 
+// Middleware to restrict access to admin users only
 const isAdminRoute = (req, res, next) => {
     if(req.user && req.user.isAdmin) {
         next();

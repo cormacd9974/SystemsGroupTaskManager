@@ -1,33 +1,40 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
+/* Apply border-box sizing to all elements for consistent layout calculations */
 * {
 box-sizing: border-box;
 }
 
+/* Set the global font and enable smoother text rendering */
 html,
 body {
 font-family: 'Plus Jakarta Sans', sans-serif;
 -webkit-font-smoothing: antialiased;
 }
 
+/* Custom scrollbar width */
 ::-webkit-scrollbar {
 width: 5px;
 }
 
+/* Scrollbar track background */
 ::-webkit-scrollbar-track {
 background: #f1f5f9;
 }
 
+/* Scrollbar thumb styling */
 ::-webkit-scrollbar-thumb {
 background: #93c5fd;
 border-radius: 10px;
 }
 
+/* Background used for the sidebar area */
 .sidebar-bg {
 background: linear-gradient(180deg, #0f2347 0%, #1a3a6e 100%);
 }
 
+/* Shared input field styling used across forms */
 .input-field {
 width: 100%;
 padding: 10px 14px;
@@ -41,11 +48,13 @@ background: white;
 color: #0f172a;
 }
 
+/* Focus state for form inputs */
 .input-field:focus {
 border-color: #2563eb;
 box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
 }
 
+/* Primary button style used for major actions */
 .btn-primary {
 background: #0068B5;
 color: white;
@@ -59,17 +68,20 @@ transition: all 0.2s;
 box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
 }
 
+/* Hover state for primary buttons */
 .btn-primary:hover {
 background: #005a9e;
 box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
 transform: translateY(-1px);
 }
 
+/* Modal backdrop styling */
 .modal-overlay {
 backdrop-filter: blur(4px);
 background: rgba(15, 23, 42, 0.5);
 }
 
+/* Dark mode CSS variables */
 .dark {
 --bg-primary: #0f172a;
 --bg-secondary: #1e293b;
@@ -78,19 +90,23 @@ background: rgba(15, 23, 42, 0.5);
 --border: #334155;
 }
 
+/* Dark mode page background and text */
 .dark body {
 background-color: #0f172a;
 color: #f1f5f9;
 }
 
+/* Override white backgrounds in dark mode */
 .dark .bg-white {
 background-color: #1e293b !important;
 }
 
+/* Override light gray backgrounds in dark mode */
 .dark .bg-gray-50 {
 background-color: #0f172a !important;
 }
 
+/* Override dark text colors in dark mode */
 .dark .text-gray-900 {
 color: #f1f5f9 !important;
 }
@@ -107,6 +123,7 @@ color: #94a3b8 !important;
 color: #64748b !important;
 }
 
+/* Update border colors in dark mode */
 .dark .border-gray-100 {
 border-color: #334155 !important;
 }
@@ -115,14 +132,17 @@ border-color: #334155 !important;
 border-color: #334155 !important;
 }
 
+/* Softer shadow for dark mode surfaces */
 .dark .shadow-sm {
 box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5) !important;
 }
 
+/* Dark mode override for gray backgrounds */
 .dark .bg-gray-100 {
 background-color: #1e293b !important;
 }
 
+/* Dark mode form controls */
 .dark input,
 .dark textarea {
 background-color: #1e293b !important;
@@ -134,6 +154,7 @@ border-color: #334155 !important;
 color: #e2e8f0 !important;
 }
 
+/* Table styling */
 .dark table {
 background-color: #1e293b !important;
 }
@@ -156,10 +177,12 @@ background-color: #334155 !important;
 background-color: #334155 !important;
 }
 
+/* Dark mode variant for red highlights */
 .dark .bg-red-50 {
 background-color: rgba(239, 68, 68, 0.15) !important;
 }
 
+/* Headings in dark mode */
 .dark h1,
 .dark h2,
 .dark h3,
@@ -167,18 +190,22 @@ background-color: rgba(239, 68, 68, 0.15) !important;
 color: #f1f5f9 !important;
 }
 
+/* Paragraph text in dark mode */
 .dark p {
 color: #cbd5e1 !important;
 }
 
+/* Links in dark mode */
 .dark a {
 color: #93c5fd !important;
 }
 
+/* Rounded card containers in dark mode */
 .dark .rounded-2xl {
 background-color: #1e293b !important;
 }
 
+/* Semantic background color overrides for dark mode */
 .dark .bg-blue-50 {
 background-color: #1e3a5f !important;
 }
@@ -195,6 +222,7 @@ background-color: #0f2e1a !important;
 background-color: #3d1515 !important;
 }
 
+/* Semantic text color overrides for dark mode */
 .dark .text-blue-600 {
 color: #93c5fd !important;
 }
@@ -215,6 +243,7 @@ color: #fca5a5 !important;
 color: #6ee7b7 !important;
 }
 
+/* Recharts chart text and grid styling in dark mode */
 .dark .recharts-text {
 fill: #94a3b8 !important;
 }
@@ -227,6 +256,7 @@ stroke: #334155 !important;
 background-color: #1e293b !important;
 }
 
+/* Shared badge component styling */
 .badge {
 display: inline-flex;
 align-items: center;
@@ -236,6 +266,7 @@ font-size: 0.7rem;
 font-weight: 600;
 }
 
+/* Hover lift animation for cards */
 .card-lift {
 transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -245,6 +276,7 @@ transform: translateY(-2px);
 box-shadow: 0 12px 32px rgba(29, 78, 216, 0.1);
 }
 
+/* Base stat card container */
 .stat-card {
 background: white;
 border: 1px solid #e2e8f0;
@@ -253,11 +285,13 @@ overflow: hidden;
 position: relative;
 }
 
+/* Dark mode stat card background */
 .dark .stat-card {
 background: #0f1d33;
 border-color: rgba(148, 163, 184, 0.15);
 }
 
+/* Decorative top border for stat cards */
 .stat-card::before {
 content: '';
 position: absolute;
@@ -267,22 +301,27 @@ right: 0;
 height: 3px;
 }
 
+/* Blue stat card accent */
 .stat-card.blue::before {
 background: linear-gradient(90deg, #1d4ed8, #3b82f6);
 }
 
+/* Green stat card accent */
 .stat-card.green::before {
 background: linear-gradient(90deg, #059669, #34d399);
 }
 
+/* Amber stat card accent */
 .stat-card.amber::before {
 background: linear-gradient(90deg, #d97706, #fbbf24);
 }
 
+/* Rose stat card accent */
 .stat-card.rose::before {
 background: linear-gradient(90deg, #be185d, #f472b6);
 }
 
+/* Table header styling */
 .data-table thead th {
 background: #eff6ff;
 color: #1a3a6e;
@@ -293,15 +332,18 @@ letter-spacing: 0.05em;
 padding: 12px 16px;
 }
 
+/* Table row styling */
 .data-table tbody tr {
 border-bottom: 1px solid #f1f5f9;
 transition: background 0.15s;
 }
 
+/* Table row hover effect */
 .data-table tbody tr:hover {
 background: #eff6ff;
 }
 
+/* Table cell padding and text size */
 .data-table tbody td {
 padding: 12px 16px;
 font-size: 0.875rem;

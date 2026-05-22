@@ -1,7 +1,9 @@
 import { Dialog, DialogPanel, Transition, TransitionChild} from "@headlessui/react";
 import { Fragment, useRef } from "react";
 
+// Reusable modal wrapper component using Headless UI dialog and transitions
 const ModalWrapper = ({ open, setOpen, children }) => {
+    // Ref used for initial focus when the modal opens
     const cancelButtonRef = useRef(null);
 
     return (
@@ -12,6 +14,7 @@ const ModalWrapper = ({ open, setOpen, children }) => {
             initialFocus={cancelButtonRef}
             onClose={() => setOpen(false)}
             >
+                {/* Background overlay fade transition */}
                 <TransitionChild
                     as={Fragment}
                     enter="ease-out duration-200"
@@ -24,8 +27,10 @@ const ModalWrapper = ({ open, setOpen, children }) => {
                   <div className="fixed inset-0 modal-overlay"/>
                 </TransitionChild>
 
+                {/* Full-screen modal container */}
                 <div className="fixed inset-0 z-10 overflow-y-auto">
                     <div className="flex min-h-full items-center justify-center p-4">
+                        {/* Modal panel entrance/exit animation */}
                         <TransitionChild
                             as={Fragment}
                             enter="ease-out duration-200"
@@ -37,6 +42,7 @@ const ModalWrapper = ({ open, setOpen, children }) => {
                         >
                            <DialogPanel className="w-full relative transform overflow-visable rounded-2xl bg-white shadow-2xl sm:my-8 sm:max-w-lg border border-gray-100">
                             <div className="bg-white px-6 py-6 overflow-visible">
+                                {/* Render modal content passed from parent */}
                                 {children}
                             </div>
                            </DialogPanel>
@@ -48,4 +54,5 @@ const ModalWrapper = ({ open, setOpen, children }) => {
     );
 };
 
+// Export the ModalWrapper component
 export default ModalWrapper;

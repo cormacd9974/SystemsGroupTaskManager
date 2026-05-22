@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { AddSubTask, TaskAssets, TaskDialog } from "./index";
 import { UserInfo } from "../index";
 
+// Styling classes used for displaying priority badges
 const PRIORITY_BADGE = {
     high: "text-red-600 bg-red-50 border border-red-200",
     medium: "text-amber-600 bg-amber-50 border border-amber-200",
@@ -15,6 +16,7 @@ const PRIORITY_BADGE = {
     low: "text-slate-500 bg-slate-50 border border-slate-200"
 };
 
+// Icons used for each priority level
 const PRIORITY_ICON = {
     high: <MdKeyboardDoubleArrowUp />,
     medium: <MdKeyboardArrowUp />,
@@ -22,6 +24,7 @@ const PRIORITY_ICON = {
     low: <MdKeyboardArrowDown />
 };
 
+// Styling classes used for task category badges
 const CATEGORY_COLOR = {
     "report-created": "bg-blue-50 text-blue-600 border border-blue-200",
     "report-enhanced": "bg-cyan-50 text-cyan-600 border border-cyan-200",
@@ -31,15 +34,23 @@ const CATEGORY_COLOR = {
     "project-new": "bg-emerald-50 text-emerald-600 border border-emerald-200",
 };
 
+// Card component used to display a single task summary
 const TaskCard = ({ task }) => {
+    // Get authenticated user from Redux store
     const { user } = useSelector((state) => state.auth);
+
+    // Controls AddSubTask modal visibility
     const [open, setOpen] = useState(false);
+
     //const [showName, setShowName] = useState(null);
+
+    // Normalize category for consistent access
     const cat = task?.category?.toLowerCase();
 
     return (
         <>
             <div className="w-full bg-white rounded-2xl border-gray-100 p-4 shadow-sm card-lift">
+                {/* Top row: priority badge and task actions dialog */}
                 <div className="flex items-center justify-between mb-3">
                     <span className={clsx("badge flex items-center gap-1 text-xs border", PRIORITY_BADGE[task?.priority])}>
                         <span className="text-sm">{PRIORITY_ICON[task?.priority]}</span>
@@ -48,12 +59,14 @@ const TaskCard = ({ task }) => {
                     <TaskDialog task={task} />
                 </div>
 
+                {/* Category badge */}
                 {cat && (
                     <span className={clsx("badge text-xs border mb-2 inline-flex", CATEGORY_COLOR[cat])}>
                         {CATEGORY_LABEL[cat]}
                     </span>
                 )}
 
+                {/* Task title and stage indicator; clicking opens task details page */}
                 <Link to={`/task/${task._id}`}>
                     <div className="flex items-start gap-2 mb-3">
                         <div className={clsx("w-2.5 h-2.5 rounded-full mt-1.5 shrink-0", TASK_TYPE[task.stage])} />
@@ -62,6 +75,8 @@ const TaskCard = ({ task }) => {
                         </h4>
                     </div>
                 </Link>
+
+                {/* Optional start date and due date information */}
                 <div>
                     {task?.startDate && <p className="text-xs text-gray-400">Start: {formatDate(new Date(task.startDate))}</p>}
                     {task?.dueDate && (
@@ -72,19 +87,27 @@ const TaskCard = ({ task }) => {
                         </p>
                     )}
                 </div>
+
+                {/* Divider */}
                 <div className="border-t border-gray-100 my-3" />
+
+                {/* Bottom row: task stats and assigned team members */}
                 <div className="flex items-center justify-between">
                     <TaskAssets
                         activities={task?.activities?.length}
                         subTasks={task?.subTasks}
                         assets={task?.assets?.length}
                     />
+
+                    {/* Team member avatars */}
                     <div className="flex -space-x-1.5 items-center">
                         {task?.team?.slice(0, 3).map((m, i) => (
                             <div key={i} className="w-8 h-8 rounded-full flex items-center justify-center text-xs border-2 border-white font-semibold" style={{ backgroundColor: ["#0068B5", "#005a9e", "#004f8c", "#0079cc", "#0086e0", "#003d6b", "#0057a0", "#0073c6"][i % 8] }}>
                                 <UserInfo user={m} />
                             </div>
                         ))}
+
+                        {/* Extra team count if more than 3 members are assigned */}
                         {task?.team?.length > 3 && (
                             <div className="w-9 h-9 rounded-full flex items-center justify-center text-xs border-2 border-white font-bold text-white" style={{ backgroundColor: "#0068B5" }}>
                                 +{task.team.length - 3}
@@ -93,16 +116,22 @@ const TaskCard = ({ task }) => {
                     </div>
                 </div>
 
+                {/* Sub-task preview and progress section */}
                 {task?.subTasks?.length > 0 ? (
                     <div className="mt-3 pt-3 border-t border-gray-100">
                         <div className="flex items-center justify-between mb-1.5">
+                        {/* Show the first sub-task title as a quick preview */}
                         <p className="text-xs font-medium text-gray-700 line-clamp-1 flex-1">
                             {task.subTasks[0].title}
                         </p>
+
+                        {/* Display completed sub-task count out of total */}
                         <span className="text-xs text-gray-400 ml-2 shrink-0">
                             {task.subTasks.filter( s => s.isCompleted).length}/{task.subTasks.length}
                         </span>
                         </div>
+
+                        {/* Progress bar showing sub-task completion percentage */}
                         <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
                             <div 
                               className={clsx("h-full rounded-full transition-all",
@@ -117,11 +146,14 @@ const TaskCard = ({ task }) => {
                         </div>
                     </div>
                 ) : (
+                    // Fallback when no sub-tasks exist
                     <div className="mt-3 pt-3 border-t border-gray-100">
                         <span className="text-xs text-gray-300">No sub-tasks</span>
                     </div>
                 )}
 
+                {/* Button to open the AddSubTask modal
+                    Only admins are allowed to use it */}
                 <button
                     disabled={!user.isAdmin}
                     onClick={() => setOpen(true)}
@@ -131,9 +163,12 @@ const TaskCard = ({ task }) => {
                     <span>Add Sub Task</span>
                 </button>
             </div>
+
+            {/* Modal for creating a new sub-task under the current task */}
             <AddSubTask open={open} setOpen={setOpen} id={task._id} />
         </>
     )
 };
 
+// Export the TaskCard component
 export default TaskCard;

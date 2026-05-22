@@ -10,6 +10,7 @@ import { AddTask } from "./tasks";
 import { Link } from "react-router-dom";
 
 
+// Styling classes for task priority badges
 const PRIORITY_BADGE = {
     high: "text-red-600 bg-red-50 border border-red-200",
     medium: "text-amber-600 bg-amber-50 border border-amber-200",
@@ -17,6 +18,7 @@ const PRIORITY_BADGE = {
     low: "text-slate-500 bg-slate-50 border border-slate-200"
 };
 
+// Icons displayed for each priority level
 const PRIORITY_ICON = {
     high: <MdKeyboardDoubleArrowUp />,
     medium: <MdKeyboardArrowUp />,
@@ -24,16 +26,27 @@ const PRIORITY_ICON = {
     low: <MdKeyboardArrowDown />
 };
 
+// Table component for displaying tasks in a tabular layout
 const Table = ({ tasks }) => {
+    // Controls delete confirmation dialog visibility
     const [openDialog, setOpenDialog] = useState(false);
+
+    // Stores the currently selected task or task ID depending on action
     const [selected, setSelected] = useState(null);
+
+    // Controls edit modal visibility
     const [openEdit, setOpenEdit] = useState(false);
+
+    // Mutation hook for moving a task to trash / deleting it
     const [deleteTask] = useTrashTaskMutation();
 
+    // Handles task deletion
     const deleteHandler = async () => {
         try {
             const res = await deleteTask({ id: selected }).unwrap();
             toast.success(res?.message);
+
+            // Close dialog and refresh the page so UI updates
             setTimeout(() => {
                 setOpenDialog(false);
                 window.location.reload();
@@ -58,9 +71,11 @@ const Table = ({ tasks }) => {
                                 <th className="text-right">Actions</th>
                             </tr>
                         </thead>
+
                         <tbody>
                             {tasks?.map((task, i) => (
                                 <tr key={i}>
+                                    {/* Task title with stage indicator */}
                                     <td>
                                         <Link to={`/task/${task._id}`} className="group flex items-center gap-2">
                                             <div className={clsx("w-2.5 h-2.5 rounded-full shrink-0", TASK_TYPE[task.stage])} />
@@ -69,17 +84,23 @@ const Table = ({ tasks }) => {
                                             </span>
                                         </Link>
                                     </td>
+
+                                    {/* Category label */}
                                     <td>
                                         <span className="text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full border border-gray-200">
                                             {CATEGORY_LABEL[task?.category] || task?.category || "-"}
                                         </span>
                                     </td>
+
+                                    {/* Priority badge */}
                                     <td>
                                         <span className={clsx("badge flex items-center gap-1 w-fit text-xs", PRIORITY_BADGE[task?.priority])}>
                                             {PRIORITY_ICON[task?.priority]}
                                             <span className="capitalize">{task?.priority}</span>
                                         </span>
                                     </td>
+
+                                    {/* Assigned team members */}
                                     <td>
                                         <div className="flex -space-x-1 items-center">
                                             {task?.team?.slice(0, 3).map((m, idx) => (
@@ -91,6 +112,8 @@ const Table = ({ tasks }) => {
                                                     <UserInfo user={m} />
                                                 </div>
                                             ))}
+
+                                            {/* Extra assigned users count */}
                                             {task?.team?.length > 3 && (
                                                 <div className="w-12 h-12 rounded-full text-white flex items-center justify-center text-xs border-2 border-white font-bold"
                                                 style={{ backgroundColor: "#003d6b"}}>
@@ -99,9 +122,13 @@ const Table = ({ tasks }) => {
                                             )}
                                         </div>
                                     </td>
+
+                                    {/* Task created date */}
                                     <td className="hideen md:table-cell text-gray-400 text-xs">
                                         {formatDate(new Date(task?.date))}
                                     </td>
+
+                                    {/* Row actions */}
                                     <td>
                                         <div className="flex items-center gap-2 justify-end">
                                             <button
@@ -124,14 +151,19 @@ const Table = ({ tasks }) => {
                     </table>
                 </div>
             </div>
+
+            {/* Delete confirmation dialog */}
             <ConfirmationDialog
                 open={openDialog}
                 setOpen={setOpenDialog}
                 onClick={deleteHandler}
             />
+
+            {/* Edit task modal */}
             {openEdit && <AddTask open={openEdit} setOpen={setOpenEdit} task={selected} key={selected?._id} />}
         </>
     );
 };
 
+// Export the Table component
 export default Table;

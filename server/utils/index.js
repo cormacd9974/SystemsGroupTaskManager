@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 
+// Create a signed JWT for the given user ID
 export const createJWT = (res, userId) => {
     const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
         expiresIn: "12h",

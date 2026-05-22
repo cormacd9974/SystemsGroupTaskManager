@@ -4,7 +4,7 @@ import { Loading, Title } from "../components";
 import { getInitials, CATEGORY_LABEL} from "../utils";
 import { Link } from "react-router-dom";
 
-
+// Badge styles for task priority levels
 const PRIORITY_BADGE = {
     high: "text-red-600 bg-red-50 border border-red-200",
     medium: "text-amber-600 bg-amber-50 border border-amber-200",
@@ -12,6 +12,7 @@ const PRIORITY_BADGE = {
     low: "text-slate-500 bg-slate-50 border border-slate-200",
 };
 
+// Badge styles for task stages
 const STAGE_BADGE = {
     "todo": "bg-gray-100 text-gray-600 border-gray-200",
     "in-progress": "bg-amber-50 text-amber-700 border-amber-200",
@@ -19,10 +20,14 @@ const STAGE_BADGE = {
 };
 
 const Team = () => {
+    // Fetch dashboard data to get team workload/status
     const { data, isLoading } = useGetDashboardStatsQuery();
+
+    // Show loader while data is loading
     if(isLoading) 
         return <div className="py-16 flex justify-center"><Loading /></div>;
 
+    // Team members and their in-progress tasks
     const teamStatus = data?.teamStatus || [];
 
     return (
@@ -34,6 +39,7 @@ const Team = () => {
                 </p>
             </div>
 
+            {/* Empty state when there are no team members/tasks to display */}
             {teamStatus.length === 0 ? (
                 <div className="bg-white rounded-2xl border border-gray-100 shadow-sm py-20 flex flex-col items-center gap-3">
                     <p className="text-gray-400 font-medium">No data available</p>
@@ -42,6 +48,7 @@ const Team = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                     {teamStatus.map((member, i) => (
                         <div key={i} className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+                            {/* Member header with avatar, name, title, and active task count */}
                             <div className="px-5 py-4 border-b border-gray-100 flex items-center gap-3">
                                 <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white text-sm font-bold shrink-0" style={{ backgroundColor: "#0068B5"}}>
                                     {getInitials(member.name)}
@@ -61,6 +68,7 @@ const Team = () => {
                             </span>
                         </div>
 
+                        {/* Render the member's in-progress tasks if any exist */}
                         {member.inProgressTasks?.length > 0 ? (
                             <div className="divide-y divide-gray-50">
                             {member.inProgressTasks.map((task, j) => (
@@ -74,6 +82,7 @@ const Team = () => {
                                         {task.title}
                                     </p>
                                     <div className="flex items-center gap-2 mt-1 flex-wrap">
+                                        {/* Optional category badge */}
                                         {task.category && (
                                             <span className="text-xs text-gray-400 bg-gray-100 border border-gray-200 px-2 py-0.5 rounded-full">
                                                 {CATEGORY_LABEL[task.category]}
@@ -84,6 +93,8 @@ const Team = () => {
                                         </span>
                                     </div>
                                 </div>
+
+                                {/* Priority badge on the right */}
                                 <span className={clsx("badge text-xs border shrink-0 mt-0.5", PRIORITY_BADGE[task.priority])}>
                                     {task.priority}
                                 </span>

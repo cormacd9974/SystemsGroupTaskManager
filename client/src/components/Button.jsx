@@ -1,5 +1,12 @@
 import clsx from "clsx"
 
+// Reusable button component
+// Accepts:
+// - classname: extra Tailwind/CSS classes
+// - label: button text
+// - type: button type (defaults to "button")
+// - onClick: click handler
+// - icon: optional icon displayed before the label
 const Button = ({ classname, label, type, onClick = () => {}, icon}) => (
     <button
         type={type || "button"}
@@ -9,9 +16,13 @@ const Button = ({ classname, label, type, onClick = () => {}, icon}) => (
         )}
         onClick={onClick}
         >
+            {/* Render icon only if provided */}
             {icon&&icon}
+
+            {/* Button label */}
             <span>{label}</span>
     </button>
 );
 
+// Export the Button component
 export default Button;

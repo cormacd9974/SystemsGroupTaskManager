@@ -3,6 +3,7 @@ import User from "../models/userModel.js";
 import Notice from "../models/notis.js";
 import {createJWT} from "../utils/index.js";
 
+// Authenticate a user and return user info plus token
 const loginUser = asyncHandler(async(req, res) => {
     const {email, password} = req.body;
     const user = await User.findOne({email});
@@ -31,6 +32,7 @@ const loginUser = asyncHandler(async(req, res) => {
     }
 });
 
+// Clear the auth cookie to log the user out
 const logoutUser = asyncHandler(async(req, res) => {
     res.cookie("token", "", {
         httpOnly: true,
@@ -39,6 +41,7 @@ const logoutUser = asyncHandler(async(req, res) => {
     res.status(200).json({message: "Logged out successfully"});
 });
 
+// Register a new user and issue a JWT token
 const registerUser = asyncHandler(async(req, res) => {
    const {name, email, password, isAdmin, role, title} = req.body;
    const userExist = await User.findOne({email});
@@ -58,12 +61,14 @@ const registerUser = asyncHandler(async(req, res) => {
    }
 });
 
+// Get a single user by ID
 const getUserById = asyncHandler(async(req, res) => {
     const{id} = req.params;
     const user = await User.findById(id).select("name email role title isActive");
     res.status(200).json(user);
 });
 
+// Return a filtered list of team members
 const getTeamList = asyncHandler(async(req, res) => {
     const {search} = req.query;
     let query = {};
@@ -82,6 +87,7 @@ const getTeamList = asyncHandler(async(req, res) => {
     res.status(200).json(users);
 });
 
+// Fetch notifications assigned to the current user
 const getNotificationList = asyncHandler(async(req, res) => {
     const {userId} = req.user;
     const notices = await Notice.find({
@@ -91,6 +97,7 @@ const getNotificationList = asyncHandler(async(req, res) => {
     res.status(200).json(notices);
 });
 
+// Update the user's profile information
 const updateUserProfile = asyncHandler(async(req, res) => {
     const {userId, isAdmin} = req.user;
     const {_id} = req.body;
@@ -110,6 +117,7 @@ const updateUserProfile = asyncHandler(async(req, res) => {
     }
 });
 
+// Mark one notification or all notifications as read
 const markNotificationRead = asyncHandler(async(req, res) => {
     const {userId} = req.user;
     const {isReadType, id} = req.query;
@@ -121,6 +129,7 @@ const markNotificationRead = asyncHandler(async(req, res) => {
     res.status(200).json({status: true, message: "Done"});
 });
 
+// Update the current user's password
 const changeUserPassword = asyncHandler(async(req, res) => {
     const {userId} = req.user;
     const user = await User.findById(userId);
@@ -134,6 +143,7 @@ const changeUserPassword = asyncHandler(async(req, res) => {
     }
 });
 
+// Activate or deactivate a user profile
 const activateUserProfile = asyncHandler(async(req, res) => {
     const {id} = req.params;
     const user = await User.findById(id);
@@ -147,6 +157,7 @@ const activateUserProfile = asyncHandler(async(req, res) => {
     }
 });
 
+// Delete a user profile permanently
 const deleteUserProfile = asyncHandler(async(req, res) => {
     const {id} = req.params;
     await User.findByIdAndDelete(id);

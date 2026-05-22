@@ -3,13 +3,21 @@ import { toast } from "sonner";
 import { useCreateSubTaskMutation } from "../../redux/slices/api/taskApiSlice";
 import { Loading, ModalWrapper, Textbox } from "../";
 
+// This component renders a modal form for creating a new sub-task under an existing task.
+// It receives:
+// - open: controls whether the modal is visible
+// - setOpen: function used to open/close the modal
+// - id: the parent task ID
 const AddSubTask = ({ open, setOpen, id }) => {// id is the parent task id
     const {
         register, handleSubmit, formState: { errors },// reset
     } = useForm();// defaultValues: { title: "", date: "", tag: "" }
 
+    // Mutation hook used to send the sub-task data to the backend
     const [addSubTask, { isLoading }] = useCreateSubTaskMutation();// isSuccess
 
+    // Handles form submission
+    // Sends the form data along with the parent task id to the API
     const handleOnSubmit = async(data) => {// reset() can be called here if needed to clear the form after submission
     try {
         const res = await addSubTask({ data, id }).unwrap();// Assuming the API returns a message on success
@@ -23,9 +31,12 @@ const AddSubTask = ({ open, setOpen, id }) => {// id is the parent task id
 return ( // The form is wrapped in a ModalWrapper component, which controls the visibility of the modal based on the 'open' prop. The 'setOpen' function is used to close the modal when needed.
     <ModalWrapper open={open} setOpen={setOpen}>
         <form onSubmit={handleSubmit(handleOnSubmit)}>
+            {/* Form title */}
             <h2 className="text-base font-bold text-gray-900 mb-4">
                 Add Sub-Task
             </h2>
+
+            {/* Form fields */}
             <div className="flex flex-col gap-5">
                 <Textbox
                     placeholder="Sub-Task Title"
@@ -36,6 +47,7 @@ return ( // The form is wrapped in a ModalWrapper component, which controls the 
                     register={register("title", { required: "Title is required" })}
                     error={errors.title?.message}
                 />
+
                 <div>
                     <Textbox
                         placeholder="Date"
@@ -56,8 +68,13 @@ return ( // The form is wrapped in a ModalWrapper component, which controls the 
                         error={errors.tag?.message}
                     />
                     </div>
+
+                    {/* Optional description field */}
                     <div className="flex flex-col gap-1 mt-4">
-                        <label className="text-sm font-medium text-gray-700">Description<span className="text-gray-400"> (optional)</span></label>
+                        <label className="text-sm font-medium text-gray-700">
+                            Description
+                            <span className="text-gray-400"> (optional)</span>
+                        </label>
                         <textarea
                             {...register("description")}
                             rows={5}
@@ -68,6 +85,7 @@ return ( // The form is wrapped in a ModalWrapper component, which controls the 
                 </div>
             
 
+            {/* Show loading state while the request is being processed */}
             {isLoading ? (
                 <div className="p-4"><Loading /></div>
             ) : (
@@ -90,8 +108,8 @@ return ( // The form is wrapped in a ModalWrapper component, which controls the 
 };
 
 export default AddSubTask;
-// This component allows users to add a sub-task to an existing task. 
-// It uses the react-hook-form library for form handling and validation, 
-// and the sonner library for displaying success and error messages. 
-// The useCreateSubTaskMutation hook is used to send the new sub-task data to the server, 
+// This component allows users to add a sub-task to an existing task.
+// It uses the react-hook-form library for form handling and validation,
+// and the sonner library for displaying success and error messages.
+// The useCreateSubTaskMutation hook is used to send the new sub-task data to the server,
 // and the Loading component is displayed while the request is in progress.

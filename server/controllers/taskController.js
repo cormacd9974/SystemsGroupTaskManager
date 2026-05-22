@@ -3,11 +3,13 @@ import Notice from "../models/notis.js";
 import Task from "../models/taskModel.js";
 import User from "../models/userModel.js";
 
+// Create a brand-new task, notify team members, and assign the task to them
 const createTask = asyncHandler(async (req, res) => {
     try {
         const { userId } = req.user;
         const { title, team, stage, date, startDate, dueDate, priority, category, assets, links, description } = req.body;
 
+        // Build the notification text that will be sent to assigned users
         let text = "New task has been assigned to you";
         if (team?.length > 1) text += ` and ${team.length - 1} others.`;
         text += ` The task priority is set to ${priority} priority. The task date is ${new Date(date).toDateString()}. Thank you!`;
@@ -15,6 +17,7 @@ const createTask = asyncHandler(async (req, res) => {
         const activity = { type: "assigned", activity: text, by: userId };
         const newLinks = links ? links.split(",") : [];
 
+        // Create the task document in MongoDB
         const task = await Task.create({
             title,
             team,
@@ -30,8 +33,10 @@ const createTask = asyncHandler(async (req, res) => {
             description,
         });
 
+        // Create notification record for the assigned team members
         await Notice.create({ team, text, task: task._id });
 
+        // Add this task to each user's task list
         const users = await User.find({ _id: team });
         for (const user of users) {
             await User.findByIdAndUpdate(user._id, { $push: { tasks: task._id } });
@@ -43,6 +48,7 @@ const createTask = asyncHandler(async (req, res) => {
     }
 });
 
+// Duplicate an existing task and create a new notification for the copied task
 const duplicateTask = asyncHandler(async (req, res) => {
     try {
         const { id } = req.params;
@@ -55,6 +61,7 @@ const duplicateTask = asyncHandler(async (req, res) => {
 
         const activity = { type: "assigned", activity: text, by: userId };
 
+        // Create a copy of the existing task
         const newTask = await Task.create({
             title: "Duplicate - " + task.title,
             team: task.team,
@@ -76,6 +83,7 @@ const duplicateTask = asyncHandler(async (req, res) => {
     }
 });
 
+// Update all editable fields of a task
 const updateTask = asyncHandler(async (req, res) => {
     const { id } = req.params;
     const { title, date, startDate, dueDate, team, stage, priority, category, assets, links, description } = req.body;
@@ -99,6 +107,7 @@ const updateTask = asyncHandler(async (req, res) => {
     }
 });
 
+// Change only the stage of a task
 const updateTaskStage = asyncHandler(async (req, res) => {
     try {
         const { id } = req.params;
@@ -112,6 +121,7 @@ const updateTaskStage = asyncHandler(async (req, res) => {
     }
 });
 
+// Mark a sub-task as completed or uncompleted
 const updateSubTaskStage = asyncHandler(async (req, res) => {
     try {
         const { taskId, subTaskId } = req.params;
@@ -126,6 +136,7 @@ const updateSubTaskStage = asyncHandler(async (req, res) => {
     }
 });
 
+// Add a new sub-task to an existing task
 const createSubTask = asyncHandler(async (req, res) => {
     const { title, tag, date, description } = req.body;
     const { id } = req.params;
@@ -139,6 +150,7 @@ const createSubTask = asyncHandler(async (req, res) => {
     }
 });
 
+// Fetch tasks based on filters like stage, trash status, search, and category
 const getTasks = asyncHandler(async (req, res) => {
     const { userId, isAdmin } = req.user;
     const { stage, isTrashed, search, category } = req.query;
@@ -181,6 +193,7 @@ const getTasks = asyncHandler(async (req, res) => {
     res.status(200).json({ status: true, tasks });
 });
 
+// Fetch a single task with team and activity details populated
 const getTask = asyncHandler(async (req, res) => {
     try {
         const { id } = req.params;
@@ -193,6 +206,7 @@ const getTask = asyncHandler(async (req, res) => {
     }
 });
 
+// Add a new activity entry to a task's activity timeline
 const postTaskActivity = asyncHandler(async (req, res) => {
     const { id } = req.params;
     const { userId } = req.user;
@@ -207,6 +221,7 @@ const postTaskActivity = asyncHandler(async (req, res) => {
     }
 });
 
+// Move a task to the trash by setting isTrashed to true
 const trashTask = asyncHandler(async (req, res) => {
     const { id } = req.params;
     try {
@@ -219,6 +234,7 @@ const trashTask = asyncHandler(async (req, res) => {
     }
 });
 
+// Permanently delete or restore one/all trashed tasks
 const deleteRestoreTask = asyncHandler(async (req, res) => {
     try {
         const { id } = req.params;
@@ -242,6 +258,7 @@ const deleteRestoreTask = asyncHandler(async (req, res) => {
     }
 });
 
+// Build dashboard stats for charts, task counts, overdue tasks, and team status
 const dashboardStatistics = asyncHandler(async (req, res) => {
     try {
         const { userId, isAdmin } = req.user;
@@ -316,6 +333,7 @@ const dashboardStatistics = asyncHandler(async (req, res) => {
     }
 });
 
+// Return completed tasks from the last year for the history page
 const getTaskHistory = asyncHandler(async (req, res) => {
     try {
         const { isAdmin, userId } = req.user;

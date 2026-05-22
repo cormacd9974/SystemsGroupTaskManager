@@ -1,3 +1,6 @@
+// Central export file for shared UI components
+// This allows other files to import multiple components from one place.
+
 import AddUser from "./AddUser";
 import Button from "./Button";
 import ChangePassword from "./ChangePassword";
@@ -17,6 +20,7 @@ import UserAvatar from "./UserAvatar";
 import UserInfo from "./UserInfo";
 import ViewNotification from "./ViewNotification";
 
+// Re-export all shared components for cleaner imports elsewhere in the app
 export {
     AddUser,
     Button,

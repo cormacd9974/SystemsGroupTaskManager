@@ -1,17 +1,26 @@
 import mongoose, { Schema } from "mongoose";
 
+// Schema for storing task data
 const taskSchema = new Schema(
     {
+        // Task title is required
         title: { type: String, required: true },
+
+        // Main task date
         date: { type: Date, default: new Date() },
+
+        // Optional start and due dates
         startDate: { type: Date },
         dueDate: { type: Date },
+
+        // Priority level for the task
         priority: {
             type: String,
             default: "normal",
             enum: ["high", "medium", "normal", "low"],
         },
 
+        // Current task stage/status
         stage: {
             type: String,
             default: "todo",
@@ -21,6 +30,7 @@ const taskSchema = new Schema(
             },
         },
 
+        // Task category used for classification
         category: {
             type: String,
             default: "report-created",
@@ -34,6 +44,7 @@ const taskSchema = new Schema(
             ],
         },
 
+        // Activity timeline for tracking task updates
         activities: [
             {
                 type: {
@@ -53,6 +64,8 @@ const taskSchema = new Schema(
                 by: { type: Schema.Types.ObjectId, ref: "User" },
             },
         ],
+
+        // List of sub-tasks under the main task
         subTasks: [
             {
                 title: String,
@@ -62,10 +75,20 @@ const taskSchema = new Schema(
                 isCompleted: Boolean,
             },
         ],
+
+        // Optional detailed description of the task
         description: String,
+
+        // File attachments or uploaded assets
         assets: [String],
+
+        // External links attached to the task
         links: [String],
+
+        // Users assigned to the task
         team: [{ type: Schema.Types.ObjectId, ref: "User" }],
+
+        // Whether the task has been moved to trash
         isTrashed: { type: Boolean, default: false},
     },
     { timestamps: true }
