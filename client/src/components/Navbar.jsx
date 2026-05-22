@@ -38,6 +38,7 @@ const toggleDark = () => {
     if (searchTerm) params.set("search", searchTerm);// If there is a search term, set it in the URL search parameters
     const newURL = `${location.pathname}${params.toString() ? "?" + params.toString() : ""}`;// Construct the new URL with the current pathname and the updated search parameters
     navigate(newURL, { replace: true });// Navigate to the new URL, replacing the current entry in the history stack to avoid creating a new entry for each search term change
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchTerm]);// Dependency array for the effect, ensuring it runs whenever the search term changes
 
   const pageName = location.pathname.split("/")[1];// Extract the page name from the current pathname by splitting it and taking the second segment

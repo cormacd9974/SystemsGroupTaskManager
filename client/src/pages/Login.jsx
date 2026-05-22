@@ -41,6 +41,7 @@ const Login = () => {
   // Redirect already logged-in users to the dashboard
   useEffect(() => {
     user && navigate("/dashboard");
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   return (

@@ -172,7 +172,7 @@ const TeamWorkPanel = ({ teamStatus }) => (
         <div key={i} className="px-5 py-4">
           <div className="flex items-center gap-3 mb-3">
             {/* Member avatar and basic info */}
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-br flex items-center justify-center text-white text-xs font-bold shrink-0" style={{ backgroundColor: "#0068B5" }}>{getInitials(member.name)}</div>
+            <div className="w-8 h-8 rounded-xl bg-linear-to-br flex items-center justify-center text-white text-xs font-bold shrink-0" style={{ backgroundColor: "#0068B5" }}>{getInitials(member.name)}</div>
             <div><p className="text-sm font-semibold text-gray-900">{member.name}</p><p className="text-xs text-gray-400">{member.title}</p></div>
 
             {/* Number of in-progress tasks for the member */}
