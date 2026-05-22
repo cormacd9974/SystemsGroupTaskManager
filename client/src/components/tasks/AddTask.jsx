@@ -108,6 +108,21 @@ const AddTask = ({ open, setOpen, task }) => {
   // Handles form submission for both create and update flows
   const handleOnSubmit = async (data) => {
     try {
+      //Due date can not come before start date
+      if(data.startDate && data.dueDate && new Date(data.dueDate) < new Date(data.startDate)) {
+        toast.error("Due date can not come before start date");
+        return;
+      }
+      //Due date can not be in the past
+      if(!task?._id && data.dueDate && new Date(data.dueDate) < new Date()) {
+        toast.error("Due date can not be in the past");
+        return;
+      }
+      //Please assign at least one team member
+      if(team.length === 0) {
+        toast.error("Please assign at least one team member");
+        return;
+      }
       // Holds uploaded file URLs returned from the backend
       let assetUrls = [];
 

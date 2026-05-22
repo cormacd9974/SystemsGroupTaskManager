@@ -20,6 +20,10 @@ const AddSubTask = ({ open, setOpen, id }) => {// id is the parent task id
     // Sends the form data along with the parent task id to the API
     const handleOnSubmit = async(data) => {// reset() can be called here if needed to clear the form after submission
     try {
+        if(data.date && new Date(data.date) < new Date()) {
+        toast.error("Sub task date cannot come before task start date");
+        return;
+      }
         const res = await addSubTask({ data, id }).unwrap();// Assuming the API returns a message on success
         toast.success(res.message);
         setTimeout(() => setOpen(false), 500);// Close the modal after a short delay to allow users to see the success message

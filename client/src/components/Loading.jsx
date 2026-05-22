@@ -4,9 +4,9 @@ const Loading = () => (
         {[0, 1, 2].map(i => (
         <div 
         key={i}
-        className="w-2 h-2 rounded-full bg-blue-500 animate-bounce"
+        className="w-2 h-2 rounded-full animate-bounce"
         // Stagger each dot animation slightly for a smoother loading effect
-        style={{ animationDelay: `${i * 0.15}s` }}
+        style={{ animationDelay: `${i * 0.15}s`, backgroundColor: "0068B5" }}
         />
         ))}
     </div>
