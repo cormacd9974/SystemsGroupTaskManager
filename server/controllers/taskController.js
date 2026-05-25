@@ -282,6 +282,20 @@ const dashboardStatistics = asyncHandler(async (req, res) => {
             return result;
         }, {});
 
+        const currentTasks = isAdmin
+        ? await Task.find({ isTrashed: false, stage: { $ne: "completed" } })
+        : await Task.find({ isTrashed: false, team: { $in: [userId] }, stage: { $ne: "completed" } });
+        
+        const currentGrouped = currentTasks.reduce((result, task) => {
+            result[task.stage] = (result[task.stage] || 0) + 1;
+            return result;
+        }, {});
+
+        const countOverdue = currentTasks.filter(t =>
+            t.dueDate &&
+            new Date(t.dueDate) < new Date()
+        ).length;
+
         /*const graphData = Object.entries(
             allTasks.reduce((result, task) => {
                 result[task.priority] = (result[task.priority] || 0) + 1;
@@ -321,7 +335,7 @@ const dashboardStatistics = asyncHandler(async (req, res) => {
             status: true,
             totalTasks: allTasks.length,
             last10Task: allTasks.slice(0, 10),
-            overdueCount,
+            overdueCount: currentOverdue,
             users: isAdmin ? users : [],
             teamStatus: isAdmin ? teamStatus : [],
             tasks: groupedTasks,

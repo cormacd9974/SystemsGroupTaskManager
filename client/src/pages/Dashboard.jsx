@@ -49,6 +49,9 @@ const Dashboard = () => {
   // Safely access task counts by status
   const totals = data?.tasks || {};
 
+  // Safely access current task counts by status
+  const current = data?.currentTasks || {};
+
   // Show loading indicator while data is being fetched
   if (isLoading) return <div className="py-16 flex justify-center"><Loading /></div>;
 
@@ -56,9 +59,9 @@ const Dashboard = () => {
   const stats = [
     { label: "Total Tasks", total: data?.totalTasks || 0, icon: <HiCollection className="text-blue-600" />, colorClass: "blue", accent: "bg-blue-50 text-blue-600" },
     { label: "Completed", total: totals["completed"] || 0, icon: <HiCheckCircle className="text-emerald-600" />, colorClass: "green", accent: "bg-emerald-50 text-emerald-600" },
-    { label: "in-progress", total: totals["in-progress"] || 0, icon: <HiLightningBolt className="text-amber-600" />, colorClass: "amber", accent: "bg-amber-50 text-amber-600" },
-    { label: "To Do", total: totals["todo"] || 0, icon: <HiClock className="text-rose-600" />, colorClass: "rose", accent: "bg-rose-50 text-rose-600" },
-    { label: "Overdue", total: data.overdueCount || 0, icon: <HiExclamationCircle className="text-rose-600" />, colorClass: "rose", accent: "bg-rose-50 text-rose-600" },
+    { label: "in-progress", total: current["in-progress"] || 0, icon: <HiLightningBolt className="text-amber-600" />, colorClass: "amber", accent: "bg-amber-50 text-amber-600" },
+    { label: "To Do", total: current["todo"] || 0, icon: <HiClock className="text-rose-600" />, colorClass: "rose", accent: "bg-rose-50 text-rose-600" },
+    { label: "Overdue", total: data?.overdueCount || 0, icon: <HiExclamationCircle className="text-rose-600" />, colorClass: "rose", accent: "bg-rose-50 text-rose-600" },
   ];
 
   return (
