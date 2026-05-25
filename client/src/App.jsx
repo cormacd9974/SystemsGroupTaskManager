@@ -12,6 +12,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import { Dashboard, History, Login, TaskDetail, Tasks, Team, Trash, Users } from "./pages"
+import ErrorBoundary from "./components/ErrorBoundary";
 
 // Protected layout shown only when a user is logged in
 function Layout() {
@@ -75,6 +76,7 @@ useEffect(() => {
 }, [darkMode]);*/
 
   return (
+    <ErrorBoundary>
     <main className='w-full min-h-screen bg-gray-50'>
       {/* App routes */}
       <Routes>
@@ -97,6 +99,7 @@ useEffect(() => {
       <Toaster richColors position="top-center" />
       
     </main>
+    </ErrorBoundary>
   );
 };
 

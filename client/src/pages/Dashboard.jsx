@@ -16,7 +16,7 @@ const PRIORITY_BADGE = { high: "text-red-600 bg-red-50 border border-red-200", m
 const PRIORITY_ICON = { high: <MdKeyboardDoubleArrowUp />, medium: <MdKeyboardArrowUp />, normal: <MdKeyboardArrowDown />, low: <MdKeyboardArrowDown /> };
 
 // Reusable stat card component used to display dashboard summary numbers
-const StatCard = ({ label, count, icon, colorClass, accent }) => (
+const StatCard = ({ label, count, icon, colorClass, accent, subLabel }) => (
   <div className={clsx("stat-card p-5 card-lift", colorClass)}>
     <div className="flex items-start justify-between">
       <div>
@@ -27,7 +27,7 @@ const StatCard = ({ label, count, icon, colorClass, accent }) => (
         <p className="text-3xl font-bold text-gray-900 dark:text-white">{count}</p>
 
         {/* Supporting caption */}
-        <p className="text-xs text-gray-400 mt-1">Past year</p>
+        <p className="text-xs text-gray-400 mt-1">{subLabel || "Past year"}</p>
       </div>
 
       {/* Icon container for each stat card */}
@@ -59,9 +59,9 @@ const Dashboard = () => {
   const stats = [
     { label: "Total Tasks", total: data?.totalTasks || 0, icon: <HiCollection className="text-blue-600" />, colorClass: "blue", accent: "bg-blue-50 text-blue-600" },
     { label: "Completed", total: totals["completed"] || 0, icon: <HiCheckCircle className="text-emerald-600" />, colorClass: "green", accent: "bg-emerald-50 text-emerald-600" },
-    { label: "in-progress", total: current["in-progress"] || 0, icon: <HiLightningBolt className="text-amber-600" />, colorClass: "amber", accent: "bg-amber-50 text-amber-600" },
-    { label: "To Do", total: current["todo"] || 0, icon: <HiClock className="text-rose-600" />, colorClass: "rose", accent: "bg-rose-50 text-rose-600" },
-    { label: "Overdue", total: data?.overdueCount || 0, icon: <HiExclamationCircle className="text-rose-600" />, colorClass: "rose", accent: "bg-rose-50 text-rose-600" },
+    { label: "in-progress", total: current["in-progress"] || 0, icon: <HiLightningBolt className="text-amber-600" />, colorClass: "amber", accent: "bg-amber-50 text-amber-600", subLabel: "Currently" },
+    { label: "To Do", total: current["todo"] || 0, icon: <HiClock className="text-rose-600" />, colorClass: "rose", accent: "bg-rose-50 text-rose-600", subLabel: "Currently"  },
+    { label: "Overdue", total: data?.overdueCount || 0, icon: <HiExclamationCircle className="text-rose-600" />, colorClass: "rose", accent: "bg-rose-50 text-rose-600", subLabel: "Currently"  },
   ];
 
   return (
@@ -111,7 +111,14 @@ const RecentTasksTable = ({ tasks }) => (
   <div className="flex-1 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
     <div className="px-5 py-4 border-b border-gray-100"><h3 className="font-bold text-gray-900 text-sm">Recent Tasks</h3></div>
     <table className="w-full data-table">
-      <thead><tr><th>Task</th><th>Priority</th><th>Team</th><th className="hidden md:table-cell">Created</th></tr></thead>
+      <thead>
+        <tr>
+          <th style={{ width: "40%"}}>Task</th>
+          <th style={{ width: "20%"}}>Priority</th>
+          <th style={{ width: "25%"}}>Team</th>
+          <th className="hidden md:table-cell" style={{ width: "10%"}}>Created</th>
+          </tr>
+          </thead>
       <tbody>
         {tasks?.map((task, i) => (
           <tr key={i} className={`${task?.dueDate && new Date(task.dueDate) < new Date () ? "bg-red-50 border-l-4 border-l-red-400" : ""}`}>

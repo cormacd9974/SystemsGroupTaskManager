@@ -335,10 +335,11 @@ const dashboardStatistics = asyncHandler(async (req, res) => {
             status: true,
             totalTasks: allTasks.length,
             last10Task: allTasks.slice(0, 10),
-            overdueCount: currentOverdue,
+            overdueCount: countOverdue,
             users: isAdmin ? users : [],
             teamStatus: isAdmin ? teamStatus : [],
             tasks: groupedTasks,
+            currentTasks: currentGrouped,
             graphData,
             message: "Successfully.",
         });

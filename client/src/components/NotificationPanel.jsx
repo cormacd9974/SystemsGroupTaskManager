@@ -92,7 +92,10 @@ export default function NotificationPanel() {
                             {/* Footer actions */}
                             <div className="grid grid-cols-2 divide-x divide-gray-100 border-t border-gray-50">
                                 <button
-                                onClick ={() => {markAsRead({type: "all", id: null}); refetch(); close();}}
+                                onClick = { async () => {
+                                    await markAsRead({ type: "all", id: null});
+                                    await refetch();
+                                }}
                                 className="py-3 text-xs font-semibold text-blue-600 hover:bg-blue-50"
                                 >
                                 Mark all read
