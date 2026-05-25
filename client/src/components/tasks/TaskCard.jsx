@@ -50,7 +50,7 @@ const TaskCard = ({ task }) => {
     return (
         <>
             <div className={clsx(
-                "w-full bg-white rounded-2xl border-gray-100 p-4 shadow-sm card-lift",
+                "w-full rounded-2xl p-4 shadow-sm card-lift",
                 task?.dueDate && new Date(task.dueDate) < new Date() && task.stage !== "completed"
                     ? "border-red-200 bg-red-50 dark:bg-red-950/30 dark:border-red-700"
                     : "bg-white border-gray-100"

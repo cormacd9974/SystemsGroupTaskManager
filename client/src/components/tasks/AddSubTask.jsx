@@ -1,8 +1,8 @@
+/* eslint-disable react-hooks/incompatible-library */
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { useCreateSubTaskMutation } from "../../redux/slices/api/taskApiSlice";
 import { Loading, ModalWrapper, Textbox } from "../";
-import { useState } from "react";
 
 // This component renders a modal form for creating a new sub-task under an existing task.
 // It receives:
@@ -10,10 +10,10 @@ import { useState } from "react";
 // - setOpen: function used to open/close the modal
 // - id: the parent task ID
 const AddSubTask = ({ open, setOpen, id }) => {// id is the parent task id
-    const [titleInput, setTitleInput] = useState(""); // State to manage the title input for showing suggestions
     const {
-        register, handleSubmit, formState: { errors }, setValue// reset
+        register, handleSubmit, formState: { errors }, setValue, watch// reset
     } = useForm();// defaultValues: { title: "", date: "", tag: "" }
+    const titleInput = watch("title", "");
 
     // Mutation hook used to send the sub-task data to the backend
     const [addSubTask, { isLoading }] = useCreateSubTaskMutation();// isSuccess
@@ -43,32 +43,33 @@ const AddSubTask = ({ open, setOpen, id }) => {// id is the parent task id
                 </h2>
 
                 {/* Form fields */}
-                <div className="flex flex-col gap-5">
-                    <Textbox
-                        placeholder="Sub-Task Title"
-                        name="title"
-                        label="Title"
-                        register={register("title", { required: "Title is required" })}
-                        error={errors.title?.message}
-                        onChange={e => setTitleInput(e.target.value)}
-                    />
-                    {titleInput?.length > 0 && (
-                        <div>
-                            {["Review", "Implement", "Test", "Document", "Validate", "Update", "Deploy", "Approve", "Draft", "Verify", "Sign-off"]
-                                .filter((s) => s.toLowerCase().includes(titleInput.toLowerCase()))
-                                .map((s, i) => (
-                                    <button
-                                        key={i}
-                                        type="button"
-                                        onClick={() => { setValue("title", s); setTitleInput(); }}
-                                        className="btn-secondary px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100">
-                                        {s}
-                                    </button>
-                                ))
-                            }
+                <div className="relative">
+                    <div className="relative">
+                        <Textbox
+                            placeholder="Sub-Task Title"
+                            name="title"
+                            label="Title"
+                            register={register("title", { required: "Title is required" })}
+                            error={errors.title?.message}
+                        />
+                        {titleInput?.length > 0 && (
+                            <div className="absolute z-50 w-full bg-white border border-gray-200 rounded-xl shadow-lg mt-1 max-h-40 overflow-y-auto">
+                                {["Review", "Implement", "Test", "Document", "Validate", "Update", "Deploy", "Approve", "Draft", "Verify", "Sign-off"]
+                                    .filter(s => s.toLowerCase().includes(titleInput.toLowerCase()))
+                                    .map((s, i) => (
+                                        <button
+                                            key={i}
+                                            type="button"
+                                            onClick={() => { setValue("title", s); }}
+                                            className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700">
+                                            {s}
+                                        </button>
+                                    ))
+                                }
+                            </div>
+                        )}
+                    </div>
 
-                        </div>
-                    )}
 
 
                     <div>
