@@ -49,7 +49,12 @@ const TaskCard = ({ task }) => {
 
     return (
         <>
-            <div className="w-full bg-white rounded-2xl border-gray-100 p-4 shadow-sm card-lift">
+            <div className={clsx(
+                "w-full bg-white rounded-2xl border-gray-100 p-4 shadow-sm card-lift",
+                task?.dueDate && new Date(task.dueDate) < new Date() && task.stage !== "completed"
+                    ? "border-red-200 bg-red-50 dark:bg-red-950/30 dark:border-red-700"
+                    : "bg-white border-gray-100"
+            )}>
                 {/* Top row: priority badge and task actions dialog */}
                 <div className="flex items-center justify-between mb-3">
                     <span className={clsx("badge flex items-center gap-1 text-xs border", PRIORITY_BADGE[task?.priority])}>
