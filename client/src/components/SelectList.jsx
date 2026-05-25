@@ -3,27 +3,21 @@ import { MdCheck, MdKeyboardArrowDown } from "react-icons/md";
 
 // Reusable custom dropdown/select component
 const SelectList = ({ lists, selected, setSelected, label }) => {
-    // Controls whether the dropdown list is visible
     const [isOpen, setIsOpen] = useState(false);
-
-    // Ref used for detecting clicks outside the dropdown
     const dropdownRef = useRef(null);
 
     useEffect(() => {
         const handleClickOutside = (e) => {
-            // Close dropdown if the click happens outside the component
             if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
                 setIsOpen(false);
             }
         };
-
         document.addEventListener("mousedown", handleClickOutside);
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
     return (
         <div className="w-full" ref={dropdownRef}>
-            {/* Optional label shown above the dropdown */}
             {label && (
                 <label className="block text-sm font-medium text-gray-700 mb-1.5">
                     {label}
@@ -31,7 +25,6 @@ const SelectList = ({ lists, selected, setSelected, label }) => {
             )}
 
             <div className="relative">
-                {/* Dropdown trigger button */}
                 <button
                     type="button"
                     onClick={() => setIsOpen(!isOpen)}
@@ -43,17 +36,26 @@ const SelectList = ({ lists, selected, setSelected, label }) => {
                     </span>
                 </button>
 
-                {/* Dropdown options list */}
                 {isOpen && (
                     <div
                         className="absolute z-9999 mt-1 w-full rounded-xl bg-white py-1 text-sm shadow-xl border border-gray-200"
                         style={{ zIndex: 9999 }}
                     >
+                        <div className="flex items-center justify-between px-4 py-2 border-b border-gray-100">
+                            <span className="text-xs font-semibold text-gray-400">{label || "Select"}</span>
+                            <button
+                                type="button"
+                                onMouseDown={(e) => { e.preventDefault(); setIsOpen(false); }}
+                                className="text-gray-400 hover:text-red-500 text-lg font-bold leading-none"
+                            >
+                                ×
+                            </button>
+                        </div>
+
                         {lists.map((list, i) => (
                             <div
                                 key={i}
                                 onMouseDown={(e) => {
-                                    // Use onMouseDown so selection happens before focus is lost
                                     e.preventDefault();
                                     e.stopPropagation();
                                     setSelected(list);
@@ -63,8 +65,6 @@ const SelectList = ({ lists, selected, setSelected, label }) => {
                                     }`}
                             >
                                 <span>{list}</span>
-
-                                {/* Checkmark for the currently selected option */}
                                 {selected === list && <MdCheck className="h-4 w-4 text-blue-600" />}
                             </div>
                         ))}
@@ -75,6 +75,6 @@ const SelectList = ({ lists, selected, setSelected, label }) => {
     );
 };
 
-// Export the SelectList component
 export default SelectList;
+
 

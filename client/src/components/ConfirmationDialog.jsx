@@ -38,7 +38,7 @@ export default function ConfirmationDialog({
                 {/* Title and message */}
                 <div className='text-center'>
                     <h3 className='text-base font-bold text-gray-900 mb-1'>
-                        {isRestore ? "Restore Task(s)" : "Delete Task(s)?"}
+                        {isRestore ? "Restore ?" : "Delete ?"}
                     </h3>
                     <p className='text-sm text-gray-500'>
                         {msg ?? "Are you sure you want to proceed with this action?"}

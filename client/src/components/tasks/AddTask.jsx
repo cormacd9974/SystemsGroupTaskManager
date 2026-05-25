@@ -221,6 +221,16 @@ const AddTask = ({ open, setOpen, task }) => {
             {/* Suggestion dropdown */}
             {showSuggestions && (
               <div className="absolute top-full left-0 right-0 bg-white border border-gray-200 rounded-xl shadow-lg z-50 max-h-64 overflow-y-auto mt-1">
+                <div className="px-4 py-2 text-sm text-gray-500 flex items-center justify-between border-b border-gray-100 sticky top-0 bg-white">
+                  <span className="font-semibold text-xs text-gray-400">Suggestions</span>
+                  <button 
+                  type="button" 
+                  onMouseDown={() => setShowSuggestions(false)} 
+                  className="text-gray-400 hover:text-red-600 text-lg fopnt-bol leading-none"
+                  >
+                    x
+                  </button>
+                </div>
                 {["Reports", "Configurations", "Projects"].map((cat) => {
                   // Filter suggestions by category and current user input
                   const filtered = SUGGESTED_TITLES.filter(t =>
