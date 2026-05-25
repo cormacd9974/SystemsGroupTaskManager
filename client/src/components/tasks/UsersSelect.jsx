@@ -28,15 +28,21 @@ export default function UserList({ team, setTeam }) {
         hasInitialized.current = true;
 
         // If no team is preselected, automatically select the first user
-        if(!team || team.length < 1) {
-           setTimeout(() => {
-            setSelectedUsers([data[0]]);
-            setTeam([data[0]._id]);
-           }, 0);
-            
-        }
+        if(team && team.length > 0) {
+            const preselected = data.filter(user => team.includes(user._id));
+            setTimeout(() => {
+                setSelectedUsers(preselected);
+            }, 0);
+        } else {
+            setTimeout(() => {
+                setSelectedUsers([data[0]]);
+                setTeam([data[0]._id]);
+            }, 0);
+        }   
+        // eslint-disable-next-line react-hooks/exhaustive-deps 
+        }, [data]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [data]);
+  
 
     useEffect(() => {
         const handleClickOutside = (e) => {

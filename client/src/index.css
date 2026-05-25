@@ -101,6 +101,11 @@ color: #f1f5f9;
 background-color: #1e293b !important;
 }
 
+.dark .border-red-200 {
+border-color: #7f1d1d !important;
+background-color: rgba(127, 29, 29, 0.3) !important;
+}
+
 /* Override light gray backgrounds in dark mode */
 .dark .bg-gray-50 {
 background-color: #0f172a !important;
@@ -220,6 +225,10 @@ background-color: #0f2e1a !important;
 
 .dark .bg-red-50 {
 background-color: #3d1515 !important;
+}
+
+.dark .border-red-200 {
+border-color: #7f1d1d !important;
 }
 
 /* Semantic text color overrides for dark mode */
