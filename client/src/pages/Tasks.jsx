@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { FaList } from "react-icons/fa";
 
 //import { useSelector } from "react-redux";
-//import { IoMdAdd } from "react-icons/io";
+import { IoMdAdd } from "react-icons/io";
 //import { FiDownload } from "react-icons/fi"
 
 import { MdGridView } from "react-icons/md";
