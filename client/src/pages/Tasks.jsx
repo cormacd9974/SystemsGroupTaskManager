@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
 import { FaList } from "react-icons/fa";
+
 //import { useSelector } from "react-redux";
-import { IoMdAdd } from "react-icons/io";
+//import { IoMdAdd } from "react-icons/io";
+//import { FiDownload } from "react-icons/fi"
+
 import { MdGridView } from "react-icons/md";
 import { Loading, Table, Tabs, Title } from "../components";
 import { AddTask, BoardView } from "../components/tasks";
@@ -32,7 +35,22 @@ const Tasks = () => {
 
     // Fetch all tasks using the selected filter and search term
     const { data, isLoading } = useGetAllTaskQuery({ strQuery: stageFilter, isTrashed: "", search: searchTerm}, { refetchOnMountOrArgChange: true });
+    
+    /*const { user } = useSelector(s => s.auth);
+    const exportToCSV = () => {
+        const tasks = data?.tasks || [];
+        if(tasks.length === 0) return;
+        const headers = ["Title", "Category", "Stage", "Priority", "Start Date", "Due Date", "Team", "Sub-tasks"];
+        const rows = tasks.map(t => [
+            `"${(t.title || "").replace(/"/g, '""')}"`,
+                t.category || "",
+                t.stage || "",
+                t.priority || "",
+                t.startDate ? new Date(t.startDate).toLocaleDateString() : "",
+                t.dueDate ? new Date(t.dueDate).toLocaleDateString() : "",
 
+        ])
+    }*/ //Possible export to csv function
     // Scroll to the top whenever the add-task modal state changes
     useEffect(() => {
         window.scrollTo({ top: 0, left: 0, behavior: "smooth"});
