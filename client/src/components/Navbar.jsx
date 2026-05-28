@@ -64,7 +64,7 @@ const toggleDark = () => {
         </div>
 
         {/* Search input is hidden on the dashboard route */}
-        {location.pathname !== "/dashboard" && (
+        {!["/dashboard", "/team", "/settings"].includes(location.pathname) && (
           <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-xl py-2 px-3.5 w-56 focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-100 transition-all">
             <MdOutlineSearch className="text-gray-400 text-lg shrink-0" />
             <input

@@ -60,7 +60,7 @@ const taskSchema = new Schema(
                     ],
                 },
                 activity: String,
-                date: { type: Date, default: new Date() },
+                date: { type: Date, default: Date.now },
                 by: { type: Schema.Types.ObjectId, ref: "User" },
             },
         ],

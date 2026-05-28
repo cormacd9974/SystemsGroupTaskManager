@@ -123,7 +123,7 @@ const TaskDetail = () => {
       {/* Task title and stage indicator */}
       <div className="flex items-start gap-3">
         <div className={clsx("w-3 h-3 rounded-full mt-2.5 shrink-0", TASK_TYPE[task?.stage])} />
-        <h1 className="text-2xl font-bold text-gray-900">{task?.title}</h1>
+        <h1 className="text-2xl font-bold text-gray-900 break-words">{task?.title}</h1>
       </div>
 
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
@@ -219,13 +219,14 @@ const TaskDetail = () => {
                     <p className="text-sm font-semibold text-gray-700 mb-2">Attachments</p>
                     <div className="flex flex-wrap gap-2">
                       {task.assets.map((url, i) => {
+                        const fullUrl = url.startsWith("http") ? url : `http://localhost:8800${url}`;
                         const isImage = /\.(jpg|jpeg|png|gif)$/i.test(url);
                         return isImage ? (
-                          <a key={i} href={url} target="_blank" rel="noreferrer">
-                            <img src={url} alt={`asset-${i}`} className="w-24 h-24 object-cover rounded-xl border border-gray-200 hover:opacity-80 transition-opacity" />
+                          <a key={i} href={fullUrl} target="_blank" rel="noreferrer">
+                            <img src={fullUrl} alt={`asset-${i}`} className="w-24 h-24 object-cover rounded-xl border border-gray-200 hover:opacity-80 transition-opacity" />
                           </a>
                         ) : (
-                          <a key={i} href={url} target="_blank" rel="noreferrer"
+                          <a key={i} href={fullUrl} target="_blank" rel="noreferrer"
                             className="flex items-center gap-2 px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-medium text-gray-700 hover:bg-blue-50 hover:border-blue-200 transition-colors">
                             📎 {url.split("/").pop()}
                           </a>

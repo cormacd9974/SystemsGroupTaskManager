@@ -19,7 +19,8 @@ export default function UserList({ team, setTeam }) {
         hasInitialized.current = true;
 
         if (team && team.length > 0) {
-            const preselected = data.filter(user => team.includes(user._id));
+            const teamIds = team.map(t => t._id || t);
+            const preselected = data.filter(user => teamIds.includes(user._id));
             setTimeout(() => {
                 setSelectedUsers(preselected);
             }, 0);
