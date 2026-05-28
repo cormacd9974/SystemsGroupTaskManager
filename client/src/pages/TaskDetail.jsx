@@ -123,7 +123,7 @@ const TaskDetail = () => {
       {/* Task title and stage indicator */}
       <div className="flex items-start gap-3">
         <div className={clsx("w-3 h-3 rounded-full mt-2.5 shrink-0", TASK_TYPE[task?.stage])} />
-        <h1 className="text-2xl font-bold text-gray-900 break-words">{task?.title}</h1>
+        <h1 className="text-2xl font-bold text-gray-900 overflow-hidden">{task?.title}</h1>
       </div>
 
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">

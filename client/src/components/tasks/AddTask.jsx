@@ -91,7 +91,7 @@ const AddTask = ({ open, setOpen, task }) => {
 
   // Stores the selected category
   // Existing task category is normalized to match the UI format
-  const [category, setCategory] = useState(task?.category?.toUpperCase()?.replace(/_/g, "-") || ALL_CATS[0]);
+  const [category, setCategory] = useState(task?.category?.toLowerCase().replace(/_/g, "-") || ALL_CATS[0]);
 
   // Stores selected team members assigned to the task
   const [team, setTeam] = useState(task?.team || []);
