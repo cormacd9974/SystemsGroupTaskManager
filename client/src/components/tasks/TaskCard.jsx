@@ -106,16 +106,16 @@ const TaskCard = ({ task }) => {
 
                     {/* Team member avatars */}
                     <div className="flex items-center">
-                        <div className="flex -space-x-2 items-center overflow-hidden">
+                        <div className="flex -space-x-2 items-center">
                         {task?.team?.slice(0, 3).map((m, i) => (
-                            <div key={i} className="w-10 h-10 rounded-full flex items-center justify-center text-sm border-2 border-white font-semibold" style={{ backgroundColor: ["#0068B5", "#005a9e", "#004f8c", "#0079cc", "#0086e0", "#003d6b", "#0057a0", "#0073c6"][i % 8] }}>
+                            <div key={i} className="w-10 h-10 rounded-full flex items-center justify-center text-sm border-[3px] border-white font-semibold z-10" style={{ backgroundColor: ["#0068B5", "#005a9e", "#004f8c", "#0079cc", "#0086e0", "#003d6b", "#0057a0", "#0073c6"][i % 8] }}>
                                 <UserInfo user={m} />
                             </div>
                         ))}
 
                         {/* Extra team count if more than 3 members are assigned */}
                         {task?.team?.length > 3 && (
-                            <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm border-2 border-white font-semibold text-white" style={{ backgroundColor: "#0068B5" }}>
+                            <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm border-[3px] border-white font-semibold text-white z-10" style={{ backgroundColor: "#0068B5" }}>
                                 +{task.team.length - 3}
                             </div>
                         )}
