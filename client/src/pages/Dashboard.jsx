@@ -113,9 +113,9 @@ const RecentTasksTable = ({ tasks }) => (
     <table className="w-full data-table">
       <thead>
         <tr>
-          <th style={{ width: "40%"}}>Task</th>
-          <th style={{ width: "20%"}}>Priority</th>
-          <th style={{ width: "25%"}}>Team</th>
+          <th style={{ width: "64%"}}>Task</th>
+          <th style={{ width: "6%"}}>Priority</th>
+          <th style={{ width: "20%"}}>Team</th>
           <th className="hidden md:table-cell" style={{ width: "10%"}}>Created</th>
           </tr>
           </thead>
@@ -123,7 +123,7 @@ const RecentTasksTable = ({ tasks }) => (
         {tasks?.map((task, i) => (
           <tr key={i} className={`${task?.dueDate && new Date(task.dueDate) < new Date () ? "bg-red-50 border-l-4 border-l-red-400" : ""}`}>
             {/* Task status indicator and title */}
-            <td><div className="flex items-center gap-2"><div className={clsx("w-2 h-2 rounded-full shrink-0", TASK_TYPE[task.stage])} /><span className="font-medium text-gray-800 text-xs line-clamp-1">{task?.title}</span></div></td>
+            <td className="max-w-0"><Link to={`/task/${task._id}`}><div className="flex items-center gap-2"><div className={clsx("w-2 h-2 rounded-full shrink-0", TASK_TYPE[task.stage])} /><span className="font-medium text-gray-800 text-xs line-clamp-1 truncate max-w-xs">{task?.title}</span></div></Link></td>
 
             {/* Task priority badge and icon */}
             <td><span className={clsx("badge text-xs flex items-center gap-1 w-fit", PRIORITY_BADGE[task?.priority])}>{PRIORITY_ICON[task?.priority]}<span className="capitalize">{task?.priority}</span></span></td>
@@ -154,12 +154,12 @@ const TeamMembersTable = ({ users }) => (
   <div className="w-full lg:w-1/3 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
     <div className="px-5 py-4 border-b border-gray-100"><h3 className="font-bold text-gray-900 text-sm">Team Members</h3></div>
     <table className="w-full data-table">
-      <thead><tr><th>Name</th><th>Status</th></tr></thead>
+      <thead><tr><th style={{ width: "90%"}}>Name</th><th style={{ width: "10%"}}>Status</th></tr></thead>
       <tbody>
         {users?.map((user, i) => (
           <tr key={i}>
             {/* User name, avatar initial, and role */}
-            <td><div className="flex items-center gap-2.5"><div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0" style={{ backgroundColor: "#0068B5" }}>{getInitials(user?.name)}</div><div><p className="font-medium text-gray-900 text-xs">{user.name}</p><p className="text-gray-400 text-xs">{user?.role}</p></div></div></td>
+            <td><div className="flex items-center gap-2.5"><div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0" style={{ backgroundColor: "#0068B5" }}>{getInitials(user?.name)}</div><div><p className="font-medium text-gray-900 text-xl">{user.name}</p><p className="text-gray-400 text-xs">{user?.role}</p></div></div></td>
 
             {/* Active/inactive state badge */}
             <td><span className={clsx("badge text-xs", user?.isActive ? "bg-emerald-50 text-emerald-700 border border-emerald-200" : "bg-amber-50 text-amber-700 border border-amber-200")}>{user?.isActive ? "Active" : "Inactive"}</span></td>
