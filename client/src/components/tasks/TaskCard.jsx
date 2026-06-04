@@ -32,6 +32,7 @@ const CATEGORY_COLOR = {
     "config-new": "bg-violet-50 text-violet-600 border border-violet-200",
     "config-updated": "bg-purple-50 text-purple-600 border border-purple-200",
     "project-new": "bg-emerald-50 text-emerald-600 border border-emerald-200",
+    "other" : "bg-gray-50 text-gray-600 border border-gray-200"
 };
 
 // Card component used to display a single task summary

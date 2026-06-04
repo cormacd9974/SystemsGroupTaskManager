@@ -57,11 +57,11 @@ const Dashboard = () => {
 
   // Summary cards displayed at the top of the dashboard
   const stats = [
-    { label: "Total Tasks", total: data?.totalTasks || 0, icon: <HiCollection className="text-blue-600" />, colorClass: "blue", accent: "bg-blue-50 text-blue-600" },
-    { label: "Completed", total: totals["completed"] || 0, icon: <HiCheckCircle className="text-emerald-600" />, colorClass: "green", accent: "bg-emerald-50 text-emerald-600" },
-    { label: "in-progress", total: current["in-progress"] || 0, icon: <HiLightningBolt className="text-amber-600" />, colorClass: "amber", accent: "bg-amber-50 text-amber-600", subLabel: "Currently" },
-    { label: "To Do", total: current["todo"] || 0, icon: <HiClock className="text-rose-600" />, colorClass: "rose", accent: "bg-rose-50 text-rose-600", subLabel: "Currently"  },
-    { label: "Overdue", total: data?.overdueCount || 0, icon: <HiExclamationCircle className="text-rose-600" />, colorClass: "rose", accent: "bg-rose-50 text-rose-600", subLabel: "Currently"  },
+    { label: "Total Tasks", total: data?.totalTasks || 0, icon: <HiCollection className="text-blue-600" />, colorClass: "blue", accent: "bg-blue-50 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400" },
+    { label: "Completed", total: totals["completed"] || 0, icon: <HiCheckCircle className="text-emerald-600 dark:text-emerald-600" />, colorClass: "green", accent: "bg-emerald-50 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400" },
+    { label: "in-progress", total: current["in-progress"] || 0, icon: <HiLightningBolt className="text-amber-600" />, colorClass: "amber", accent: "bg-amber-50 dark:bg-amber-900/40 text-amber-600 dark:text-amber-400", subLabel: "Currently" },
+    { label: "To Do", total: current["todo"] || 0, icon: <HiClock className="text-rose-600" />, colorClass: "rose", accent: "bg-rose-50 dark:bg-rose-900/40 text-rose-600 dark:text-rose-400", subLabel: "Currently"  },
+    { label: "Overdue", total: data?.overdueCount || 0, icon: <HiExclamationCircle className="text-rose-600" />, colorClass: "rose", accent: "bg-rose-50 dark:bg-rose-900/40 text-rose-600 dark:text-rose-400", subLabel: "Currently"  },
   ];
 
   return (
@@ -159,7 +159,7 @@ const TeamMembersTable = ({ users }) => (
         {users?.map((user, i) => (
           <tr key={i}>
             {/* User name, avatar initial, and role */}
-            <td><div className="flex items-center gap-2.5"><div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0" style={{ backgroundColor: "#0068B5" }}>{getInitials(user?.name)}</div><div><p className="font-medium text-gray-900 text-xl">{user.name}</p><p className="text-gray-400 text-xs">{user?.role}</p></div></div></td>
+            <td><div className="flex items-center gap-2.5"><div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0" style={{ backgroundColor: ["#0068B5", "#005a9e", "#004f8c", "#0079cc", "#0086e0", "#003d6b", "#0057a0", "#0073c6"][i % 8] }}>{getInitials(user?.name)}</div><div><p className="font-medium text-gray-900 text-xl">{user.name}</p><p className="text-gray-400 text-xs">{user?.role}</p></div></div></td>
 
             {/* Active/inactive state badge */}
             <td><span className={clsx("badge text-xs", user?.isActive ? "bg-emerald-50 text-emerald-700 border border-emerald-200" : "bg-amber-50 text-amber-700 border border-amber-200")}>{user?.isActive ? "Active" : "Inactive"}</span></td>
@@ -182,7 +182,7 @@ const TeamWorkPanel = ({ teamStatus }) => (
         <div key={i} className="px-5 py-4">
           <div className="flex items-center gap-3 mb-3">
             {/* Member avatar and basic info */}
-            <div className="w-8 h-8 rounded-xl bg-linear-to-br flex items-center justify-center text-white text-xs font-bold shrink-0" style={{ backgroundColor: "#0068B5" }}>{getInitials(member.name)}</div>
+            <div className="w-8 h-8 rounded-xl bg-linear-to-br flex items-center justify-center text-white text-xs font-bold shrink-0" style={{ backgroundColor: ["#0068B5", "#005a9e", "#004f8c", "#0079cc", "#0086e0", "#003d6b", "#0057a0", "#0073c6"][i % 8] }}>{getInitials(member.name)}</div>
             <div><p className="text-sm font-semibold text-gray-900">{member.name}</p><p className="text-xs text-gray-400">{member.title}</p></div>
 
             {/* Number of in-progress tasks for the member */}

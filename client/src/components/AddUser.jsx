@@ -13,7 +13,7 @@ const AddUser = ({ open, setOpen, userData }) => {
     const { user } = useSelector((state) => state.auth);
 
     // Initialize form with existing user data when editing
-    const { register, handleSubmit, formState: { errors } } = useForm({ defaultValues: userData ?? {} });
+    const { register, handleSubmit, reset, formState: { errors } } = useForm({ defaultValues: userData ?? {} });
 
     // Redux dispatch function
     const dispatch = useDispatch();
@@ -48,6 +48,7 @@ const AddUser = ({ open, setOpen, userData }) => {
             // Close modal after a short delay
             setTimeout(() =>
                 setOpen(false), 1500);
+            reset({ name: "", email:"", isAdmin: "", title:""});
         } catch (err) {
             // Show fallback error if API response does not provide one
             toast.error(err?.data?.message || "Something went wrong");

@@ -61,4 +61,5 @@ export const CATEGORY_LABEL = {
     "config-new": "Config . New",
     "config-updated": "Config . Updated",
     "project-new": "Project . New",
+    "other" : "Other"
 };

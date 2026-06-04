@@ -20,6 +20,7 @@ const CATEGORY_GROUPS = [
   { group: "Reports", options: ["REPORT-CREATED", "REPORT-ENHANCED", "REPORT-VALIDATED"], labels: { "REPORT-CREATED": "Created", "REPORT-ENHANCED": "Enhanced", "REPORT-VALIDATED": "Validated" } },
   { group: "Configurations", options: ["CONFIG-NEW", "CONFIG-UPDATED"], labels: { "CONFIG-NEW": "New", "CONFIG-UPDATED": "Updated" } },
   { group: "Projects", options: ["PROJECT-NEW"], labels: { "PROJECT-NEW": "New" } },
+  { group: "Other", options: ["OTHER"], labels: { "OTHER" : "Other"}}
 ];
 
 // Flatten all category values into a single array
@@ -73,7 +74,7 @@ const SUGGESTED_TITLES = [
 const AddTask = ({ open, setOpen, task }) => {
   // Initialize react-hook-form with default values.
   // If a task exists, its values are prefilled for editing.
-  const { register, handleSubmit, setValue, formState: { errors } } = useForm({
+  const { register, handleSubmit, setValue, reset, formState: { errors } } = useForm({
     defaultValues: { title: task?.title || "", date: dateFormatter(task?.date || new Date()), startDate: task?.startDate ? dateFormatter(new Date(task.startDate)) : "", dueDate: task?.dueDate ? dateFormatter(new Date(task.dueDate)) : "", description: task?.description || "", links: task?.links?.join(",") || "" },
   });
 
@@ -179,6 +180,7 @@ const AddTask = ({ open, setOpen, task }) => {
         setCategory(ALL_CATS[0]);
         setTeam([]);
         setAssets([]);
+        reset({ title: "", date: dateFormatter(new Date()), startDate: "", dueDate: "", description: "", links: ""})
       }, 500);
     } catch (err) {
       // Show backend or fallback error message if submission fails

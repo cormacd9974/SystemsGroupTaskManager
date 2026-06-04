@@ -41,6 +41,7 @@ const taskSchema = new Schema(
                 "config-new",
                 "config-updated",
                 "project-new",
+                "other"
             ],
         },
 

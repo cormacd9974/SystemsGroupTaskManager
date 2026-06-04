@@ -116,7 +116,7 @@ const Users = () => {
                                         {/* Avatar + name */}
                                         <td>
                                             <div className="flex items-center gap-3">
-                                                <div className="w-9 h-9 rounded-xl bg-linear-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold shrink-0">
+                                                <div className="w-9 h-9 rounded-xl flex items-center justify-center text-sm font-semibold text-white" style={{ backgroundColor: ["#0068B5", "#005a9e", "#004f8c", "#0079cc", "#0086e0", "#003d6b", "#0057a0", "#0073c6"][i % 8] }}>
                                                     {getInitials(user.name)}
                                                 </div>
                                                 <span className="font-medium text-gray-900 text-sm">{user.name}</span>

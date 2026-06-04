@@ -48,6 +48,16 @@ const GROUPS = [
       "project-new": "New",
     },
   },
+  {
+    key: "other",
+    label: "Other", 
+    color: "bg-gray-400",
+    lightBg: "bg-gray-50",
+    border: "border-gray-200",
+    text: "text-gray-600",
+    categories: ["other"],
+    subLabels: { "other": "Other"}
+  }
 ];
 
 // Board view component that displays tasks grouped by category type
@@ -56,7 +66,7 @@ const BoardView = ({ tasks }) => {
   if (!tasks) return null;
 
   return (
-    <div className="w-full py-4 grid grid-cols-1 md:grid-cols-3 gap-5 px-4 pb-6">
+    <div className="w-full py-4 grid sm:grid-cols-2 xl:grid-cols-4 gap-4 px-4 pb-6">
       {GROUPS.map(group => {
         // Filter tasks that belong to the current group based on category
         const groupTasks = tasks.filter(t => {
