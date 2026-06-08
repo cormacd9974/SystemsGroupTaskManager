@@ -40,6 +40,12 @@ const createTask = asyncHandler(async (req, res) => {
         
         // REQUEST PARSING: Destructure all task fields from request body
         const { title, team, stage, date, startDate, dueDate, priority, category, assets, links, description } = req.body;
+        if(!title?.trim()) {
+            return res.status(400).json({ status: false, message: "Title is required"});
+        }
+        if(!team?.length) {
+            return res.status(400).json({ status: false, message: "At least one team member is required"});
+        }
 
         // NOTIFICATION MESSAGE GENERATION
         // BUSINESS RULE: Create contextual notification text based on team size and task details

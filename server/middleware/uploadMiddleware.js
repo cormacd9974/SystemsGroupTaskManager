@@ -78,15 +78,24 @@ const fileFilter = ( req, file, cb) => {
     // ALLOWED FILE TYPES: Whitelist of acceptable file extensions
     // SECURITY: Restrictive list prevents executable file uploads
     // BUSINESS: Covers common task management document types
-    const allowed = /jpeg|jpg|png|gif|pdf|doc|docx|xlsx|csv|txt/;
+    const allowedExt = /jpeg|jpg|png|gif|pdf|doc|docx|xlsx|csv|txt/;
     
     // EXTENSION EXTRACTION AND VALIDATION
     // NORMALIZATION: Convert to lowercase for case-insensitive matching
     // VALIDATION: Test against allowed extensions regex pattern
-    const ext = allowed.test(path.extname(file.originalname).toLocaleLowerCase());
-    
+    const ext = allowedExt.test(path.extname(file.originalname).toLocaleLowerCase());
+    const allowedMime = [
+        "image/jpeg","image/png", "image/gif", 
+        "application/pdf",
+        "application/msword",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "application/vnd.ms-excel",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "text/csv", "text/plain"
+    ];
+    const mine = allowedMine.includes(file.minetype);
+    (ext && mine) ? cb(null, true) : cb(new Error("File type not supported"));
     // VALIDATION RESULT: Accept or reject file based on extension
-    ext ? cb(null, true) : cb(new Error("File type not supported"));
 }
 
 /**

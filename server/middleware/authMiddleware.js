@@ -50,6 +50,9 @@ const protectRoute = async(req, res, next) => {
             // USER LOOKUP: Fetch current user data for authorization context
             // PERFORMANCE: Select only necessary fields to minimize database load
             const user = await User.findById(decoded.userId).select("isAdmin email");
+            if(!user) {
+                return res.status(401).json({ status: false, message: "Not authorised. User not found."});
+            }
             
             // REQUEST ENRICHMENT: Attach user context for downstream middleware and controllers
             // DESIGN: Provides consistent user data structure across all protected routes
