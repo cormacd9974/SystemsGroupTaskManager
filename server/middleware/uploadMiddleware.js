@@ -45,11 +45,11 @@ const storage = multer.diskStorage({
         // PERFORMANCE: Date.now() provides millisecond precision for uniqueness
         // ALTERNATIVE: Consider UUID for distributed systems or higher concurrency
         const unique = Date.now().toString();
-        
+        const sanitized = file.originalname.replace(/\s+/g, "-").replace(/[^a-zA-Z0-9.\-_]/g, "");
         // FILENAME CONSTRUCTION: Preserve original extension for file type identification
         // FORMAT: {timestamp}.{original_extension}
         // EXAMPLE: 1640995200000.pdf, 1640995200001.jpg
-        cb(null, unique + path.extname(file.originalname));
+        cb(null, unique + "-" + sanitized);
     },
 });
 
@@ -91,10 +91,11 @@ const fileFilter = ( req, file, cb) => {
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
         "application/vnd.ms-excel",
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        "text/csv", "text/plain"
+        "text/csv", "text/plain",
+        "application/octet-stream"
     ];
-    const mine = allowedMine.includes(file.minetype);
-    (ext && mine) ? cb(null, true) : cb(new Error("File type not supported"));
+    const mime = allowedMime.includes(file.mimetype);
+    (ext && mime) ? cb(null, true) : cb(new Error("File type not supported"));
     // VALIDATION RESULT: Accept or reject file based on extension
 }
 

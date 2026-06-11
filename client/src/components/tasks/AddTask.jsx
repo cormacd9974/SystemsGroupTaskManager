@@ -187,7 +187,7 @@ const AddTask = ({ open, setOpen, task }) => {
       // Pre-fill description if editing
       description: task?.description || "",
       // Convert links array to comma-separated string for textarea
-      links: task?.links?.join(",") || "",
+      links: task?.links?.join("\n") || "",
     },
   });
 
@@ -213,7 +213,7 @@ const AddTask = ({ open, setOpen, task }) => {
   // Selected task category with normalization for existing tasks
   // Converts underscores to hyphens and lowercases for consistency
   const [category, setCategory] = useState(
-    task?.category?.toLowerCase().replace(/_/g, "-") || ALL_CATS[0],
+    task?.category?.toUpperCase() || ALL_CATS[0],
   );
 
   // Array of selected team members assigned to this task
@@ -299,6 +299,10 @@ const AddTask = ({ open, setOpen, task }) => {
         const uploadData = await uploadRes.json();
 
         // Extract file URLs from the response
+        if(!uploadRes.ok || !uploadData.status) {
+          toast.error(uploadData.message || "File upload failed");
+          return;
+        }
         assetUrls = uploadData.urls || [];
       }
 
@@ -686,9 +690,9 @@ const AddTask = ({ open, setOpen, task }) => {
           {/* LINKS FIELD */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1.5">
-              Links{" "}
-              <span className="text-gray-400 font-normal">
-                (comma separated)
+              Links {" "}
+              <span className="text-gray-500 font-normal">
+                (press Enter after each new link)
               </span>
             </label>
             <textarea

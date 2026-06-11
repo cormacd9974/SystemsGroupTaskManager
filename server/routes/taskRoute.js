@@ -31,8 +31,13 @@ router.post("/activity/:id", protectRoute, postTaskActivity );
 
 // Upload files and return uploaded file URLs
 router.post("/upload", protectRoute, upload.array("files", 10), (req, res) =>{
+    if (!req.files || req.files.length === 0) {
+        return res.status(400).json({ status: false, message: "No files uploaded"});
+    }
     const urls =  req.files.map(f => `/uploads/${f.filename}`);
     res.status(200).json({ status: true, urls});
+} , (err, req, res, next) => {
+    res.status(400).json({ status: false, message: err.message});
 })
 
 // Dashboard stats for tasks

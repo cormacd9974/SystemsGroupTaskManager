@@ -14,6 +14,7 @@ import { Loading, Title, UserInfo } from "../components"; // Reusable UI compone
 import { useGetTaskHistoryQuery } from "../redux/slices/api/taskApiSlice"; // RTK Query hook for fetching completed tasks
 import { CATEGORY_LABEL } from "../utils"; // Utility constant for category display mapping
 import { Link } from "react-router-dom"; // React Router for navigation
+import CompletionsTable from "../components/CompletionsTable";
 
 /**
  * Priority badge styling configuration
@@ -141,7 +142,7 @@ const History = () => {
     { key: "config", label: "Configurations" }, // System configuration tasks
     { key: "project", label: "Projects" }, // Project-related tasks
   ];
-
+  <CompletionsTable tasks={data?.tasks || []} />
   return (
     <div className="space-y-4">
       {/* Page header section */}

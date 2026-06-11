@@ -57,7 +57,7 @@ const createTask = asyncHandler(async (req, res) => {
         const activity = { type: "assigned", activity: text, by: userId };
         
         // LINK PROCESSING: Convert comma-separated links string to array for storage
-        const newLinks = links ? links.split(",") : [];
+        const newLinks = links ? links.split(/[\s,]+/).filter(Boolean) : [];
 
         // TASK CREATION: Insert new task document with normalized and validated data
         const task = await Task.create({
@@ -183,7 +183,7 @@ const updateTask = asyncHandler(async (req, res) => {
         task.assets = assets;
         task.stage = stage.toLowerCase();                     // NORMALIZATION: Consistent case
         task.team = team;                                     // TEAM REASSIGNMENT: Update assigned members
-        task.links = links ? links.split(",") : [];          // LINK PROCESSING: Convert to array
+        task.links = links ? links.split(/[\s,]+/).filter(Boolean) : [];         // LINK PROCESSING: Convert to array
         task.description = description;
         
         // PERSISTENCE: Save all changes to database
@@ -531,15 +531,15 @@ const dashboardStatistics = asyncHandler(async (req, res) => {
         const { userId, isAdmin } = req.user;
         
         // DATE FILTERING: Limit analysis to recent tasks (last year) for performance
-        const oneYearAgo = new Date();
-        oneYearAgo.setFullYear(oneYearAgo.getFullYear() -1);
+        const threeMonthsAgo = new Date();
+        threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() -3);
         
         // TASK RETRIEVAL: Get tasks based on user permissions
         const allTasks = isAdmin
-            ? await Task.find({ isTrashed: false, date: { $gte: oneYearAgo } })
+            ? await Task.find({ isTrashed: false, date: { $gte: threeMonthsAgo } })
                 .populate({ path: "team", select: "name role title email" })
                 .sort({ _id: -1 })
-            : await Task.find({ isTrashed: false, team: { $in: [userId] }, date: { $gte: oneYearAgo } })
+            : await Task.find({ isTrashed: false, team: { $in: [userId] }, date: { $gte: threeMonthsAgo } })
                 .populate({ path: "team", select: "name role title email" })
                 .sort({ _id: -1 });
 
@@ -573,7 +573,7 @@ const dashboardStatistics = asyncHandler(async (req, res) => {
         ).length;
 
         // PRIORITY DISTRIBUTION: Create ordered priority statistics for charts
-        const priorityCount = allTasks.reduce((result, task) => {
+        const priorityCount = currentTasks.reduce((result, task) => {
             result[task.priority] = (result[task.priority] || 0) + 1;
             return result;
         }, {});
@@ -611,7 +611,7 @@ const dashboardStatistics = asyncHandler(async (req, res) => {
         // COMPREHENSIVE RESPONSE: Return all dashboard metrics
         res.status(200).json({
             status: true,
-            totalTasks: allTasks.length,                      // TOTAL COUNT: All tasks in scope
+            totalTasks: currentTasks.length,                      // TOTAL COUNT: All tasks in scope
             last10Task: allTasks.slice(0, 10),                // RECENT TASKS: Latest 10 for quick view
             overdueCount: countOverdue,                       // USER-SPECIFIC: Overdue count for current user
             users: isAdmin ? users : [],                      // ADMIN ONLY: User list

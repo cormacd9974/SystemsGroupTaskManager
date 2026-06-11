@@ -83,7 +83,7 @@ const StatCard = ({ label, count, icon, colorClass, accent, subLabel }) => (
 
         {/* Supporting context label */}
         {/* UX: Provides temporal context for the statistic (e.g., "Past year", "Currently") */}
-        <p className="text-xs text-gray-400 mt-1">{subLabel || "Past year"}</p>
+        <p className="text-xs text-gray-400 mt-1">{subLabel || "Past 3 months"}</p>
       </div>
 
       {/* Icon container with themed background */}
@@ -185,6 +185,7 @@ const Dashboard = () => {
       icon: <HiCollection className="text-blue-600" />,
       colorClass: "blue",
       accent: "bg-blue-50 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400",
+      subLabel: "Currently"
     },
     {
       label: "Completed",
