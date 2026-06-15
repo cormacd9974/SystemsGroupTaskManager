@@ -102,7 +102,7 @@ export default function NotificationPanel() {
           enterTo="opacity-100 translate-y-0" // End: fully visible at normal position
           leave="transition ease-in duration-150"
           leaveFrom="opacity-100 translate-y-0" // Start: fully visible
-          leaveto="opacity-0" // End: invisible (fade out)
+          leaveTo="opacity-0" // End: invisible (fade out)
         >
           {/* DROPDOWN PANEL */}
           {/* Main notification dropdown container */}

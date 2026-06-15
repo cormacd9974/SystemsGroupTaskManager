@@ -279,7 +279,7 @@ const Trash = () => {
 
                       {/* Deletion date for reference */}
                       <td className="text-gray-400 text-xs">
-                        {new Date(item?.date).toDateString()}
+                        {new Date(item?.updatedAt).toDateString()}
                       </td>
 
                       {/* Action buttons for individual tasks */}

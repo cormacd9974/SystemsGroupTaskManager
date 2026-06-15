@@ -49,7 +49,7 @@ const taskSchema = new Schema(
          * task identification and chronological ordering.
          */
         // Main task date
-        date: { type: Date, default: new Date() },
+        date: { type: Date, default: Date.now },
 
         // Optional start and due dates
         startDate: { type: Date },                  // PROJECT PLANNING: Task start scheduling

@@ -651,8 +651,8 @@ const getTaskHistory = asyncHandler(async (req, res) => {
         
         // PERMISSION-BASED QUERY: Different queries for admin vs regular users
         const query = isAdmin 
-        ? { isTrashed: false, stage: "completed", date: { $gte: oneYearAgo } }     // ADMIN: All completed tasks
-        : { isTrashed: false, stage: "completed", team: { $in: [userId] }, date: { $gte: oneYearAgo } }; // USER: Only assigned tasks
+        ? { isTrashed: false, stage: "completed", updatedAt: { $gte: oneYearAgo } }     // ADMIN: All completed tasks
+        : { isTrashed: false, stage: "completed", team: { $in: [userId] }, updatedAt: { $gte: oneYearAgo } }; // USER: Only assigned tasks
 
         // HISTORY RETRIEVAL: Get completed tasks with team information
         const tasks = await Task.find(query)

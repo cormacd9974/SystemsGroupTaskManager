@@ -65,6 +65,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
                 body: data, // Updated profile information
                 credentials: "include", // Include session cookies for authentication
             }),
+            invalidatesTags: ["Users"],
             // Note: Could benefit from invalidatesTags: ["Users"] for profile updates
         }),
 
@@ -147,6 +148,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
                 method: "DELETE", // HTTP method for resource deletion
                 credentials: "include", // Include session cookies for authentication
             }),
+            invalidatesTags: ["Users"],
             // Note: Should include invalidatesTags: ["Users"] for team list updates
         }),
 
@@ -194,6 +196,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
                 body: data, // User action data (status change)
                 credentials: "include", // Include session cookies for authentication
             }),
+            invalidatesTags: ["Users"],
             // Note: Should include invalidatesTags: ["Users"] for status updates
         }),
 
@@ -285,6 +288,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
                 body: data, // Read action data and context
                 credentials: "include", // Include session cookies for authentication
             }),
+            invalidatesTags: ["Users"],
             // Note: Should include invalidatesTags: ["Users"] for notification updates
         }),
 

@@ -19,13 +19,15 @@ const PORT = process.env.PORT || 8800;
 const app = express();
 
 // Enable CORS for local frontend development origins
-app.use(
+if (process.env.NODE_ENV !== "production") {
+  app.use(
     cors({
-        origin: ["http://localhost:3000", "http://localhost:5173"],
-        methods: ["GET", "POST", "PUT", "DELETE"],
-        credentials: true,
-    })
-);
+      origin: ["http://localhost:3000", "http://localhost:5173"],
+      methods: ["GET", "POST", "PUT", "DELETE"],
+      credentials: true,
+    }),
+  );
+}
 
 // Parse JSON request bodies
 app.use(express.json());
@@ -50,8 +52,15 @@ app.use(morgan("dev"));
 app.use("/api", routes);
 
 // Handle unknown routes and errors
-app.use(routeNotFound);
-app.use(errorHandler);
+if (process.env.NODE_ENV !== "production") {
+    const distpath = path.join(__dirname, "..'/client/dist");
+    app.use(express.static(distPath));
+    app.use((req, res) => {
+        res.sendFile(path.join(distPath, "index.html"));
+    });
+} else {
+    app.use(routeNotFound);
+}
 
 // Start the server
 app.listen(PORT, () => console.log(`Server listenning on port ${PORT}`));

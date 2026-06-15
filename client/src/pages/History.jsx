@@ -142,9 +142,10 @@ const History = () => {
     { key: "config", label: "Configurations" }, // System configuration tasks
     { key: "project", label: "Projects" }, // Project-related tasks
   ];
-  <CompletionsTable tasks={data?.tasks || []} />
+  
   return (
     <div className="space-y-4">
+      <CompletionsTable tasks={data?.tasks || []} />
       {/* Page header section */}
       {/* Provides context and description for the history view */}
       <div>

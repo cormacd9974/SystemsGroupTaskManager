@@ -711,7 +711,7 @@ const TaskDetail = () => {
                         // URL processing for local vs external assets
                         const fullUrl = url.startsWith("http")
                           ? url
-                          : `http://localhost:8800${url}`;
+                          : `${window.location.origin}${url}`;
                         const isImage = /\.(jpg|jpeg|png|gif)$/i.test(url);
 
                         return isImage ? (

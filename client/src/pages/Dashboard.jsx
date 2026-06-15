@@ -134,7 +134,7 @@ const Dashboard = () => {
 
   // Fetch comprehensive dashboard statistics from API
   // refetchOnMountOrArgChange ensures fresh data on each visit
-  const { data, isLoading } = useGetDashboardStatsQuery(undefined, {
+  const { data, isLoading, isError } = useGetDashboardStatsQuery(undefined, {
     refetchOnMountOrArgChange: true,
   });
 
@@ -172,6 +172,12 @@ const Dashboard = () => {
         <Loading />
       </div>
     );
+  if (isError)
+    return (
+      <div className="py-16 flex justify-center">
+        <p className="text-red-500">Failed to load Dashboard, Try again.</p>
+      </div>
+    );
 
   /**
    * Dashboard statistics configuration
@@ -185,7 +191,7 @@ const Dashboard = () => {
       icon: <HiCollection className="text-blue-600" />,
       colorClass: "blue",
       accent: "bg-blue-50 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400",
-      subLabel: "Currently"
+      subLabel: "Currently",
     },
     {
       label: "Completed",
@@ -303,7 +309,7 @@ const Dashboard = () => {
       )}
     </div>
   );
-};
+};;
 
 /**
  * RecentTasksTable Component - Displays the 10 most recent tasks

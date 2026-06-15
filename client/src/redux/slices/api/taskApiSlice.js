@@ -118,6 +118,7 @@ export const taskApiSlice = apiSlice.injectEndpoints({
                 body: {}, // Empty body - server handles duplication logic
              
             }),
+            invalidatesTags: ["Tasks"],
             // Note: Could benefit from invalidatesTags: ["Tasks"] for immediate UI updates
         }),
 
@@ -275,6 +276,7 @@ export const taskApiSlice = apiSlice.injectEndpoints({
                 body: data, // Sub-task data payload
                 
             }),
+            invalidatesTags: ["Tasks"],
             // Note: Should include invalidatesTags: ["Tasks"] for UI updates
         }),
 
@@ -311,6 +313,7 @@ export const taskApiSlice = apiSlice.injectEndpoints({
                 body: data, // Activity information and metadata
             
             }),
+            invalidatesTags: ["Tasks"],
             // Note: Should include invalidatesTags: ["Tasks"] for timeline updates
         }),
 
