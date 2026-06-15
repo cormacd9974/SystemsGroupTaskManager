@@ -16,6 +16,7 @@ import {
     updateTaskStage,
 } from "../controllers/taskController.js";
 import { upload } from "../middleware/uploadMiddleware.js";
+import { runEmailChecks } from "../utils/scheduler.js";
 
 // Router for all task-related endpoints
 const router = express.Router();
@@ -70,5 +71,10 @@ router.put("/:id", protectRoute, trashTask );
 // Permanently delete or restore trashed tasks
 router.delete("/delete-restore", protectRoute, deleteRestoreTask );
 router.delete("/delete-restore/:id", protectRoute, deleteRestoreTask );
+
+router.get("/test-email-scheduler", protectRoute, async (req, res) => {
+    await runEmailChecks();
+    res.json({ status: true, message: "Scheduler triggered successfully"});
+});
 
 export default router;

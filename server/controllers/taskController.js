@@ -14,7 +14,7 @@ import asyncHandler from "express-async-handler";  // Wrapper for async route ha
 import Notice from "../models/notis.js";           // Notification model for team communication
 import Task from "../models/taskModel.js";         // Main task entity with all task-related fields
 import User from "../models/userModel.js";         // User model for team member management
-
+import { sendAssignmentEmail } from "../utils/emailService.js";
 /**
  * CREATE NEW TASK ENDPOINT
  * 
@@ -84,6 +84,18 @@ const createTask = asyncHandler(async (req, res) => {
         const users = await User.find({ _id: team });
         for (const user of users) {
             await User.findByIdAndUpdate(user._id, { $push: { tasks: task._id } });
+        }
+        for (const user of users) {
+            if (user.email) {
+                sendAssignmentEmail({
+                    to: user.email,
+                    name: user.name,
+                    taskTitle: title,
+                    priority,
+                    dueDate,
+                    taskId: task._id,
+                }).catch(err => console.error("Assignment email error:", err.message));
+            }
         }
 
         // SUCCESS RESPONSE: Return created task with success status

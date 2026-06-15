@@ -78,7 +78,7 @@ const History = () => {
 
   // Fetch completed task history from the API
   // RTK Query provides caching, loading states, and error handling
-  const { data, isLoading } = useGetTaskHistoryQuery();
+  const { data, isLoading, isError } = useGetTaskHistoryQuery();
 
   /**
    * Local state for filtering and search functionality
@@ -102,6 +102,13 @@ const History = () => {
         <Loading />
       </div>
     );
+  if( isError ) {
+    return (
+      <div className="py-16 flex justify-center">
+        <p className="text-red-600">Failed to load History please try again.</p>
+      </div>
+    )
+  }
 
   /**
    * Data processing and safe access

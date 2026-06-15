@@ -256,6 +256,8 @@ const taskSchema = new Schema(
          */
         // Whether the task has been moved to trash
         isTrashed: { type: Boolean, default: false}, // SOFT DELETE: Trash status flag
+        dueSoonNotified: { type: Boolean, default: false },
+        overdueNotified: { type: Boolean, default: false },
     },
     
     /**

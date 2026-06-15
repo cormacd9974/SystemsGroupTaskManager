@@ -341,7 +341,7 @@ const TaskDetail = () => {
   const { id } = useParams();
 
   // Fetch single task data with real-time updates
-  const { data, isLoading, refetch } = useGetSingleTaskQuery(id);
+  const { data, isLoading, isError, refetch } = useGetSingleTaskQuery(id);
 
   // Sub-task status mutation for completion toggling
   const [subTaskAction, { isLoading: isSubmitting }] =
@@ -395,6 +395,14 @@ const TaskDetail = () => {
         <Loading />
       </div>
     );
+
+  if( isError ) {
+    return (
+      <div className="py-16 flex justify-center">
+        <p className="text-red-600">Task not found, please try again.</p>
+      </div>
+    )
+  }
 
   /**
    * Progress calculation for sub-task completion
