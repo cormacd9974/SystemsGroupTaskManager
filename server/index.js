@@ -51,9 +51,9 @@ app.use(morgan("dev"));
 // Mount API routes under /api
 app.use("/api", routes);
 
-// Handle unknown routes and errors
-if (process.env.NODE_ENV !== "production") {
-    const distpath = path.join(__dirname, "..'/client/dist");
+// Serve React production build and handle client-side routing
+if (process.env.NODE_ENV === "production") {
+    const distPath = path.join(__dirname, "../client/dist");
     app.use(express.static(distPath));
     app.use((req, res) => {
         res.sendFile(path.join(distPath, "index.html"));
@@ -62,5 +62,7 @@ if (process.env.NODE_ENV !== "production") {
     app.use(routeNotFound);
 }
 
+app.use(errorHandler);
+
 // Start the server
-app.listen(PORT, () => console.log(`Server listenning on port ${PORT}`));
+app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
