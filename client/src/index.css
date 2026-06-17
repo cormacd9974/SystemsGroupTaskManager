@@ -102,8 +102,8 @@ background-color: #1e293b !important;
 }
 
 .dark .border-red-200 {
-border-color: #7f1d1d !important;
-background-color: rgba(127, 29, 29, 0.3) !important;
+border-color: #dc2626 !important;
+background-color: rgba(220, 38, 38, 0.28) !important;
 }
 
 /* Override light gray backgrounds in dark mode */
@@ -184,7 +184,7 @@ background-color: #334155 !important;
 
 /* Dark mode variant for red highlights */
 .dark .bg-red-50 {
-background-color: rgba(239, 68, 68, 0.15) !important;
+background-color: rgba(220, 38, 38, 0.28) !important;
 }
 
 /* Headings in dark mode */

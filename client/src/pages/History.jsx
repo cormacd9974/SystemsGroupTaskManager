@@ -8,7 +8,7 @@ import {
   MdKeyboardDoubleArrowUp,
 } from "react-icons/md"; // Material Design priority icons
 import { HiOutlineClipboardCheck } from "react-icons/hi"; // Heroicon for empty state illustration
-
+import { useSelector } from "react-redux";
 // Internal component and utility imports
 import { Loading, Title, UserInfo } from "../components"; // Reusable UI components
 import { useGetTaskHistoryQuery } from "../redux/slices/api/taskApiSlice"; // RTK Query hook for fetching completed tasks
@@ -79,7 +79,7 @@ const History = () => {
   // Fetch completed task history from the API
   // RTK Query provides caching, loading states, and error handling
   const { data, isLoading, isError } = useGetTaskHistoryQuery();
-
+  const { user } = useSelector((state) => state.auth);
   /**
    * Local state for filtering and search functionality
    * Client-side filtering provides immediate user feedback
@@ -152,7 +152,7 @@ const History = () => {
   
   return (
     <div className="space-y-4">
-      <CompletionsTable tasks={data?.tasks || []} />
+      {user?.isAdmin && <CompletionsTable tasks={data?.tasks || []} />}
       {/* Page header section */}
       {/* Provides context and description for the history view */}
       <div>

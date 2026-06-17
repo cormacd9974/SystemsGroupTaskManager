@@ -82,7 +82,7 @@ const AddUser = ({ open, setOpen, userData }) => {
         // SELF-UPDATE DETECTION: If the logged-in user edited their own profile,
         // refresh the Redux auth state to reflect the changes immediately
         if (userData?._id === user?._id) {
-          dispatch(setCredentials({ ...res?.user }));
+          dispatch(setCredentials({ ...user, ...res?.user }));
         }
       } else {
         // ADD MODE: Create a new user

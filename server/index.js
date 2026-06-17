@@ -8,11 +8,13 @@ import { routeNotFound, errorHandler } from "./middleware/errorMiddleware.js";
 import routes from "./routes/index.js";
 import { fileURLToPath } from "url";
 import path from "path";
+import { startScheduler } from "./utils/scheduler.js";
 
 dotenv.config();
 
 // Connect to MongoDB
 dbConnection();
+startScheduler();
 
 const PORT = process.env.PORT || 8800;
 
@@ -53,7 +55,7 @@ app.use("/api", routes);
 
 // Handle unknown routes and errors
 if (process.env.NODE_ENV === "production") {
-    const distPath = path.join(__dirname, "..'/client/dist");
+    const distPath = path.join(__dirname, "../client/dist");
     app.use(express.static(distPath));
     app.use((req, res) => {
         res.sendFile(path.join(distPath, "index.html"));
