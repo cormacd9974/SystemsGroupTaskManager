@@ -21,7 +21,7 @@ export const sendAssignmentEmail = async ({
     taskId,
 }) => {
     const link = `${process.env.APP_URL}/task/${taskId}`;
-    await transporter.sendMail({
+    await getTransporter().sendMail({
         from: process.env.EMAIL_FROM,
         to,
         subject: `You've been assigned: ${taskTitle}`,
@@ -53,7 +53,7 @@ export const sendDueSoonEmail = async ({
     taskId,
 }) => {
     const link = `${process.env.APP_URL}/task/${taskId}`;
-    await transporter.sendMail({
+    await getTransporter().sendMail({
         from: process.env.EMAIL_FROM,
         to,
         subject: `Due in 24 hours: ${taskTitle}`,
@@ -84,7 +84,7 @@ export const sendOverdueEmail = async ({
     taskId,
 }) => {
     const link = `${process.env.APP_URL}/task/${taskId}`;
-    await transporter.sendMail({
+    await getTransporter().sendMail({
         from: process.env.EMAIL_FROM,
         to,
         subject: `Overdue task: ${taskTitle}`,

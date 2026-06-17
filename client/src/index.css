@@ -223,14 +223,6 @@ background-color: #3d2e00 !important;
 background-color: #0f2e1a !important;
 }
 
-.dark .bg-red-50 {
-background-color: #3d1515 !important;
-}
-
-.dark .border-red-200 {
-border-color: #7f1d1d !important;
-}
-
 /* Semantic text color overrides for dark mode */
 .dark .text-blue-600 {
 color: #93c5fd !important;
