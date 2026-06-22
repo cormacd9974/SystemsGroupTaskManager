@@ -7,7 +7,9 @@ import Tasks from "./Tasks"
 import Team from "./Team"
 import Trash from "./Trash"
 import Users from "./Users"
-
+import ForgotPassword from "./ForgotPassword"
+import ResetPassword from "./ResetPassword"
+ 
 // Re-exporting all page components from this file for cleaner imports elsewhere
 export {
     Dashboard,
@@ -19,5 +21,5 @@ export {
     Trash,
     Users,
     ForgotPassword,
-    
+    ResetPassword
 };
