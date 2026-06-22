@@ -29,7 +29,7 @@ import ErrorBoundary from "./components/ErrorBoundary"; // Error handling wrappe
 import { setOpenSidebar } from "./redux/slices/authSlice"; // Action to control mobile sidebar visibility
 
 // PAGE COMPONENT IMPORTS - Lazy loading could be implemented here for performance
-import { Dashboard, History, Login, TaskDetail, Tasks, Team, Trash, Users } from "./pages";
+import { Dashboard, History, Login, TaskDetail, Tasks, Team, Trash, Users, ForgotPassword, ResetPassword } from "./pages";
 
 /**
  * PROTECTED LAYOUT COMPONENT
@@ -242,6 +242,9 @@ const App = () => {
               LOGIN PAGE: Accessible without authentication
               Handles user sign-in and registration flows */}
           <Route path="/log-in" element={<Login />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+
         </Routes>
 
         {/* GLOBAL TOAST NOTIFICATION SYSTEM

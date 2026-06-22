@@ -10,6 +10,7 @@ import { MdOutlineAddTask } from "react-icons/md"; // Material Design icon for b
 import { toast } from "sonner"; // Toast notification library for user feedback
 import { Loading } from "../components"; // Reusable loading component
 import { useLoginMutation } from "../redux/slices/api/authApiSlice"; // RTK Query mutation for login API
+import { Link } from "react-router-dom";
 
 /**
  * Login Component - User authentication interface with split-screen design
@@ -256,9 +257,9 @@ const Login = () => {
               {/* Forgot password link */}
               {/* UX: Provides recovery option for users who forgot credentials */}
               <div className="flex justify-end">
-                <span className="text-sm text-blue-600 hover:underline cursor-pointer">
+                <Link to="/forgot-password" className="text-sm text-blue-600 hover:underline cursor-pointer">
                   Forgot Password?
-                </span>
+                </Link>
               </div>
 
               {/* Submit button with loading state */}
