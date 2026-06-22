@@ -15,7 +15,9 @@ import User from "../models/userModel.js";         // User entity with authentic
 import Notice from "../models/notis.js";           // Notification system for user communication
 
 // UTILITY IMPORTS
-import {createJWT} from "../utils/index.js";       // JWT token generation and management utilities
+import { createJWT } from "../utils/index.js";       // JWT token generation and management utilities
+import crypto from "crypto";
+import { sendPasswordResetEmail } from "../utils/emailService.js";
 
 /**
  * USER LOGIN AUTHENTICATION ENDPOINT
@@ -35,35 +37,35 @@ import {createJWT} from "../utils/index.js";       // JWT token generation and m
  * preventing XSS attacks while maintaining seamless user experience across
  * browser sessions and page refreshes.
  */
-const loginUser = asyncHandler(async(req, res) => {
+const loginUser = asyncHandler(async (req, res) => {
     // REQUEST PARSING: Extract login credentials from request body
-    const {email, password} = req.body;
-    
+    const { email, password } = req.body;
+
     // USER LOOKUP: Find user by email address (case-sensitive for security)
-    const user = await User.findOne({email});
-    
+    const user = await User.findOne({ email });
+
     // AUTHENTICATION CHECK: Validate user exists
-    if(!user) {
+    if (!user) {
         // SECURITY: Generic error message prevents email enumeration attacks
-        return res.status(401).json({status: false, message: "Invalid email or password."});
+        return res.status(401).json({ status: false, message: "Invalid email or password." });
     }
-    
+
     // ACCOUNT STATUS VALIDATION: Check if account is active
-    if(!user?.isActive) {
+    if (!user?.isActive) {
         // BUSINESS RULE: Deactivated accounts cannot login, requires admin intervention
-        return res.status(401).json({status: false, message: "Account deactivated. Contact Admin."});
+        return res.status(401).json({ status: false, message: "Account deactivated. Contact Admin." });
     }
-    
+
     // PASSWORD VERIFICATION: Use secure password comparison method
     const isMatch = await user.matchPassword(password);
-    
-    if(user && isMatch) {
+
+    if (user && isMatch) {
         // TOKEN GENERATION: Create JWT for authenticated session
         const token = createJWT(res, user._id);
-        
+
         // SECURITY: Remove password from response object
         user.password = undefined;
-        
+
         // SUCCESS RESPONSE: Return user profile data and authentication token
         res.status(200).json({
             _id: user._id,
@@ -77,7 +79,7 @@ const loginUser = asyncHandler(async(req, res) => {
         });
     } else {
         // AUTHENTICATION FAILURE: Generic error message for security
-        return res.status(401).json({status: false, message: "Invalid email or password."});
+        return res.status(401).json({ status: false, message: "Invalid email or password." });
     }
 });
 
@@ -94,15 +96,15 @@ const loginUser = asyncHandler(async(req, res) => {
  * CLIENT-SIDE COORDINATION: Works with frontend logout logic to clear local
  * storage, reset application state, and redirect to login page.
  */
-const logoutUser = asyncHandler(async(req, res) => {
+const logoutUser = asyncHandler(async (req, res) => {
     // COOKIE INVALIDATION: Clear authentication token cookie
     res.cookie("token", "", {
         httpOnly: true,                           // SECURITY: Prevent XSS access to cookie
         expires: new Date(0),                     // IMMEDIATE EXPIRATION: Set to epoch time
     });
-    
+
     // SUCCESS RESPONSE: Confirm logout completion
-    res.status(200).json({message: "Logged out successfully"});
+    res.status(200).json({ message: "Logged out successfully" });
 });
 
 /**
@@ -120,40 +122,40 @@ const logoutUser = asyncHandler(async(req, res) => {
  * SECURITY: Passwords are automatically hashed by the User model's pre-save
  * middleware, ensuring secure storage without plaintext exposure.
  */
-const registerUser = asyncHandler(async(req, res) => {
-   // REQUEST PARSING: Extract user registration data
-   const {name, email, password, isAdmin, role, title} = req.body;
-   
-   // DUPLICATE CHECK: Prevent multiple accounts with same email
-   const userExist = await User.findOne({email});
-   if(userExist) {
-    // CONFLICT RESPONSE: Clear error message for duplicate email
-    return res.status(400).json({status: false, message: "User already exists"});
-   }
-   
-   // USER CREATION: Create new user account with provided data
-   const user = await User.create({
-    name, 
-    email, 
-    password,                                     // AUTO-HASHED: By User model middleware
-    isAdmin, 
-    role, 
-    title
-   });
-   
-   if(user) {
-    // SECURITY: Remove password from response object
-    user.password = undefined;
-    
-    // TOKEN GENERATION: Create authentication token for immediate login
-    const token = createJWT(res, user._id);
-    
-    // SUCCESS RESPONSE: Return new user profile with authentication token
-    res.status(201).json({ ...user.toObject(), token });
-   } else {
-    // CREATION FAILURE: Handle invalid user data
-    return res.status(400).json({status: false, message: "Invalid user data."});
-   }
+const registerUser = asyncHandler(async (req, res) => {
+    // REQUEST PARSING: Extract user registration data
+    const { name, email, password, isAdmin, role, title } = req.body;
+
+    // DUPLICATE CHECK: Prevent multiple accounts with same email
+    const userExist = await User.findOne({ email });
+    if (userExist) {
+        // CONFLICT RESPONSE: Clear error message for duplicate email
+        return res.status(400).json({ status: false, message: "User already exists" });
+    }
+
+    // USER CREATION: Create new user account with provided data
+    const user = await User.create({
+        name,
+        email,
+        password,                                     // AUTO-HASHED: By User model middleware
+        isAdmin,
+        role,
+        title
+    });
+
+    if (user) {
+        // SECURITY: Remove password from response object
+        user.password = undefined;
+
+        // TOKEN GENERATION: Create authentication token for immediate login
+        const token = createJWT(res, user._id);
+
+        // SUCCESS RESPONSE: Return new user profile with authentication token
+        res.status(201).json({ ...user.toObject(), token });
+    } else {
+        // CREATION FAILURE: Handle invalid user data
+        return res.status(400).json({ status: false, message: "Invalid user data." });
+    }
 });
 
 /**
@@ -168,13 +170,13 @@ const registerUser = asyncHandler(async(req, res) => {
  * PERFORMANCE OPTIMIZATION: Returns only necessary fields to reduce response
  * size and improve API performance for user lookup operations.
  */
-const getUserById = asyncHandler(async(req, res) => {
+const getUserById = asyncHandler(async (req, res) => {
     // PARAMETER EXTRACTION: Get user ID from URL parameters
-    const{id} = req.params;
-    
+    const { id } = req.params;
+
     // USER LOOKUP: Fetch user with selected fields only
     const user = await User.findById(id).select("name email role title isActive");
-    
+
     // RESPONSE: Return user profile data
     res.status(200).json(user);
 });
@@ -194,29 +196,29 @@ const getUserById = asyncHandler(async(req, res) => {
  * UI INTEGRATION: Supports autocomplete, dropdown selections, and user picker
  * components throughout the application interface.
  */
-const getTeamList = asyncHandler(async(req, res) => {
+const getTeamList = asyncHandler(async (req, res) => {
     // SEARCH PARAMETER: Extract search query from request
-    const {search} = req.query;
-    
+    const { search } = req.query;
+
     // QUERY BUILDING: Initialize empty query object
     let query = {};
-    
+
     // SEARCH IMPLEMENTATION: Build multi-field search query
-    if(search) {
+    if (search) {
         const searchQuery = {
             $or: [                                            // SEARCH ACROSS: Multiple user fields
-                {title: {$regex: search, $options: "i"} },           // JOB TITLE: Case-insensitive search
-                {name: {$regex: search, $options: "i"} },            // FULL NAME: Case-insensitive search
-                {role: {$regex: search, $options: "i"} },            // SYSTEM ROLE: Case-insensitive search
-                {email: {$regex: search, $options: "i"} },           // EMAIL ADDRESS: Case-insensitive search
+                { title: { $regex: search, $options: "i" } },           // JOB TITLE: Case-insensitive search
+                { name: { $regex: search, $options: "i" } },            // FULL NAME: Case-insensitive search
+                { role: { $regex: search, $options: "i" } },            // SYSTEM ROLE: Case-insensitive search
+                { email: { $regex: search, $options: "i" } },           // EMAIL ADDRESS: Case-insensitive search
             ],
         };
-        query = { ...query, ...searchQuery};
+        query = { ...query, ...searchQuery };
     }
-    
+
     // USER RETRIEVAL: Fetch matching users with selected fields
     const users = await User.find(query).select("name title email role isActive");
-    
+
     // RESPONSE: Return filtered user list
     res.status(200).json(users);
 });
@@ -236,16 +238,16 @@ const getTeamList = asyncHandler(async(req, res) => {
  * DATA POPULATION: Includes related task information to provide context
  * for notifications without requiring additional API calls.
  */
-const getNotificationList = asyncHandler(async(req, res) => {
+const getNotificationList = asyncHandler(async (req, res) => {
     // AUTHENTICATION: Extract user ID from JWT token
-    const {userId} = req.user;
-    
+    const { userId } = req.user;
+
     // NOTIFICATION QUERY: Find unread notifications for current user
     const notices = await Notice.find({
         team: userId,                             // RECIPIENT: User is in notification team
         isRead: { $nin: [userId] },               // UNREAD: User ID not in read array
     }).populate("task", "title");                 // TASK DATA: Include task title for context
-    
+
     // RESPONSE: Return unread notifications with task context
     res.status(200).json(notices);
 });
@@ -268,43 +270,43 @@ const getNotificationList = asyncHandler(async(req, res) => {
  * SECURITY: Removes password from response to prevent accidental exposure
  * of sensitive authentication data.
  */
-const updateUserProfile = asyncHandler(async(req, res) => {
+const updateUserProfile = asyncHandler(async (req, res) => {
     // AUTHENTICATION: Extract user context from JWT
-    const {userId, isAdmin} = req.user;
-    const {_id} = req.body;
-    
+    const { userId, isAdmin } = req.user;
+    const { _id } = req.body;
+
     // PERMISSION RESOLUTION: Determine target user ID based on permissions
     // LOGIC: Admin updating self OR Admin updating others OR User updating self
-    const id = isAdmin && userId.toString() === _id?.toString() ? userId : 
-               isAdmin && userId.toString() !== _id?.toString() ? _id : 
-               userId;
-    
+    const id = isAdmin && userId.toString() === _id?.toString() ? userId :
+        isAdmin && userId.toString() !== _id?.toString() ? _id :
+            userId;
+
     // USER LOOKUP: Find target user for update
     const user = await User.findById(id);
-    
-    if(user) {
+
+    if (user) {
         // PARTIAL UPDATE: Update only provided fields, preserve existing values
         user.name = req.body.name || user.name;
         user.title = req.body.title || user.title;
         user.role = req.body.role || user.role;
         user.email = req.body.email || user.email;
         user.isAdmin = req.body.isAdmin !== undefined ? req.body.isAdmin : user.isAdmin;
-        
+
         // PERSISTENCE: Save updated user data
         const updateUser = await user.save();
-        
+
         // SECURITY: Remove password from response
         updateUser.password = undefined;
-        
+
         // SUCCESS RESPONSE: Return updated user profile
         res.status(200).json({
-            status: true, 
-            message: "Profile update successful", 
+            status: true,
+            message: "Profile update successful",
             user: updateUser
         });
     } else {
         // NOT FOUND: Handle invalid user ID
-        res.status(404).json({status: false, message: "User not found"});
+        res.status(404).json({ status: false, message: "User not found" });
     }
 });
 
@@ -323,28 +325,28 @@ const updateUserProfile = asyncHandler(async(req, res) => {
  * PERFORMANCE: Uses efficient MongoDB update operations with array operators
  * to minimize database load and improve response times.
  */
-const markNotificationRead = asyncHandler(async(req, res) => {
+const markNotificationRead = asyncHandler(async (req, res) => {
     // AUTHENTICATION: Extract user ID from JWT token
-    const {userId} = req.user;
-    const {isReadType, id} = req.query;
-    
+    const { userId } = req.user;
+    const { isReadType, id } = req.query;
+
     // OPERATION TYPE: Handle bulk vs individual notification marking
-    if(isReadType === "all") {
+    if (isReadType === "all") {
         // BULK UPDATE: Mark all unread notifications as read for user
         await Notice.updateMany(
-            {team: userId, isRead: {$nin:[userId]}},          // QUERY: Unread notifications for user
-            {$push: {isRead: userId}}                         // UPDATE: Add user to read array
+            { team: userId, isRead: { $nin: [userId] } },          // QUERY: Unread notifications for user
+            { $push: { isRead: userId } }                         // UPDATE: Add user to read array
         );
     } else {
         // INDIVIDUAL UPDATE: Mark specific notification as read
         await Notice.findOneAndUpdate(
-            {_id: id, isRead: {$nin:[userId]}},               // QUERY: Specific unread notification
-            {$push: {isRead: userId}}                         // UPDATE: Add user to read array
-        ); 
+            { _id: id, isRead: { $nin: [userId] } },               // QUERY: Specific unread notification
+            { $push: { isRead: userId } }                         // UPDATE: Add user to read array
+        );
     }
-    
+
     // SUCCESS RESPONSE: Confirm operation completion
-    res.status(200).json({status: true, message: "Done"});
+    res.status(200).json({ status: true, message: "Done" });
 });
 
 /**
@@ -363,26 +365,26 @@ const markNotificationRead = asyncHandler(async(req, res) => {
  * DATA PROTECTION: Removes password from response to prevent accidental
  * exposure of hashed password data in API responses or logs.
  */
-const changeUserPassword = asyncHandler(async(req, res) => {
+const changeUserPassword = asyncHandler(async (req, res) => {
     // AUTHENTICATION: Extract user ID from JWT token
-    const {userId} = req.user;
-    
+    const { userId } = req.user;
+
     // USER LOOKUP: Find current user account
     const user = await User.findById(userId);
-    
-    if(user) {
+
+    if (user) {
         // PASSWORD UPDATE: Set new password (auto-hashed by model middleware)
         user.password = req.body.password;
         await user.save();
-        
+
         // SECURITY: Remove password from user object
         user.password = undefined;
-        
+
         // SUCCESS RESPONSE: Confirm password change
-        res.status(200).json({status: true, message: "Done"});
+        res.status(200).json({ status: true, message: "Done" });
     } else {
         // NOT FOUND: Handle invalid user ID
-        res.status(404).json({status: false, message: "User not found"});
+        res.status(404).json({ status: false, message: "User not found" });
     }
 });
 
@@ -403,26 +405,26 @@ const changeUserPassword = asyncHandler(async(req, res) => {
  * ADMINISTRATIVE CONTROL: Provides administrators with granular user access
  * management capabilities for security and organizational requirements.
  */
-const activateUserProfile = asyncHandler(async(req, res) => {
+const activateUserProfile = asyncHandler(async (req, res) => {
     // PARAMETER EXTRACTION: Get target user ID from URL
-    const {id} = req.params;
-    
+    const { id } = req.params;
+
     // USER LOOKUP: Find target user account
     const user = await User.findById(id);
 
-    if(user) {
+    if (user) {
         // STATUS UPDATE: Set activation status from request body
         user.isActive = req.body.isActive;
         await user.save();
-        
+
         // DYNAMIC RESPONSE: Provide contextual success message
         res.status(200).json({
-            status: true, 
+            status: true,
             message: `User ${user.isActive ? "activated" : "deactivated"} successfully`
         });
     } else {
         // NOT FOUND: Handle invalid user ID
-        res.status(404).json({status: false, message: "User not found"});
+        res.status(404).json({ status: false, message: "User not found" });
     }
 });
 
@@ -446,16 +448,56 @@ const activateUserProfile = asyncHandler(async(req, res) => {
  * SECURITY: Requires administrative privileges and should be logged
  * for audit and compliance purposes.
  */
-const deleteUserProfile = asyncHandler(async(req, res) => {
+const deleteUserProfile = asyncHandler(async (req, res) => {
     // PARAMETER EXTRACTION: Get target user ID from URL
-    const {id} = req.params;
-    
+    const { id } = req.params;
+
     // PERMANENT DELETION: Remove user account from database
     await User.findByIdAndDelete(id);
-    
+
     // SUCCESS RESPONSE: Confirm deletion completion
-    res.status(200).json({status: true, message: "User deleted successfully"});
+    res.status(200).json({ status: true, message: "User deleted successfully" });
 });
+
+const forgotPassword = asyncHandler(async (req, res) => {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+
+    if (!user) {
+        return res.status(200).json({ status: true, message: "If that email exists, a reset link has been sent." });
+    }
+
+    const resetToken = crypto.randomBytes(32).toString("hex");
+    user.resetToken = resetToken;
+    user.resetTokenExpiry = new Date(Date.now() + 60 * 60 * 1000);
+    await user.save();
+
+    const resetUrl = `${process.env.APP_URL}/reset-password?token=${resetToken}`;
+    await sendPasswordResetEmail({ to: user.email, name: user.name, resetUrl });
+
+    res.status(200).json({ status: true, message: "If that email exists, a reset link has been sent." });
+});
+
+const resetPassword = asyncHandler(async (req, res) => {
+    const { token, password } = req.body;
+
+    const user = await User.findOne({
+        resetToken: token,
+        resetTokenExpiry: { $gt: new Date() },
+    });
+
+    if (!user) {
+        return res.status(400).json({ status: false, message: "Invalid or expired reset link." });
+    }
+
+    user.password = password;
+    user.resetToken = undefined;
+    user.resetTokenExpiry = undefined;
+    await user.save();
+
+    res.status(200).json({ status: true, message: "Password reset successfully. You can now log in." });
+});
+
 
 // EXPORT ALL CONTROLLER FUNCTIONS
 // Organized by functional category for easy reference and maintenance
@@ -464,18 +506,20 @@ export {
     loginUser,              // User login with credential validation
     logoutUser,             // Session termination and cookie cleanup
     registerUser,           // New user account creation
-    
+
     // USER DATA OPERATIONS  
     getUserById,            // Individual user profile retrieval
     getTeamList,            // Searchable user directory for team management
-    
+
     // NOTIFICATION OPERATIONS
     getNotificationList,    // Unread notification retrieval
     markNotificationRead,   // Notification read status management
-    
+
     // PROFILE MANAGEMENT OPERATIONS
     updateUserProfile,      // User profile data updates
     changeUserPassword,     // Password change functionality
     activateUserProfile,    // Account activation/deactivation
-    deleteUserProfile       // Permanent account deletion
+    deleteUserProfile,       // Permanent account deletion
+    forgotPassword,
+    resetPassword
 };

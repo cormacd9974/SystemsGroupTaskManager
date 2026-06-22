@@ -17,5 +17,7 @@ export {
     Tasks,
     Team,
     Trash,
-    Users
+    Users,
+    ForgotPassword,
+    
 };

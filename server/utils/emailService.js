@@ -106,3 +106,25 @@ export const sendOverdueEmail = async ({
 `,
     });
 };
+
+export const sendPasswordResetEmail = async ({ to, name, resetUrl }) => {
+    await getTransporter().sendMail({
+        from: process.env.EMAIL_FROM,
+        to,
+        subject: "Reset your SGTM password",
+        html: `
+<div style="font-family:sans-serif;max-width:520px;margin:0 auto;">
+<div style="background:#0068B5;padding:24px 32px;border-radius:8px 8px 0 0;">
+<h2 style="color:#fff;margin:0;font-size:18px;">Password Reset Request</h2>
+</div>
+<div style="background:#f9fafb;padding:24px 32px;border:1px solid #e5e7eb;border-top:none;border-radius:0 0 8px 8px;">
+<p style="margin:0 0 16px;color:#374151;">Hi ${name},</p>
+<p style="margin:0 0 16px;color:#374151;">You requested a password reset. Click the button below — this link expires in 1 hour.</p>
+<a href="${resetUrl}" style="display:inline-block;background:#0068B5;color:#fff;padding:10px 20px;border-radius:6px;text-decoration:none;font-weight:600;font-size:14px;">Reset Password</a>
+<p style="margin:16px 0 0;color:#9ca3af;font-size:12px;">If you didn't request this, ignore this email.</p>
+</div>
+</div>
+`,
+    });
+};
+

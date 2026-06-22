@@ -132,6 +132,22 @@ export const authApiSlice = apiSlice.injectEndpoints({
                 credentials: "include", // Include cookies for potential immediate session
             }),
         }),
+        forgotPassword: builder.mutation({
+            query: (data) => ({
+                url: "/user/forgot-password",
+                method: "POST",
+                body: data,
+            }),
+        }),
+
+        resetPassword: builder.mutation({
+            query: (data) => ({
+                url: "/user/reset-password",
+                method: "POST",
+                body: data,
+            }),
+        }),
+
     }),
 });
 
@@ -190,6 +206,8 @@ export const {
      * - Handle successful account creation
      */
     useRegisterMutation,
+    useForgotPasswordMutation,
+    useResetPasswordMutation
 } = authApiSlice;
 
 /**

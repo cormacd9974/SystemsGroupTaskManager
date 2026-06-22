@@ -10,7 +10,9 @@ import {
     markNotificationRead,
     changeUserPassword,
     activateUserProfile,
-    deleteUserProfile
+    deleteUserProfile,
+    forgotPassword,
+    resetPassword
 } from "../controllers/userController.js";
 import { isAdminRoute, protectRoute } from "../middleware/authMiddleware.js";
 
@@ -22,6 +24,9 @@ router.post("/register", protectRoute, isAdminRoute, registerUser);
 
 // Log in an existing user
 router.post("/login", loginUser );
+
+router.post("/forgot-password", forgotPassword);
+router.post("/reset-password", resetPassword);
 
 // Log out the current user
 router.post("/logout", logoutUser );
