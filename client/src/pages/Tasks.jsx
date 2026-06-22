@@ -5,7 +5,7 @@ import { FaList } from "react-icons/fa"; // Font Awesome list icon for list view
 // Redux and routing imports (commented imports preserved for context)
 //import { useSelector } from "react-redux"; // Redux state access (currently unused)
 import { IoMdAdd } from "react-icons/io"; // Ionicons add icon for new task button
-//import { FiDownload } from "react-icons/fi" // Feather download icon (for future CSV export)
+import { FiDownload } from "react-icons/fi" // Feather download icon (for future CSV export)
 
 // Additional UI icons and components
 import { MdGridView } from "react-icons/md"; // Material Design grid icon for board view tab
@@ -117,6 +117,28 @@ const Tasks = () => {
 
         ])
     }*/ //Possible export to csv function
+    const exportToCSV = () => {
+        const tasks = data?.tasks || [];
+        if(tasks.length === 0) return;
+        const headers = ["Title", "Stage", "Priority", "Category", "Due Date", "Team"];
+        const rows = tasks.map((t) => [
+            `"${(t.title || "").replace(/"/g, '""')}"`,
+                t.category || "",
+                t.stage || "",
+                t.priority || "",
+                t.startDate ? new Date(t.startDate).toLocaleDateString() : "",
+                t.dueDate ? new Date(t.dueDate).toLocaleDateString() : "",
+                (t.team || []).map((m) => m.name).join("; "),
+        ]);
+        const csv = [headers, ...rows].map((r) => r.join(",")).join("\n");
+        const blob = new Blob([csv], { type: "text/csv"});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `tasks-${new Date().toISOString().slice(0, 10)}.csv`;
+        a.click();
+        URL.revokeObjectURL(url);
+    }
     
     /**
      * Side effect for smooth scrolling behavior
@@ -133,80 +155,98 @@ const Tasks = () => {
      * Provides user feedback during initial data fetch and filter changes
      */
     return isLoading ? (
-        <div className="py-16 flex justify-center">
-            <Loading />
-        </div>
+      <div className="py-16 flex justify-center">
+        <Loading />
+      </div>
     ) : (
-        <div className="w-full space-y-4">
-            {/* Page header with title, task count, and primary action */}
-            {/* Design: Clear hierarchy with title on left, action on right */}
-            <div className="flex items-center justify-between">
-                <div>
-                  {/* Page title component for consistent styling */}
-                  <Title title="Tasks"/>
-                  
-                  {/* Task count for immediate context and data awareness */}
-                  {/* UX: Helps users understand the scope of their task list */}
-                  <p className="text-sm text-gray-400 mt-0.5">
-                    {data?.tasks?.length || 0} tasks
-                  </p>
-                </div>
-                
-                {/* Primary action button for task creation */}
-                {/* Design: Prominent placement and styling for key user action */}
-                <button
-                onClick={() => setOpen(true)} // Opens the task creation modal
-                className="btn-primary flex items-center gap-2"
-                >
-                    <IoMdAdd className="text-lg"/>
-                    <span>New Task</span>
-                </button>
-            </div>
+      <div className="w-full space-y-4">
+        {/* Page header with title, task count, and primary action */}
+        {/* Design: Clear hierarchy with title on left, action on right */}
+        <div className="flex items-center justify-between">
+          <div>
+            {/* Page title component for consistent styling */}
+            <Title title="Tasks" />
 
-            {/* Stage filter buttons for workflow management */}
-            {/* UX: Toggle-style buttons for clear filter state indication */}
-            <div>
-                {["", "todo", "in-progress"].map((stage) => (
-                    <button
-                        key={stage}
-                        onClick={() => setStageFilter(stage)} // Updates active filter
-                        className={`px-4 py-2 rounded-lg text-xs font-medium border tracking-all ${
-                            stageFilter === stage
-                                ? "border-[#0068B5] text-white" // Active state: Brand blue with white text
-                                : "text-gray-700 border-gray-200 bg-white hover:border-[#0068B5]" // Inactive state: Gray with hover effect
-                        }`}
-                        // Dynamic background color for active state
-                        style={stageFilter === stage ? { backgroundColor: "#0068B5"} : {}}
-                    >
-                        {/* User-friendly filter labels */}
-                        {/* Business logic: Maps internal stage values to readable labels */}
-                        {stage === "" ? "All" : stage === "todo" ? "To Do" : "In Progress"}
-                    </button>
-                ))}
-            </div>
+            {/* Task count for immediate context and data awareness */}
+            {/* UX: Helps users understand the scope of their task list */}
+            <p className="text-sm text-gray-400 mt-0.5">
+              {data?.tasks?.length || 0} tasks
+            </p>
+          </div>
 
-            {/* Main content container with tabbed view switching */}
-            {/* Design: Card-based layout with clean borders and subtle shadows */}
-            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-                <Tabs tabs={TABS} setSelected={setSelected}>
-                    {/* Conditional padding based on selected view */}
-                    {/* Design decision: Board view handles its own padding, List view needs container padding */}
-                    <div className={selected === 0 ? "" : "p-4"}>
-                        {/* Conditional rendering based on active tab */}
-                        {/* Architecture: Separate components for different visualization modes */}
-                        {selected === 0
-                          ? <BoardView tasks={data?.tasks}/> // Kanban-style board for visual workflow
-                          : <Table tasks={data?.tasks}/> // Detailed table view for comprehensive data
-                        }
-                    </div>
-                </Tabs>
-            </div>
-
-            {/* Task creation modal */}
-            {/* Modal pattern: Provides focused, distraction-free task creation experience */}
-            {/* Conditional rendering: Only mounts when needed for performance */}
-            <AddTask open={open} setOpen={setOpen} />
+          {/* Primary action button for task creation */}
+          {/* Design: Prominent placement and styling for key user action */}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={exportToCSV} // Opens the task creation modal
+              className="flex items-center gap-2 px-4 npy-2 rounded-lg text-sm font-medium border border-gray-200 bg-white text-gray-600 hover:border-[#0068B5] hover:text-[#0068B5] transition-colors"
+            >
+              <FiDownload className="text-base" />
+              <span>Export to CSV</span>
+            </button>
+            <button
+              onClick={() => setOpen(true)} // Opens the task creation modal
+              className="btn-primary flex items-center gap-2"
+            >
+              <IoMdAdd className="text-lg" />
+              <span>New Task</span>
+            </button>
+          </div>
         </div>
+
+        {/* Stage filter buttons for workflow management */}
+        {/* UX: Toggle-style buttons for clear filter state indication */}
+        <div>
+          {["", "todo", "in-progress"].map((stage) => (
+            <button
+              key={stage}
+              onClick={() => setStageFilter(stage)} // Updates active filter
+              className={`px-4 py-2 rounded-lg text-xs font-medium border tracking-all ${
+                stageFilter === stage
+                  ? "border-[#0068B5] text-white" // Active state: Brand blue with white text
+                  : "text-gray-700 border-gray-200 bg-white hover:border-[#0068B5]" // Inactive state: Gray with hover effect
+              }`}
+              // Dynamic background color for active state
+              style={
+                stageFilter === stage ? { backgroundColor: "#0068B5" } : {}
+              }
+            >
+              {/* User-friendly filter labels */}
+              {/* Business logic: Maps internal stage values to readable labels */}
+              {stage === ""
+                ? "All"
+                : stage === "todo"
+                  ? "To Do"
+                  : "In Progress"}
+            </button>
+          ))}
+        </div>
+
+        {/* Main content container with tabbed view switching */}
+        {/* Design: Card-based layout with clean borders and subtle shadows */}
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+          <Tabs tabs={TABS} setSelected={setSelected}>
+            {/* Conditional padding based on selected view */}
+            {/* Design decision: Board view handles its own padding, List view needs container padding */}
+            <div className={selected === 0 ? "" : "p-4"}>
+              {/* Conditional rendering based on active tab */}
+              {/* Architecture: Separate components for different visualization modes */}
+              {
+                selected === 0 ? (
+                  <BoardView tasks={data?.tasks} /> // Kanban-style board for visual workflow
+                ) : (
+                  <Table tasks={data?.tasks} />
+                ) // Detailed table view for comprehensive data
+              }
+            </div>
+          </Tabs>
+        </div>
+
+        {/* Task creation modal */}
+        {/* Modal pattern: Provides focused, distraction-free task creation experience */}
+        {/* Conditional rendering: Only mounts when needed for performance */}
+        <AddTask open={open} setOpen={setOpen} />
+      </div>
     );
 };
 

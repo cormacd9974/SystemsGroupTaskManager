@@ -15,6 +15,7 @@ import { useGetTaskHistoryQuery } from "../redux/slices/api/taskApiSlice"; // RT
 import { CATEGORY_LABEL } from "../utils"; // Utility constant for category display mapping
 import { Link } from "react-router-dom"; // React Router for navigation
 import CompletionsTable from "../components/CompletionsTable";
+import { FiDownload } from "react-icons/fi"; // Icon for export functionality]
 
 /**
  * Priority badge styling configuration
@@ -149,7 +150,28 @@ const History = () => {
     { key: "config", label: "Configurations" }, // System configuration tasks
     { key: "project", label: "Projects" }, // Project-related tasks
   ];
-  
+
+  const exportToCSV = () => {
+    if(filtered.length === 0) return alert("No tasks to export with current filters.");
+
+    const headers = ["Title", "Category", "Priority", "Team", "Completed Date"];
+    const rows = filtered.map((t) => [
+      `"${(t.title || "").replace(/"/g, '""')}"`,
+      t.category || "",
+      t.priority || "",
+      (t.team || []).map((m) => m.name).join("; "),
+      t.updatedAt ? new Date(t.updatedAt).toLocaleDateString("en-IE") : ""
+    ]);
+    const csv = [headers, ...rows].map((r) => r.join(",")).join("\n");
+    const blob = new Blob([csv], { type: "text/csv"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `history-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="space-y-4">
       {user?.isAdmin && <CompletionsTable tasks={data?.tasks || []} />}
@@ -196,9 +218,13 @@ const History = () => {
 
         {/* Results counter */}
         {/* UX: Shows user how many tasks match current filters */}
-        <span className="text-xs text-gray-400 ml-auto">
-          {filtered.length} tasks
-        </span>
+        <div className="ml-auto text-sm text-gray-500">
+          <span className="font-medium text-gray-700">{filtered.length} tasks</span>
+          <button onClick={exportToCSV} disabled={filtered.length === 0} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border border-gray-200 bg-white text-gray-600 hover:border-blue-[#0068B5] hover:text-[#0068B5] disabled:opacity-50 disabled:cursor-not-allowed transition-colors ml-4">
+            <FiDownload />
+            Export
+          </button>
+        </div>
       </div>
 
       {/* Conditional rendering: Empty state vs task table */}
