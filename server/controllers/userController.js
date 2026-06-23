@@ -40,6 +40,9 @@ import { sendPasswordResetEmail } from "../utils/emailService.js";
 const loginUser = asyncHandler(async (req, res) => {
     // REQUEST PARSING: Extract login credentials from request body
     const { email, password } = req.body;
+    if(typeof email !== "string" || typeof password !== "string") {
+       return res.status(400).json({status: false, message: "Invalid credentials."});
+    }
 
     // USER LOOKUP: Find user by email address (case-sensitive for security)
     const user = await User.findOne({ email });
@@ -125,6 +128,9 @@ const logoutUser = asyncHandler(async (req, res) => {
 const registerUser = asyncHandler(async (req, res) => {
     // REQUEST PARSING: Extract user registration data
     const { name, email, password, isAdmin, role, title } = req.body;
+    if(!password || password.length < 6) {
+       return res.status(400).json({status: false, message: "password must be at least 6 characters."});
+    }
 
     // DUPLICATE CHECK: Prevent multiple accounts with same email
     const userExist = await User.findOne({ email });
@@ -288,9 +294,11 @@ const updateUserProfile = asyncHandler(async (req, res) => {
         // PARTIAL UPDATE: Update only provided fields, preserve existing values
         user.name = req.body.name || user.name;
         user.title = req.body.title || user.title;
-        user.role = req.body.role || user.role;
         user.email = req.body.email || user.email;
+        if(req.user.isAdmin) {
+        user.role = req.body.role || user.role;
         user.isAdmin = req.body.isAdmin !== undefined ? req.body.isAdmin : user.isAdmin;
+        }
 
         // PERSISTENCE: Save updated user data
         const updateUser = await user.save();
@@ -374,6 +382,9 @@ const changeUserPassword = asyncHandler(async (req, res) => {
 
     if (user) {
         // PASSWORD UPDATE: Set new password (auto-hashed by model middleware)
+        if (!req.body.password || req.body.password.length < 6) {
+            return res.status(400).json({ status: false, message: "password must be at least 6 characters." });
+        }
         user.password = req.body.password;
         await user.save();
 
@@ -461,6 +472,9 @@ const deleteUserProfile = asyncHandler(async (req, res) => {
 
 const forgotPassword = asyncHandler(async (req, res) => {
     const { email } = req.body;
+    if(typeof email !== "string") {
+       return res.status(400).json({status: false, message: "Invalid request."});
+    }
     const user = await User.findOne({ email });
 
     if (!user) {
@@ -480,6 +494,9 @@ const forgotPassword = asyncHandler(async (req, res) => {
 
 const resetPassword = asyncHandler(async (req, res) => {
     const { token, password } = req.body;
+    if(typeof token !== "string" || typeof password !== "string") {
+       return res.status(400).json({status: false, message: "Invalid request."});
+    }
 
     const user = await User.findOne({
         resetToken: token,
@@ -489,7 +506,9 @@ const resetPassword = asyncHandler(async (req, res) => {
     if (!user) {
         return res.status(400).json({ status: false, message: "Invalid or expired reset link." });
     }
-
+    if(!password || password.length < 6) {
+       return res.status(400).json({status: false, message: "password must be at least 6 characters."});
+    }
     user.password = password;
     user.resetToken = undefined;
     user.resetTokenExpiry = undefined;

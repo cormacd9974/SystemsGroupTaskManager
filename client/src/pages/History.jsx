@@ -155,12 +155,13 @@ const History = () => {
     if(filtered.length === 0) return alert("No tasks to export with current filters.");
 
     const headers = ["Title", "Category", "Priority", "Team", "Completed Date"];
+    const esc = (v) => `${String(v ?? "").replace(/"/g, '""')}"`;
     const rows = filtered.map((t) => [
-      `"${(t.title || "").replace(/"/g, '""')}"`,
-      t.category || "",
-      t.priority || "",
-      (t.team || []).map((m) => m.name).join("; "),
-      t.updatedAt ? new Date(t.updatedAt).toLocaleDateString("en-IE") : ""
+      esc(t.title),
+      esc(t.category),
+      esc(t.priority),
+      esc((t.team || []).map((m) => m.name).join("; ")),
+      esc(t.updatedAt ? new Date(t.updatedAt).toLocaleDateString("en-IE") : "")
     ]);
     const csv = [headers, ...rows].map((r) => r.join(",")).join("\n");
     const blob = new Blob([csv], { type: "text/csv"});
@@ -220,7 +221,7 @@ const History = () => {
         {/* UX: Shows user how many tasks match current filters */}
         <div className="ml-auto text-sm text-gray-500">
           <span className="font-medium text-gray-700">{filtered.length} tasks</span>
-          <button onClick={exportToCSV} disabled={filtered.length === 0} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border border-gray-200 bg-white text-gray-600 hover:border-blue-[#0068B5] hover:text-[#0068B5] disabled:opacity-50 disabled:cursor-not-allowed transition-colors ml-4">
+          <button onClick={exportToCSV} disabled={filtered.length === 0} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border border-gray-200 bg-white text-gray-600 hover:border-[#0068B5] hover:text-[#0068B5] disabled:opacity-50 disabled:cursor-not-allowed transition-colors ml-4">
             <FiDownload />
             Export
           </button>
@@ -260,8 +261,8 @@ const History = () => {
 
               <tbody>
                 {/* Iterate through filtered tasks to render table rows */}
-                {filtered.map((task, i) => (
-                  <tr key={i}>
+                {filtered.map((task) => (
+                  <tr key={task._id}>
                     {/* Task title cell with completion indicator and navigation */}
                     <td>
                       <Link

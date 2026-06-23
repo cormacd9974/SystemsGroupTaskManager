@@ -16,7 +16,6 @@ import {
     updateTaskStage,
 } from "../controllers/taskController.js";
 import { upload } from "../middleware/uploadMiddleware.js";
-import { runEmailChecks } from "../utils/scheduler.js";
 
 // Router for all task-related endpoints
 const router = express.Router();
@@ -46,11 +45,6 @@ router.get("/dashboard", protectRoute, dashboardStatistics );
 
 // Completed task history
 router.get("/history", protectRoute, getTaskHistory );
-
-router.get("/test-email-scheduler", protectRoute, async (req, res) => {
-    await runEmailChecks();
-    res.json({ status: true, message: "Scheduler triggered successfully"});
-});
 
 // Get all tasks
 router.get("/", protectRoute, getTasks);

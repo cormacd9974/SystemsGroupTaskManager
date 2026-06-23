@@ -9,6 +9,7 @@ import routes from "./routes/index.js";
 import { fileURLToPath } from "url";
 import path from "path";
 import { startScheduler } from "./utils/scheduler.js";
+import { protectRoute } from "./middleware/authMiddleware.js"
 
 dotenv.config();
 
@@ -39,7 +40,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Serve uploaded files statically
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/uploads", protectRoute, express.static(path.join(__dirname, "uploads")));
 
 // Parse URL-encoded form data
 app.use(express.urlencoded({ extended: true }));

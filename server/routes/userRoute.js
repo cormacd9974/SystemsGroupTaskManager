@@ -15,6 +15,15 @@ import {
     resetPassword
 } from "../controllers/userController.js";
 import { isAdminRoute, protectRoute } from "../middleware/authMiddleware.js";
+import rateLimit from "express-rate-limit"
+
+const authLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 20,
+    message: { status: false, message: "Too many attempts, please try again later."},
+    standardHeaders: true,
+    legacyHeaders: true
+})
 
 // Router for all user-related endpoints
 const router = express.Router();
@@ -23,10 +32,10 @@ const router = express.Router();
 router.post("/register", protectRoute, isAdminRoute, registerUser);
 
 // Log in an existing user
-router.post("/login", loginUser );
+router.post("/login", authLimiter, loginUser );
 
-router.post("/forgot-password", forgotPassword);
-router.post("/reset-password", resetPassword);
+router.post("/forgot-password", authLimiter, forgotPassword);
+router.post("/reset-password", authLimiter, resetPassword);
 
 // Log out the current user
 router.post("/logout", logoutUser );

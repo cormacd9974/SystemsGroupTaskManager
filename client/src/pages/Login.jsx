@@ -291,48 +291,4 @@ const Login = () => {
   );
 };
 
-/**
- * Export the Login component as default export
- *
- * Component Summary:
- * - Professional authentication interface with split-screen design
- * - Comprehensive form validation using react-hook-form
- * - RTK Query integration for secure API communication
- * - Redux state management for authentication persistence
- * - Responsive design adapting from mobile to desktop layouts
- *
- * Key Features:
- * - Split-screen layout with branding panel and login form
- * - Real-time form validation with user-friendly error messages
- * - Loading states during authentication process
- * - Automatic redirect for already authenticated users
- * - Mobile-responsive design with adaptive branding display
- * - Security notice for authorized personnel access
- *
- * Authentication Flow:
- * - Form validation on client side
- * - Secure API call to authentication endpoint
- * - Redux state update with user credentials
- * - Automatic navigation to dashboard on success
- * - Error handling with toast notifications
- *
- * Security Considerations:
- * - Secure credential handling through Redux
- * - Client-side validation with server-side verification
- * - Error messages that don't expose sensitive information
- * - Automatic redirect to prevent unauthorized access
- *
- * UX Design Principles:
- * - Clear visual hierarchy with professional branding
- * - Intuitive form layout with accessible labels
- * - Immediate feedback for validation errors
- * - Loading states for user awareness during processing
- * - Responsive design for various device sizes
- *
- * Business Integration:
- * - Company branding with Systems Group identity
- * - Production department context
- * - Internal system for authorized personnel
- * - Professional appearance suitable for corporate environment
- */
 export default Login;

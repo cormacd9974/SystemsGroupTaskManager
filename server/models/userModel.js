@@ -9,7 +9,7 @@ const userSchema = new Schema(
     title: { type: String, required: true },
 
     // User role; defaults to regular user
-    role: { type: String, required: "user" },
+    role: { type: String, default: "user" },
 
     // Unique email used for login
     email: { type: String, required: true, unique: true },

@@ -148,7 +148,13 @@ const duplicateTask = asyncHandler(async (req, res) => {
             assets: task.assets,                              // RESOURCE COPYING: Include original assets
             links: task.links,                                // REFERENCE LINKS: Maintain original links
             description: task.description,
-            subTasks: task.subTasks,                          // SUB-TASK INHERITANCE: Copy all sub-tasks
+            subTasks: task.subTasks.map(s => ({
+                title: s.title,
+                date: s.date,
+                tag: s.tag,
+                description: s.description,
+                isCompleted: false,
+            })),                          // SUB-TASK INHERITANCE: Copy all sub-tasks
             activities: activity,                             // NEW ACTIVITY TRAIL: Start fresh activity log
         });
 
@@ -189,6 +195,10 @@ const updateTask = asyncHandler(async (req, res) => {
         task.title = title;
         task.date = date;
         task.startDate = startDate || undefined;              // OPTIONAL FIELD: Allow null values
+        if(dueDate && dueDate !== task.dueDate?.toISOString().slice(0, 10)) {
+            task.dueSoonNotified = false;
+            task.overdueNotified = false;
+        }
         task.dueDate = dueDate || undefined;                  // OPTIONAL FIELD: Allow null values
         task.priority = priority.toLowerCase();               // NORMALIZATION: Consistent case
         task.category = category ? category.toLowerCase() : task.category; // CONDITIONAL UPDATE

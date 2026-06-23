@@ -247,7 +247,7 @@ ${body}
         <div className="flex items-center gap-2">
           <button
             onClick={exportToExcel} // Opens the task creation modal
-            className="flex items-center gap-2 px-4 npy-2 rounded-lg text-sm font-medium border border-gray-200 bg-white text-gray-600 hover:border-[#0068B5] hover:text-[#0068B5] transition-colors"
+            className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium border border-gray-200 bg-white text-gray-600 hover:border-[#0068B5] hover:text-[#0068B5] transition-colors"
           >
             <FiDownload className="text-base" />
             <span>Export to Excel</span>
@@ -269,7 +269,7 @@ ${body}
           <button
             key={stage}
             onClick={() => setStageFilter(stage)} // Updates active filter
-            className={`px-4 py-2 rounded-lg text-xs font-medium border tracking-all ${
+            className={`px-4 py-2 rounded-lg text-xs font-medium border ${
               stageFilter === stage
                 ? "border-[#0068B5] text-white" // Active state: Brand blue with white text
                 : "text-gray-700 border-gray-200 bg-white hover:border-[#0068B5]" // Inactive state: Gray with hover effect
