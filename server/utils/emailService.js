@@ -1,10 +1,10 @@
 import nodemailer from "nodemailer";
 
 const esc = (s) => String(s ?? "")
-.replace(/&/g, "&amp:")
-.replace(/</g, "&lt:")
-.replace(/>/g, "&gt:")
-.replace(/"/g, "&quot:")
+.replace(/&/g, "&amp;")
+.replace(/</g, "&lt;")
+.replace(/>/g, "&gt;")
+.replace(/"/g, "&quot;")
 
 const getTransporter = () => nodemailer.createTransport({
     host: process.env.EMAIL_HOST,

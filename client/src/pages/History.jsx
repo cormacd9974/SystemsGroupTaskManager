@@ -155,7 +155,7 @@ const History = () => {
     if(filtered.length === 0) return alert("No tasks to export with current filters.");
 
     const headers = ["Title", "Category", "Priority", "Team", "Completed Date"];
-    const esc = (v) => `${String(v ?? "").replace(/"/g, '""')}"`;
+    const esc = (v) => `"${String(v ?? "").replace(/"/g, '""')}"`;
     const rows = filtered.map((t) => [
       esc(t.title),
       esc(t.category),
