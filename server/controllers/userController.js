@@ -15,7 +15,7 @@ import User from "../models/userModel.js";         // User entity with authentic
 import Notice from "../models/notis.js";           // Notification system for user communication
 
 // UTILITY IMPORTS
-import { createJWT } from "../utils/index.js";       // JWT token generation and management utilities
+import { createJWT, escapeRegex } from "../utils/index.js";       // JWT token generation and management utilities
 import crypto from "crypto";
 import { sendPasswordResetEmail } from "../utils/emailService.js";
 
@@ -213,10 +213,10 @@ const getTeamList = asyncHandler(async (req, res) => {
     if (search) {
         const searchQuery = {
             $or: [                                            // SEARCH ACROSS: Multiple user fields
-                { title: { $regex: search, $options: "i" } },           // JOB TITLE: Case-insensitive search
-                { name: { $regex: search, $options: "i" } },            // FULL NAME: Case-insensitive search
-                { role: { $regex: search, $options: "i" } },            // SYSTEM ROLE: Case-insensitive search
-                { email: { $regex: search, $options: "i" } },           // EMAIL ADDRESS: Case-insensitive search
+                { title: { $regex: escapeRegex(search), $options: "i" } },           // JOB TITLE: Case-insensitive search
+                { name: { $regex: escapeRegex(search), $options: "i" } },            // FULL NAME: Case-insensitive search
+                { role: { $regex: escapeRegex(search), $options: "i" } },            // SYSTEM ROLE: Case-insensitive search
+                { email: { $regex: escapeRegex(search), $options: "i" } },           // EMAIL ADDRESS: Case-insensitive search
             ],
         };
         query = { ...query, ...searchQuery };

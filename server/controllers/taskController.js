@@ -15,6 +15,7 @@ import Notice from "../models/notis.js";           // Notification model for tea
 import Task from "../models/taskModel.js";         // Main task entity with all task-related fields
 import User from "../models/userModel.js";         // User model for team member management
 import { sendAssignmentEmail } from "../utils/emailService.js";
+import { escapeRegex } from "../utils/index.js";
 /**
  * CREATE NEW TASK ENDPOINT
  * 
@@ -128,6 +129,7 @@ const duplicateTask = asyncHandler(async (req, res) => {
         
         // SOURCE TASK RETRIEVAL: Fetch original task to duplicate
         const task = await Task.findById(id);
+        if (!task) return res.status(404).json({ status: false, message: "Task not found."});
 
         // NOTIFICATION GENERATION: Create notification text using original task data
         let text = "New task has been assigned to you";
@@ -190,6 +192,7 @@ const updateTask = asyncHandler(async (req, res) => {
     try {
         // TASK RETRIEVAL: Fetch existing task for modification
         const task = await Task.findById(id);
+        if (!task) return res.status(404).json({ status: false, message: "Task not found."});
         
         // FIELD UPDATES: Apply all provided updates with normalization
         task.title = title;
@@ -237,6 +240,7 @@ const updateTaskStage = asyncHandler(async (req, res) => {
         
         // TARGETED UPDATE: Fetch and update only the stage field
         const task = await Task.findById(id);
+        if (!task) return res.status(404).json({ status: false, message: "Task not found."});
         task.stage = stage.toLowerCase();                     // NORMALIZATION: Consistent case
         await task.save();
         
@@ -303,6 +307,7 @@ const createSubTask = asyncHandler(async (req, res) => {
     try {
         // PARENT TASK RETRIEVAL: Get the task to add sub-task to
         const task = await Task.findById(id);
+        if (!task) return res.status(404).json({ status: false, message: "Task not found."});
         
         // SUB-TASK ADDITION: Push new sub-task to embedded array
         task.subTasks.push({ 
@@ -378,10 +383,10 @@ const getTasks = asyncHandler(async (req, res) => {
         query = {
             ...query,
             $or: [                                            // SEARCH ACROSS: Multiple fields
-                { title: { $regex: search, $options: "i" } },        // Case-insensitive title search
-                { stage: { $regex: search, $options: "i" } },        // Stage matching
-                { priority: { $regex: search, $options: "i" } },     // Priority matching
-                { category: { $regex: search, $options: "i" } },     // Category matching
+                { title: { $regex: escapeRegex(search), $options: "i" } },        // Case-insensitive title search
+                { stage: { $regex: escapeRegex(search), $options: "i" } },        // Stage matching
+                { priority: { $regex: escapeRegex(search), $options: "i" } },     // Priority matching
+                { category: { $regex: escapeRegex(search), $options: "i" } },     // Category matching
             ],
         };
     }
@@ -443,6 +448,7 @@ const postTaskActivity = asyncHandler(async (req, res) => {
     try {
         // TASK RETRIEVAL: Get task to add activity to
         const task = await Task.findById(id);
+        if (!task) return res.status(404).json({ status: false, message: "Task not found."});
         
         // ACTIVITY ADDITION: Add new activity with user attribution
         task.activities.push({ 
@@ -478,6 +484,7 @@ const trashTask = asyncHandler(async (req, res) => {
     try {
         // SOFT DELETE: Mark task as trashed instead of permanent deletion
         const task = await Task.findById(id);
+        if (!task) return res.status(404).json({ status: false, message: "Task not found."});
         task.isTrashed = true;                                // SOFT DELETE FLAG
         await task.save();
         

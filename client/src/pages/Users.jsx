@@ -56,7 +56,7 @@ const Users = () => {
     const [searchParams] = useSearchParams();
 
     // Store current search term in local state for API queries
-    const [searchTerm] = useState(searchParams.get("search") || "");
+    const searchTerm = searchParams.get("search") || "";
 
     /**
      * API integration for data fetching and mutations
@@ -236,7 +236,7 @@ const Users = () => {
                             
                             <tbody>
                                 {data?.map((user, i) => (
-                                    <tr key={i}>
+                                    <tr key={user._id}>
                                         {/* User identification with avatar and name */}
                                         <td>
                                             <div className="flex items-center gap-3">

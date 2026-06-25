@@ -133,7 +133,7 @@ const store = configureStore({
      * - Sensitive data protection through proper configuration
      * - Optional browser extension requirement for functionality
      */
-    devTools: true,
+    devTools: import.meta.env.DEV,
 });
 
 /**

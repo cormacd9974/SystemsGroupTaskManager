@@ -270,7 +270,7 @@ const TaskCard = ({ task }) => {
         {/* ADD SUB-TASK BUTTON */}
         {/* Only enabled for admin users */}
         <button
-          disabled={!user.isAdmin} // Disable for non-admin users
+          disabled={!user?.isAdmin} // Disable for non-admin users
           onClick={() => setOpen(true)} // Open AddSubTask modal
           className="w-full flex items-center gap-2 mt-3 text-xs text-blue-500 hover:text-blue-700 font-semibold disabled:cursor-not-allowed disabled:text-gray-300"
         >

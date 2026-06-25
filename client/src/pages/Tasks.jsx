@@ -90,7 +90,7 @@ const Tasks = () => {
    * - isTrashed: Exclude deleted tasks (empty string = not trashed)
    * - search: Text-based search filtering from URL parameters
    */
-  const { data, isLoading } = useGetAllTaskQuery(
+  const { data, isLoading, refetch } = useGetAllTaskQuery(
     {
       strQuery: stageFilter,
       isTrashed: "",
@@ -297,7 +297,7 @@ ${body}
               selected === 0 ? (
                 <BoardView tasks={data?.tasks} /> // Kanban-style board for visual workflow
               ) : (
-                <Table tasks={data?.tasks} />
+                <Table tasks={data?.tasks} refetch={refetch}/>
               ) // Detailed table view for comprehensive data
             }
           </div>

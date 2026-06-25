@@ -189,10 +189,10 @@ const BoardView = ({ tasks }) => {
             <div className="flex flex-col gap-3">
               {groupTasks.length > 0 ? (
                 // Render task cards when tasks exist in this group
-                groupTasks.map((task, i) => (
+                groupTasks.map((task) => (
                   <TaskCard
                     task={task}
-                    key={i} // Using index as key (consider using task._id for better performance)
+                    key={task._id} // Using index as key (consider using task._id for better performance)
                   />
                 ))
               ) : (

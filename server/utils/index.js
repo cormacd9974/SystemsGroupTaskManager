@@ -13,3 +13,5 @@ export const createJWT = (res, userId) => {
     });*/
     return token;
 };
+
+export const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');

@@ -348,11 +348,11 @@ const RecentTasksTable = ({ tasks }) => (
       </thead>
 
       <tbody>
-        {tasks?.map((task, i) => (
+        {tasks?.map((task) => (
           // Conditional row styling for overdue tasks
           // UX: Red background immediately draws attention to urgent items
           <tr
-            key={i}
+            key={task._id}
             className={`${task?.dueDate && new Date(task.dueDate) < new Date() ? "bg-red-50 border-l-4 border-l-red-400" : ""}`}
           >
             {/* Task title cell with status indicator and navigation */}
@@ -458,7 +458,7 @@ const TeamMembersTable = ({ users }) => (
 
       <tbody>
         {users?.map((user, i) => (
-          <tr key={i}>
+          <tr key={user._id}>
             {/* User information with avatar and role */}
             <td>
               <div className="flex items-center gap-2.5">
@@ -546,7 +546,7 @@ const TeamWorkPanel = ({ teamStatus }) => (
     {/* Team member sections with dividers */}
     <div className="divide-y divide-gray-100">
       {teamStatus.map((member, i) => (
-        <div key={i} className="px-5 py-4">
+        <div key={member._id} className="px-5 py-4">
           {/* Member header with avatar, info, and task count */}
           <div className="flex items-center gap-3 mb-3">
             {/* Member avatar with dynamic color */}

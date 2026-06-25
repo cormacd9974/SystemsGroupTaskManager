@@ -57,7 +57,7 @@ const PRIORITY_ICON = {
  * 
  * @returns {JSX.Element} Rendered table component with task data
  */
-const Table = ({ tasks }) => {
+const Table = ({ tasks, refetch }) => {
     /**
      * State management for modal and dialog interactions
      * Separates concerns between different UI states for maintainability
@@ -106,7 +106,7 @@ const Table = ({ tasks }) => {
             // Performance note: Could be optimized by updating RTK Query cache instead of full reload
             setTimeout(() => {
                 setOpenDialog(false);
-                window.location.reload();
+                refetch();
             }, 500);
         } catch (err) {
             // Handle and display error messages with fallback text
@@ -139,8 +139,8 @@ const Table = ({ tasks }) => {
                         <tbody>
                             {/* Iterate through tasks array to render table rows */}
                             {/* Performance: Uses index as key (acceptable for static lists) */}
-                            {tasks?.map((task, i) => (
-                                <tr key={i}>
+                            {tasks?.map((task) => (
+                                <tr key={task._id}>
                                     {/* Task title cell with navigation and stage indicator */}
                                     <td>
                                         {/* Link to task detail page with hover effects */}
@@ -207,8 +207,8 @@ const Table = ({ tasks }) => {
                                     </td>
 
                                     {/* Task creation date - hidden on mobile for space optimization */}
-                                    {/* Note: There's a typo in className "hideen" - should be "hidden" */}
-                                    <td className="hideen md:table-cell text-gray-400 text-xs">
+                                    
+                                    <td className="hidden md:table-cell text-gray-400 text-xs">
                                         {/* Uses utility function for consistent date formatting across app */}
                                         {formatDate(new Date(task?.date))}
                                     </td>
@@ -236,7 +236,7 @@ const Table = ({ tasks }) => {
                                                     setSelected(task._id); // Store only ID for deletion
                                                     setOpenDialog(true); 
                                                 }}
-                                                className="flex items-center gap-1 text-xs text-red-600 bg-red-50 hover:bg-bred-100 px-2.5 py-1.5 rounded-lg font-medium"
+                                                className="flex items-center gap-1 text-xs text-red-600 bg-red-50 hover:bg-red-100 px-2.5 py-1.5 rounded-lg font-medium"
                                             >
                                                 <HiTrash /> Delete
                                             </button>

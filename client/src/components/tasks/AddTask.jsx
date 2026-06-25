@@ -260,7 +260,7 @@ const AddTask = ({ open, setOpen, task }) => {
       }
 
       // For new tasks, ensure due date is not in the past
-      if (!task?._id && data.dueDate && new Date(data.dueDate) < new Date()) {
+      if (!task?._id && data.dueDate && new Date(data.dueDate) < new Date(new Date().toDateString())) {
         toast.error("Due date can not be in the past");
         return;
       }

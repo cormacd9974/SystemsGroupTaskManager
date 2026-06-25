@@ -95,7 +95,7 @@ const Trash = () => {
   const [searchParams] = useSearchParams();
 
   // Maintain search term in local state for API queries
-  const [searchTerm] = useState(searchParams.get("search")||"");
+  const searchTerm = searchParams.get("search")||"";
 
   /**
    * API integration for data fetching and mutations
@@ -249,8 +249,8 @@ const Trash = () => {
                 </thead>
                 
                 <tbody>
-                  {data?.tasks?.map((item,i) => (
-                    <tr key={i}>
+                  {data?.tasks?.map((item) => (
+                    <tr key={item._id}>
                       {/* Task title cell with stage indicator */}
                       <td>
                         <div className="flex items-center gap-2.5">

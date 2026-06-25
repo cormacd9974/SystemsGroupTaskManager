@@ -9,7 +9,8 @@
 
 // THIRD-PARTY IMPORTS
 import multer from "multer";                       // Multipart form data handling for file uploads
-import path from "path";                           // Node.js path utilities for file extension handling
+import path from "path";
+import { fileURLToPath } from "url";                           // Node.js path utilities for file extension handling
 
 /**
  * STORAGE CONFIGURATION
@@ -30,13 +31,15 @@ import path from "path";                           // Node.js path utilities for
  * to cloud storage (AWS S3, Google Cloud Storage) for better scalability,
  * redundancy, and CDN integration.
  */
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const storage = multer.diskStorage({
     // DESTINATION CONFIGURATION: Define upload directory
     destination: (req, file, cb) => {
         // STORAGE LOCATION: Centralized uploads directory
         // SECURITY: Ensure this directory is outside web root in production
         // PERMISSIONS: Directory should have appropriate read/write permissions
-        cb(null, "uploads/");
+        cb(null, path.join(__dirname, "uploads/"));
     },
     
     // FILENAME GENERATION: Create unique filenames to prevent conflicts

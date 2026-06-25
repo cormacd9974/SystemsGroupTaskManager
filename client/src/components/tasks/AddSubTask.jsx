@@ -71,8 +71,8 @@ const AddSubTask = ({ open, setOpen, id }) => {
     try {
       // Validate that the sub-task date is not in the past
       // This prevents users from creating sub-tasks with invalid due dates
-      if (data.date && new Date(data.date) < new Date()) {
-        toast.error("Sub task date cannot come before task start date");
+      if (data.date && new Date(data.date) < new Date(new Date().toDateString())) {
+        toast.error("Date can not be in the past.");
         return; // Exit early if validation fails
       }
 
