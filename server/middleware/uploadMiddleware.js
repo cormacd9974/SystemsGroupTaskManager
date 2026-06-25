@@ -39,7 +39,7 @@ const storage = multer.diskStorage({
         // STORAGE LOCATION: Centralized uploads directory
         // SECURITY: Ensure this directory is outside web root in production
         // PERMISSIONS: Directory should have appropriate read/write permissions
-        cb(null, path.join(__dirname, "uploads/"));
+        cb(null, path.join(__dirname, "../uploads"));
     },
     
     // FILENAME GENERATION: Create unique filenames to prevent conflicts

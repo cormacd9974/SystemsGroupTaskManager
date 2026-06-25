@@ -524,6 +524,7 @@ const deleteRestoreTask = asyncHandler(async (req, res) => {
         } else if (actionType === "restore") {
             // SINGLE RESTORATION: Restore specific task from trash
             const t = await Task.findById(id);
+            if (!task) return res.status(404).json({ status: false, message: "Task not found."});
             t.isTrashed = false;
             await t.save();
             
