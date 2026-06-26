@@ -40,7 +40,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Serve uploaded files statically
-app.use("/uploads", protectRoute, express.static(path.join(__dirname, "uploads")));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Parse URL-encoded form data
 app.use(express.urlencoded({ extended: true }));
@@ -52,6 +52,7 @@ app.use(cookieParser());
 app.use(morgan("dev"));
 
 // Mount API routes under /api
+app.get("/healthz", (req, res) => res.json({ status: "ok"}));
 app.use("/api", routes);
 
 // Handle unknown routes and errors
