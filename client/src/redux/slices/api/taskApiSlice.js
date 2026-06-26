@@ -185,7 +185,7 @@ export const taskApiSlice = apiSlice.injectEndpoints({
                 method: "GET", // HTTP method for data retrieval
                 
             }),
-            // Note: Could benefit from providesTags for individual task caching
+            providesTags: ["Tasks"], // Cache tag for task detail invalidation
         }),
 
         /**

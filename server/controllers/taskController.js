@@ -420,10 +420,12 @@ const getTask = asyncHandler(async (req, res) => {
             .populate({ path: "team", select: "name title role email" })      // TEAM DETAILS: Full member info
             .populate({ path: "activities.by", select: "name" });             // ACTIVITY AUTHORS: User names
             
+        if(!task) return res.status(404).json({ status: false, message: "Task not found."});
         res.status(200).json({ status: true, task });
+
         
     } catch (error) {
-        throw new Error("Failed to fetch task", error);
+        throw error;
     }
 });
 

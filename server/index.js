@@ -9,7 +9,7 @@ import routes from "./routes/index.js";
 import { fileURLToPath } from "url";
 import path from "path";
 import { startScheduler } from "./utils/scheduler.js";
-import { protectRoute } from "./middleware/authMiddleware.js"
+
 
 dotenv.config();
 

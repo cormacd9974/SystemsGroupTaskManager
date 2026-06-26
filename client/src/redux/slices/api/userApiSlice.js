@@ -104,7 +104,8 @@ export const userApiSlice = apiSlice.injectEndpoints({
                 method: "GET", // HTTP method for data retrieval
                 credentials: "include", // Include session cookies for authentication
             }),
-            // Note: Should include providesTags: ["Users"] for cache management
+            providesTags: ["Users"],
+            // Note: Could benefit from providesTags: ["Users"] for team list updates
         }),
 
         /**
