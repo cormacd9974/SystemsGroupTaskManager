@@ -10,13 +10,18 @@ import routes from "./routes/index.js";
 import { fileURLToPath } from "url";
 import path from "path";
 import { startScheduler } from "./utils/scheduler.js";
-
+import { validateEnv } from "./utils/validateEnv.js";
 
 dotenv.config();
 
 // Connect to MongoDB
 dbConnection();
 startScheduler();
+
+dotenv.config();
+validateEnv();
+
+dbConnection();
 
 const PORT = process.env.PORT || 8800;
 
@@ -71,7 +76,7 @@ if (process.env.NODE_ENV === "production") {
 app.use(errorHandler);
 
 // Start the server
-const server = app.listen(PORT, () => console.log(`Server listenning on port ${PORT}`));
+const server = app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
 process.on("SIGTERM", () => {
   server.close(() => process.exit(0));
 })
