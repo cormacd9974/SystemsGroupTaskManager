@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 import morgan from "morgan";
+import helmet from "helmet";
 import { dbConnection } from "./utils/connectDB.js";
 import { routeNotFound, errorHandler } from "./middleware/errorMiddleware.js";
 import routes from "./routes/index.js";
@@ -20,6 +21,7 @@ startScheduler();
 const PORT = process.env.PORT || 8800;
 
 const app = express();
+app.use(helmet());
 
 // Enable CORS for local frontend development origins
 if (process.env.NODE_ENV !== "production") {
@@ -69,4 +71,7 @@ if (process.env.NODE_ENV === "production") {
 app.use(errorHandler);
 
 // Start the server
-app.listen(PORT, () => console.log(`Server listenning on port ${PORT}`));
+const server = app.listen(PORT, () => console.log(`Server listenning on port ${PORT}`));
+process.on("SIGTERM", () => {
+  server.close(() => process.exit(0));
+})
