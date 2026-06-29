@@ -1,5 +1,5 @@
 const REQUIRED = ["MONGO_URI", "JWT_SECRET"];
-const EMAIL = ["EMAIL_HOST", "EMAIL_USER", "EMAIL_PASS", "EMAIL_FROM", "APP_URL"];P
+const EMAIL = ["EMAIL_HOST", "EMAIL_USER", "EMAIL_PASS", "EMAIL_FROM", "APP_URL"];
 export const validateEnv = () => {
     const missing = REQUIRED.filter((key) => !process.env[key]);
     if(missing.length) {
