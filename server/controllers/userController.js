@@ -176,7 +176,7 @@ const registerUser = asyncHandler(async (req, res) => {
  * PERFORMANCE OPTIMIZATION: Returns only necessary fields to reduce response
  * size and improve API performance for user lookup operations.
  */
-const getUserById = asyncHandler(async (req, res) => {
+/*const getUserById = asyncHandler(async (req, res) => {
     // PARAMETER EXTRACTION: Get user ID from URL parameters
     const { id } = req.params;
 
@@ -185,7 +185,7 @@ const getUserById = asyncHandler(async (req, res) => {
 
     // RESPONSE: Return user profile data
     res.status(200).json(user);
-});
+});*/
 
 /**
  * GET TEAM LIST ENDPOINT
@@ -527,7 +527,6 @@ export {
     registerUser,           // New user account creation
 
     // USER DATA OPERATIONS  
-    getUserById,            // Individual user profile retrieval
     getTeamList,            // Searchable user directory for team management
 
     // NOTIFICATION OPERATIONS

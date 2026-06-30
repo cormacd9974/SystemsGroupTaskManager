@@ -48,8 +48,7 @@ const ChangeTaskActions = ({ _id, stage }) => {
       const res = await changeStage({ id: _id, stage: val }).unwrap();
       // Show success message to user
       toast.success(res?.message);
-      // Refresh page to reflect changes (could be optimized with cache updates)
-      //setTimeout(() => window.location.reload(), 500);
+      
     } catch (err) {
       // Show error message if stage change fails
       toast.error(err?.data?.message || err.error);
@@ -138,10 +137,9 @@ export default function TaskDialog({ task }) {
       toast.success(res?.message);
 
       // Close confirmation dialog and refresh the page after success
-      //setTimeout(() => {
+      
         setOpenDialog(false);
-       // window.location.reload(); // Refresh to update UI
-      //}, 500);
+       
     } catch (err) {
       // Show error message if deletion fails
       toast.error(err?.data?.message || err.error);
@@ -157,7 +155,7 @@ export default function TaskDialog({ task }) {
       toast.success(res?.message);
 
       // Refresh page so the duplicated task appears in the UI
-      //setTimeout(() => window.location.reload(), 500);
+      
     } catch (err) {
       // Show error message if duplication fails
       toast.error(err?.data?.message || err.error);

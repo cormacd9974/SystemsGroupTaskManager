@@ -3,7 +3,6 @@ import {
     loginUser,
     logoutUser,
     registerUser,   
-    getUserById,
     getTeamList,
     getNotificationList,
     updateUserProfile,

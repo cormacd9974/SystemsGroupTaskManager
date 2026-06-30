@@ -83,9 +83,8 @@ const createTask = asyncHandler(async (req, res) => {
         // BIDIRECTIONAL RELATIONSHIP MAINTENANCE
         // Update each assigned user's task list to maintain data consistency
         const users = await User.find({ _id: team });
-        for (const user of users) {
-            await User.findByIdAndUpdate(user._id, { $push: { tasks: task._id } });
-        }
+            await User.updateMany({_id: { $in: team } } , { $push: { tasks: task._id } });
+        
         for (const user of users) {
             if (user.email) {
                 sendAssignmentEmail({
@@ -193,7 +192,7 @@ const updateTask = asyncHandler(async (req, res) => {
         // TASK RETRIEVAL: Fetch existing task for modification
         const task = await Task.findById(id);
         if (!task) return res.status(404).json({ status: false, message: "Task not found."});
-        
+        const previousTeam = task.team.map((id) => id.toString());
         // FIELD UPDATES: Apply all provided updates with normalization
         task.title = title;
         task.date = date;
@@ -207,12 +206,19 @@ const updateTask = asyncHandler(async (req, res) => {
         task.category = category ? category.toLowerCase() : task.category; // CONDITIONAL UPDATE
         task.assets = assets;
         task.stage = stage ? stage.toLowerCase() : task.stage;                     // NORMALIZATION: Consistent case
-        task.team = team;                                     // TEAM REASSIGNMENT: Update assigned members
+        if (team) task.team = team;                                     // TEAM REASSIGNMENT: Update assigned members
         task.links = links ? links.split(/[\s,]+/).filter(Boolean) : [];         // LINK PROCESSING: Convert to array
         task.description = description;
         
         // PERSISTENCE: Save all changes to database
         await task.save();
+        if (team) {
+            const newTeam = team.map((id) => id.toString());
+            const removed = previousTeam.filter((id) => !newTeam.includes(id));
+            const added = newTeam.filter((id) => !previousTeam.includes(id));
+            if(removed.length) await User.updateMany({ _id: { $in: removed}}, { $pull: { tasks: task._id}});
+            if(added.length) await User.updateMany({ _id: { $in: added}}, { $push: { tasks: task._id}});
+        }
         
         res.status(200).json({ status: true, message: "Task updated successfully." });
         
@@ -238,7 +244,7 @@ const updateTaskStage = asyncHandler(async (req, res) => {
         const { id } = req.params;
         const { stage } = req.body;
         if (typeof stage !== "string" || !stage.trim()) {
-            return res.status(404).json({ status: false, message: "Stage is required."}) 
+            return res.status(400).json({ status: false, message: "Stage is required."}) 
         }
         // TARGETED UPDATE: Fetch and update only the stage field
         const task = await Task.findById(id);
