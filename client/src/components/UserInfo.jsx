@@ -61,7 +61,7 @@ export default function UserInfo({ user }) {
         {/* Design pattern: Circular avatar with initials as fallback for profile photos */}
         {/* Inherits size and background color from parent container for flexibility */}
         <span className="inline-flex items-center justify-center h-full w-full rounded-full text-white text-xs font-bold tracking-white">
-          {getInitials(user.name)}
+          {getInitials(user?.name)}
         </span>
       </PopoverButton>
 
@@ -95,7 +95,7 @@ export default function UserInfo({ user }) {
             {/* User information text section */}
             {/* Layout: Vertical stack of user details with proper text hierarchy */}
             {/* Overflow handling: Prevents long text from breaking layout */}
-            <div className="miw-w-0 overflow-hidden">
+            <div className="min-w-0 overflow-hidden">
               {/* User's full name - primary identification */}
               {/* Typography: Medium weight for emphasis as primary identifier */}
               {/* Truncation: Prevents layout breaks with very long names */}

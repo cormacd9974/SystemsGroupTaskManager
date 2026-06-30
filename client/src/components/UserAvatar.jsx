@@ -12,7 +12,6 @@ import { IoLogOutOutline } from "react-icons/io5"; // Ionicons logout icon
 import { useDispatch, useSelector } from "react-redux"; // Redux hooks for state management
 import { useNavigate } from "react-router-dom"; // React Router navigation hook
 import { getInitials } from "../utils"; // Utility function to extract user initials
-import { toast } from "sonner"; // Toast notifications for user feedback
 import { useLogoutMutation } from "../redux/slices/api/authApiSlice"; // RTK Query mutation for logout API
 import ChangePassword from "./ChangePassword"; // Modal component for password changes
 import AddUser from "./AddUser"; // Modal component for profile editing (reused for user creation)
@@ -90,15 +89,14 @@ const UserAvatar = () => {
     try {
       // Call logout API to invalidate server-side session
       await logoutUser().unwrap();
-
+    } catch {
+      // Display error message with fallback text
+    } finally {
       // Clear Redux authentication state
       dispatch(logout());
 
       // Redirect to login page
       navigate("/log-in");
-    } catch (err) {
-      // Display error message with fallback text
-      toast.error(err?.data?.message || "Something went wrong");
     }
   };
 

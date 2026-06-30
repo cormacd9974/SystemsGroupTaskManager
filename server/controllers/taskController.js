@@ -52,7 +52,7 @@ const createTask = asyncHandler(async (req, res) => {
         // BUSINESS RULE: Create contextual notification text based on team size and task details
         let text = "New task has been assigned to you";
         if (team?.length > 1) text += ` and ${team.length - 1} others.`;
-        text += ` The task priority is set to ${priority} priority. The task date is ${new Date(date).toDateString()}. Thank you!`;
+        text += ` The task priority is set to ${priority || "normal"} priority. The task date is ${date ? new Date(date).toDateString() : new Date().toDateString()}. Thank you!`;
 
         // ACTIVITY TRACKING: Create initial activity record for task creation
         const activity = { type: "assigned", activity: text, by: userId };
@@ -68,7 +68,7 @@ const createTask = asyncHandler(async (req, res) => {
             date,
             startDate,
             dueDate,
-            priority: priority.toLowerCase(),                   // NORMALIZATION: Ensure consistent case
+            priority: priority ? priority.toLowerCase() : "normal",                   // NORMALIZATION: Ensure consistent case
             category: category ? category.toLowerCase().replace("_", "-") : "report-created", // DEFAULT CATEGORY
             assets,
             activities: activity,                               // AUDIT TRAIL: Initial creation activity
@@ -203,10 +203,10 @@ const updateTask = asyncHandler(async (req, res) => {
             task.overdueNotified = false;
         }
         task.dueDate = dueDate || undefined;                  // OPTIONAL FIELD: Allow null values
-        task.priority = priority.toLowerCase();               // NORMALIZATION: Consistent case
+        task.priority = priority ? priority.toLowerCase() : task.priority;              // NORMALIZATION: Consistent case
         task.category = category ? category.toLowerCase() : task.category; // CONDITIONAL UPDATE
         task.assets = assets;
-        task.stage = stage.toLowerCase();                     // NORMALIZATION: Consistent case
+        task.stage = stage ? stage.toLowerCase() : task.stage;                     // NORMALIZATION: Consistent case
         task.team = team;                                     // TEAM REASSIGNMENT: Update assigned members
         task.links = links ? links.split(/[\s,]+/).filter(Boolean) : [];         // LINK PROCESSING: Convert to array
         task.description = description;
@@ -237,7 +237,9 @@ const updateTaskStage = asyncHandler(async (req, res) => {
     try {
         const { id } = req.params;
         const { stage } = req.body;
-        
+        if (typeof stage !== "string" || !stage.trim()) {
+            return res.status(404).json({ status: false, message: "Stage is required."}) 
+        }
         // TARGETED UPDATE: Fetch and update only the stage field
         const task = await Task.findById(id);
         if (!task) return res.status(404).json({ status: false, message: "Task not found."});
@@ -513,6 +515,10 @@ const deleteRestoreTask = asyncHandler(async (req, res) => {
     try {
         const { id } = req.params;
         const { actionType } = req.query;
+
+        if ((actionType === "deleteAll" || actionType === "restoreAll") && !req.user.isAdmin) {
+            return res.status(403).json({ status: false, message: "Admin access is required."});
+        }
 
         // OPERATION ROUTING: Handle different action types
         if (actionType === "delete") {

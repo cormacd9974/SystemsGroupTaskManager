@@ -129,13 +129,13 @@ const Users = () => {
     const deleteHandler = async () => {
         try {
             // Execute user deletion mutation
-            const res = await deleteUser(selected);
+            const res = await deleteUser(selected).unwrap();
             
             // Refresh team list to reflect changes
             refetch();
             
             // Provide success feedback to user
-            toast.success(res?.data?.message);
+            toast.success(res?.message);
             
             // Clean up selected state
             setSelected(null);
@@ -160,11 +160,11 @@ const Users = () => {
             const res = await userAction({ 
                 isActive: !selected?.isActive, // Toggle current status
                 id: selected?._id 
-            });
+            }).unwrap();
             
             // Refresh data and provide feedback
             refetch();
-            toast.success(res?.data?.message);
+            toast.success(res?.message);
             
             // Clean up state and close dialog
             setSelected(null);

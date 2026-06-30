@@ -40,7 +40,7 @@ const ModalWrapper = ({ open, setOpen, children }) => {
                             leaveFrom="opacity-100 scale-100"
                             leaveTo="opacity-0 scale-95"
                         >
-                           <DialogPanel className="w-full relative transform overflow-visable rounded-2xl bg-white shadow-2xl sm:my-8 sm:max-w-lg border border-gray-100">
+                           <DialogPanel className="w-full relative transform overflow-visible rounded-2xl bg-white shadow-2xl sm:my-8 sm:max-w-lg border border-gray-100">
                             <div className="bg-white px-6 py-6 overflow-visible">
                                 {/* Render modal content passed from parent */}
                                 {children}

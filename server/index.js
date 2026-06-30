@@ -13,15 +13,10 @@ import { startScheduler } from "./utils/scheduler.js";
 import { validateEnv } from "./utils/validateEnv.js";
 
 dotenv.config();
-
+validateEnv();
 // Connect to MongoDB
 dbConnection();
 startScheduler();
-
-dotenv.config();
-validateEnv();
-
-dbConnection();
 
 const PORT = process.env.PORT || 8800;
 

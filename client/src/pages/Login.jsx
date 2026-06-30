@@ -213,7 +213,7 @@ const Login = () => {
                 {/* Email input with validation rules */}
                 <input
                   type="email" // HTML5 email validation
-                  placeholder="you@company.com" // Helpful placeholder text
+                  placeholder="you@intel.com" // Helpful placeholder text
                   className="input-field" // Consistent styling class
                   {...register("email", {
                     required: "Email Address is required",
