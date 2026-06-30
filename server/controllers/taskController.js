@@ -82,8 +82,8 @@ const createTask = asyncHandler(async (req, res) => {
 
         // BIDIRECTIONAL RELATIONSHIP MAINTENANCE
         // Update each assigned user's task list to maintain data consistency
-        const users = await User.find({ _id: team });
-            await User.updateMany({_id: { $in: team } } , { $push: { tasks: task._id } });
+        const users = await User.find({ _id: { $in: team } });
+        await User.updateMany({_id: { $in: team } } , { $push: { tasks: task._id } });
         
         for (const user of users) {
             if (user.email) {
