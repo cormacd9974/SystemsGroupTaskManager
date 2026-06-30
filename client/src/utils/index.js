@@ -30,6 +30,7 @@
  * - Activity log entries
  */
 export const formatDate = (date) => {
+    if (!date || isNaN(date)) return "-";
     const month = date.toLocaleString("en-US", {month: "short"});
     return `${date.getDate()}-${month}-${date.getFullYear()}`;
 };
