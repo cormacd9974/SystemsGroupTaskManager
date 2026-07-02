@@ -250,11 +250,11 @@ const History = () => {
               {/* Table header with column labels */}
               <thead>
                 <tr>
-                  <th>Task</th> {/* Primary task information */}
-                  <th>Category</th> {/* Task categorization */}
-                  <th>Priority</th> {/* Priority level indicators */}
-                  <th>Team</th> {/* Assigned team members */}
-                  <th className="hidden md:table-cell">Completed</th>{" "}
+                  <th>Task</th> 
+                  <th>Category</th> 
+                  <th>Priority</th> 
+                  <th>Team</th>
+                  <th className="hidden md:table-cell">Completed</th>
                   {/* Responsive: Hidden on mobile */}
                 </tr>
               </thead>

@@ -240,11 +240,11 @@ const Trash = () => {
                 {/* Table header with column labels */}
                 <thead>
                   <tr>
-                    <th>Task Title</th> {/* Primary task identification */}
-                    <th>Priority</th> {/* Priority level for context */}
-                    <th>Stage</th> {/* Workflow stage when deleted */}
-                    <th>Deleted On</th> {/* Deletion timestamp */}
-                    <th className="text-right">Actions</th> {/* Restore/delete actions */}
+                    <th>Task Title</th>
+                    <th>Priority</th>
+                    <th>Stage</th> 
+                    <th>Deleted On</th>
+                    <th className="text-right">Actions</th> 
                   </tr>
                 </thead>
                 

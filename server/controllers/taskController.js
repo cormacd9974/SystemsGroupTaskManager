@@ -192,7 +192,7 @@ const updateTask = asyncHandler(async (req, res) => {
         // TASK RETRIEVAL: Fetch existing task for modification
         const task = await Task.findById(id);
         if (!task) return res.status(404).json({ status: false, message: "Task not found."});
-        const previousTeam = task.team.map((id) => id.toString());
+        const previousTeam = (task.team || []).map((m) => (m._id || m).toString());
         // FIELD UPDATES: Apply all provided updates with normalization
         task.title = title;
         task.date = date;
@@ -213,7 +213,7 @@ const updateTask = asyncHandler(async (req, res) => {
         // PERSISTENCE: Save all changes to database
         await task.save();
         if (team) {
-            const newTeam = team.map((id) => id.toString());
+            const newTeam = (team || []).map((m) => (m._id || m).toString());
             const removed = previousTeam.filter((id) => !newTeam.includes(id));
             const added = newTeam.filter((id) => !previousTeam.includes(id));
             if(removed.length) await User.updateMany({ _id: { $in: removed}}, { $pull: { tasks: task._id}});
